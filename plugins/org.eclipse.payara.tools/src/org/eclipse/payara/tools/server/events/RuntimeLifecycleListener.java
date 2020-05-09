@@ -31,42 +31,42 @@ import org.eclipse.wst.server.core.IRuntimeLifecycleListener;
 
 public class RuntimeLifecycleListener implements IRuntimeLifecycleListener {
 
-    @Override
-    public void runtimeAdded(IRuntime runtime) {
-        if (!isPayara(runtime)) {
-            return;
-        }
-        
-        tryRefreshContainers(runtime);
-    }
+	@Override
+	public void runtimeAdded(IRuntime runtime) {
+		if (!isPayara(runtime)) {
+			return;
+		}
 
-    @Override
-    public void runtimeChanged(IRuntime runtime) {
-        if (!isPayara(runtime)) {
-            return;
-        }
-        
-        tryRefreshContainers(runtime);
-    }
+		tryRefreshContainers(runtime);
+	}
 
-    @Override
-    public void runtimeRemoved(IRuntime runtime) {
-        if (!isPayara(runtime)) {
-            return;
-        }
-        
-        tryRefreshContainers(runtime);
-    }
+	@Override
+	public void runtimeChanged(IRuntime runtime) {
+		if (!isPayara(runtime)) {
+			return;
+		}
 
-    private void tryRefreshContainers(IRuntime runtime) {
-        for (IProject project : getWorkspace().getRoot().getProjects()) {
-            try {
-                if (isOnClasspath(project)) {
-                    getContainersRefresherThread().addProjectToQueue(project);
-                }
-            } catch (CoreException e) {
-                PayaraToolsPlugin.log(e);
-            }
-        }
-    }
+		tryRefreshContainers(runtime);
+	}
+
+	@Override
+	public void runtimeRemoved(IRuntime runtime) {
+		if (!isPayara(runtime)) {
+			return;
+		}
+
+		tryRefreshContainers(runtime);
+	}
+
+	private void tryRefreshContainers(IRuntime runtime) {
+		for (IProject project : getWorkspace().getRoot().getProjects()) {
+			try {
+				if (isOnClasspath(project)) {
+					getContainersRefresherThread().addProjectToQueue(project);
+				}
+			} catch (CoreException e) {
+				PayaraToolsPlugin.log(e);
+			}
+		}
+	}
 }

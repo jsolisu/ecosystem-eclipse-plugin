@@ -27,56 +27,53 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.payara.tools.PayaraToolsPlugin;
 
 /**
- * This thread refreshes the Payara libraries container, effectively
- * whenever ".settings/org.eclipse.wst.common.project.facet.core.xml" in
- * a project changes.
+ * This thread refreshes the Payara libraries container, effectively whenever
+ * ".settings/org.eclipse.wst.common.project.facet.core.xml" in a project
+ * changes.
  * 
  * TODO: Can't this just use the Eclipse job framework?
  */
 public class ContainersRefresherThread extends Thread {
-    
-    private final LinkedList<IProject> projects = new LinkedList<>();
 
+	private final LinkedList<IProject> projects = new LinkedList<>();
 
-    public IProject getProjectFromQueue() {
-        synchronized (projects) {
-            if (projects.isEmpty()) {
-                try {
-                    projects.wait();
-                } catch (InterruptedException e) {
-                    return null;
-                }
-            }
+	public IProject getProjectFromQueue() {
+		synchronized (projects) {
+			if (projects.isEmpty()) {
+				try {
+					projects.wait();
+				} catch (InterruptedException e) {
+					return null;
+				}
+			}
 
-            return projects.removeFirst();
-        }
-    }
+			return projects.removeFirst();
+		}
+	}
 
-    public void addProjectToQueue(final IProject project) {
-        synchronized (projects) {
-            projects.addLast(project);
-            projects.notify();
-        }
-    }
+	public void addProjectToQueue(final IProject project) {
+		synchronized (projects) {
+			projects.addLast(project);
+			projects.notify();
+		}
+	}
 
-    @Override
-    public void run() {
-        while (true) {
-            IProject project = getProjectFromQueue();
+	@Override
+	public void run() {
+		while (true) {
+			IProject project = getProjectFromQueue();
 
-            if (project == null) {
-                return;
-            }
+			if (project == null) {
+				return;
+			}
 
-            try {
-                IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                
-                workspace.run(
-                    monitor -> SystemLibrariesContainer.refresh(project),
-                    workspace.getRoot(), 0, null);
-            } catch (CoreException e) {
-                PayaraToolsPlugin.log(e);
-            }
-        }
-    }
+			try {
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+
+				workspace.run(monitor -> SystemLibrariesContainer.refresh(project), workspace.getRoot(), 0, null);
+			} catch (CoreException e) {
+				PayaraToolsPlugin.log(e);
+			}
+		}
+	}
 }

@@ -26,39 +26,39 @@ package org.eclipse.payara.tools.sdk.server.config;
  */
 public abstract class GlassFishTool {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Tools library directory (relative under GlassFish home). */
-    private final String lib;
+	/** Tools library directory (relative under GlassFish home). */
+	private final String lib;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of GlassFish tool.
-     * <p/>
-     *
-     * @param lib Tools library directory (relative under GlassFish home).
-     */
-    public GlassFishTool(final String lib) {
-        this.lib = lib;
-    }
+	/**
+	 * Creates an instance of GlassFish tool.
+	 * <p/>
+	 *
+	 * @param lib Tools library directory (relative under GlassFish home).
+	 */
+	public GlassFishTool(final String lib) {
+		this.lib = lib;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get tools library directory (relative under GlassFish home).
-     * <p/>
-     *
-     * @return Tools library directory (relative under GlassFish home).
-     */
-    public String getLib() {
-        return lib;
-    }
+	/**
+	 * Get tools library directory (relative under GlassFish home).
+	 * <p/>
+	 *
+	 * @return Tools library directory (relative under GlassFish home).
+	 */
+	public String getLib() {
+		return lib;
+	}
 
 }

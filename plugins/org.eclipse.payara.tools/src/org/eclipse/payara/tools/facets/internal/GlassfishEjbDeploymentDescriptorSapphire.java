@@ -27,43 +27,43 @@ import org.eclipse.sapphire.modeling.xml.RootXmlResource;
 import org.eclipse.sapphire.modeling.xml.XmlResourceStore;
 import org.eclipse.sapphire.workspace.WorkspaceFileResourceStore;
 
-class GlassfishEjbDeploymentDescriptorSapphire extends
-        AbstractGlassfishDeploymentDescriptor implements IGlassfishEjbDeploymentDescriptor {
+class GlassfishEjbDeploymentDescriptorSapphire extends AbstractGlassfishDeploymentDescriptor
+		implements IGlassfishEjbDeploymentDescriptor {
 
-    private IFile file;
+	private IFile file;
 
-    private IGlassfishEjbDescriptorModel model;
+	private IGlassfishEjbDescriptorModel model;
 
-    GlassfishEjbDeploymentDescriptorSapphire(IFile file) throws ResourceStoreException {
-        this.file = file;
-        this.model = IGlassfishEjbDescriptorModel.TYPE
-                .instantiate(new RootXmlResource(new XmlResourceStore(new WorkspaceFileResourceStore(file))));
-    }
+	GlassfishEjbDeploymentDescriptorSapphire(IFile file) throws ResourceStoreException {
+		this.file = file;
+		this.model = IGlassfishEjbDescriptorModel.TYPE
+				.instantiate(new RootXmlResource(new XmlResourceStore(new WorkspaceFileResourceStore(file))));
+	}
 
-    @Override
-    protected void prepareDescriptor() {
+	@Override
+	protected void prepareDescriptor() {
 
-    }
+	}
 
-    @Override
-    protected boolean isPossibleToCreate() {
-        // check for existence of older sun descriptor
-        IPath sunDescriptor = file.getLocation().removeLastSegments(1)
-                .append(IGlassfishEjbDeploymentDescriptor.SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME);
-        if (sunDescriptor.toFile().exists()) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	protected boolean isPossibleToCreate() {
+		// check for existence of older sun descriptor
+		IPath sunDescriptor = file.getLocation().removeLastSegments(1)
+				.append(IGlassfishEjbDeploymentDescriptor.SUN_EJB_DEPLOYMENT_DESCRIPTOR_NAME);
+		if (sunDescriptor.toFile().exists()) {
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    protected void save() {
-        try {
-            model.resource().save();
-        } catch (ResourceStoreException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
+	@Override
+	protected void save() {
+		try {
+			model.resource().save();
+		} catch (ResourceStoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }

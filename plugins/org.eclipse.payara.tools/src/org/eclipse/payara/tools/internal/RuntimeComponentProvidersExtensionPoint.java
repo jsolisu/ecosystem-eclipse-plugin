@@ -35,80 +35,83 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponent;
 import org.eclipse.wst.server.core.IRuntime;
 
 /**
- * Contains the logic for processing the <code>runtimeComponentProviders</code> extension point.
+ * Contains the logic for processing the <code>runtimeComponentProviders</code>
+ * extension point.
  *
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 public final class RuntimeComponentProvidersExtensionPoint {
-    public static final String EXTENSION_POINT_ID = "runtimeComponentProviders";
-    private static final String EL_RUNTIME_COMPONENT_PROVIDER = "runtime-component-provider";
-    private static final String ATTR_CLASS = "class";
+	public static final String EXTENSION_POINT_ID = "runtimeComponentProviders";
+	private static final String EL_RUNTIME_COMPONENT_PROVIDER = "runtime-component-provider";
+	private static final String ATTR_CLASS = "class";
 
-    private static List<RuntimeComponentProvider> providers;
+	private static List<RuntimeComponentProvider> providers;
 
-    public static List<IRuntimeComponent> getRuntimeComponents(IRuntime runtime) {
-        List<IRuntimeComponent> components = new ArrayList<>();
+	public static List<IRuntimeComponent> getRuntimeComponents(IRuntime runtime) {
+		List<IRuntimeComponent> components = new ArrayList<>();
 
-        for (RuntimeComponentProvider provider : getProviders()) {
-            try {
-                List<IRuntimeComponent> runtimeComponents = provider.getRuntimeComponents(runtime);
+		for (RuntimeComponentProvider provider : getProviders()) {
+			try {
+				List<IRuntimeComponent> runtimeComponents = provider.getRuntimeComponents(runtime);
 
-                if (runtimeComponents != null) {
-                    components.addAll(runtimeComponents);
-                }
-            } catch (final Exception e) {
-                PayaraToolsPlugin.log(e);
-            }
-        }
+				if (runtimeComponents != null) {
+					components.addAll(runtimeComponents);
+				}
+			} catch (final Exception e) {
+				PayaraToolsPlugin.log(e);
+			}
+		}
 
-        return components;
-    }
+		return components;
+	}
 
-    private static synchronized List<RuntimeComponentProvider> getProviders() {
-        if (providers == null) {
-            List<RuntimeComponentProvider> modifiableProviders = new ArrayList<>();
+	private static synchronized List<RuntimeComponentProvider> getProviders() {
+		if (providers == null) {
+			List<RuntimeComponentProvider> modifiableProviders = new ArrayList<>();
 
-            for (ProviderDef providerDef : readExtensions()) {
-                RuntimeComponentProvider provider = instantiate(providerDef.pluginId, providerDef.className, RuntimeComponentProvider.class);
+			for (ProviderDef providerDef : readExtensions()) {
+				RuntimeComponentProvider provider = instantiate(providerDef.pluginId, providerDef.className,
+						RuntimeComponentProvider.class);
 
-                if (provider != null) {
-                    modifiableProviders.add(provider);
-                }
-            }
+				if (provider != null) {
+					modifiableProviders.add(provider);
+				}
+			}
 
-            providers = unmodifiableList(modifiableProviders);
-        }
+			providers = unmodifiableList(modifiableProviders);
+		}
 
-        return providers;
-    }
+		return providers;
+	}
 
-    private static List<ProviderDef> readExtensions() {
-        List<ProviderDef> providers = new ArrayList<>();
+	private static List<ProviderDef> readExtensions() {
+		List<ProviderDef> providers = new ArrayList<>();
 
-        for (IConfigurationElement element : getTopLevelElements(findExtensions(SYMBOLIC_NAME, EXTENSION_POINT_ID))) {
-            
-            String pluginId = element.getContributor().getName();
+		for (IConfigurationElement element : getTopLevelElements(findExtensions(SYMBOLIC_NAME, EXTENSION_POINT_ID))) {
 
-            if (element.getName().equals(EL_RUNTIME_COMPONENT_PROVIDER)) {
-                try {
-                    providers.add(new ProviderDef(pluginId, findRequiredAttribute(element, ATTR_CLASS)));
-                } catch (final InvalidExtensionException e) {
-                    // Continue. The problem has been reported to the user via the log.
-                }
-            }
-        }
+			String pluginId = element.getContributor().getName();
 
-        return providers;
-    }
+			if (element.getName().equals(EL_RUNTIME_COMPONENT_PROVIDER)) {
+				try {
+					providers.add(new ProviderDef(pluginId, findRequiredAttribute(element, ATTR_CLASS)));
+				} catch (final InvalidExtensionException e) {
+					// Continue. The problem has been reported to the user via the log.
+				}
+			}
+		}
 
-    private static final class ProviderDef {
-        public final String pluginId;
-        public final String className;
+		return providers;
+	}
 
-        public ProviderDef(String pluginId, String className) {
-            this.pluginId = pluginId;
-            this.className = className;
-        }
-    }
+	private static final class ProviderDef {
+		public final String pluginId;
+		public final String className;
+
+		public ProviderDef(String pluginId, String className) {
+			this.pluginId = pluginId;
+			this.className = className;
+		}
+	}
 
 }

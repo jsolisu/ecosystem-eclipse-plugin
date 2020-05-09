@@ -29,24 +29,24 @@ import java.util.List;
  */
 public class ConfigReaderSources extends ConfigReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// XML reader methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Provide paths to listen on.
-     * <p/>
-     * Sets readers for internal <code>javadocs</code> elements.
-     * <p/>
-     *
-     * @return Paths that the reader listens to.
-     */
-    @Override
-    public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<>();
-        paths.add(new TreeParser.Path("/server/library/sources/file", pathReader));
-        paths.add(new TreeParser.Path("/server/library/sources/fileset", filesetReader));
-        return paths;
-    }
+	/**
+	 * Provide paths to listen on.
+	 * <p/>
+	 * Sets readers for internal <code>javadocs</code> elements.
+	 * <p/>
+	 *
+	 * @return Paths that the reader listens to.
+	 */
+	@Override
+	public List<TreeParser.Path> getPathsToListen() {
+		LinkedList<TreeParser.Path> paths = new LinkedList<>();
+		paths.add(new TreeParser.Path("/server/library/sources/file", pathReader));
+		paths.add(new TreeParser.Path("/server/library/sources/fileset", filesetReader));
+		return paths;
+	}
 
 }

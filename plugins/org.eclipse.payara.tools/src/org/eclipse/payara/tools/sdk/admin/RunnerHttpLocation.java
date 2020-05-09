@@ -29,48 +29,49 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerHttpLocation extends RunnerHttp {
 
-    /**
-     * Returned value is map where locations are stored under keys specified in CommandLocation class.
-     */
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    ResultMap<String, String> result;
+	/**
+	 * Returned value is map where locations are stored under keys specified in
+	 * CommandLocation class.
+	 */
+	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
+	ResultMap<String, String> result;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerHttpLocation(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerHttpLocation(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected Result createResult() {
-        return result = new ResultMap<>();
-    }
+	@Override
+	protected Result createResult() {
+		return result = new ResultMap<>();
+	}
 
-    @Override
-    protected boolean processResponse() {
-        if (manifest == null) {
-            return false;
-        }
+	@Override
+	protected boolean processResponse() {
+		if (manifest == null) {
+			return false;
+		}
 
-        result.value = new HashMap<>();
-        Attributes mainAttrs = manifest.getMainAttributes();
-        if (mainAttrs != null) {
-            result.value.put("Base-Root_value", mainAttrs.getValue("Base-Root_value"));
-            result.value.put("Domain-Root_value", mainAttrs.getValue("Domain-Root_value"));
-            result.value.put("message", mainAttrs.getValue("message"));
-        }
+		result.value = new HashMap<>();
+		Attributes mainAttrs = manifest.getMainAttributes();
+		if (mainAttrs != null) {
+			result.value.put("Base-Root_value", mainAttrs.getValue("Base-Root_value"));
+			result.value.put("Domain-Root_value", mainAttrs.getValue("Domain-Root_value"));
+			result.value.put("message", mainAttrs.getValue("message"));
+		}
 
-        return true;
-    }
+		return true;
+	}
 
 }

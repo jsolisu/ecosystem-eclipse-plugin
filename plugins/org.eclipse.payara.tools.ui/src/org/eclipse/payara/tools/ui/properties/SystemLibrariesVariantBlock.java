@@ -39,148 +39,148 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 
 /**
- * This class implements the visual radio buttons on the properties page for {@link ClasspathContainerPage}.
+ * This class implements the visual radio buttons on the properties page for
+ * {@link ClasspathContainerPage}.
  * 
  * @author Arjan Tijms
  */
 public class SystemLibrariesVariantBlock {
 
-    private Composite control;
-    private final ListenerList<IPropertyChangeListener> changeListeners = new ListenerList<>();
+	private Composite control;
+	private final ListenerList<IPropertyChangeListener> changeListeners = new ListenerList<>();
 
-    private IClasspathEntry selection;
-    private String title;
-    
-    private Button defaultButton;
-    private Button allButton;
+	private IClasspathEntry selection;
+	private String title;
 
-    private IStatus status = OK_STATUS;
-    private static IStatus OK_STATUS = new Status(IStatus.OK, "SystemLibrariesVariantBlock", 0, "", null);
+	private Button defaultButton;
+	private Button allButton;
 
-    public SystemLibrariesVariantBlock(IClasspathEntry selection) {
-        this.selection = selection;
-    }
-    
-    /**
-     * Creates this block's control in the given control.
-     *
-     * @param anscestor containing control
-     */
-    public void createControl(Composite ancestor) {
-        control = newComposite(ancestor);
-        
-        Composite composite = newComposite(newGroup(control, title), 3);
-        createDefaultButton(composite, 3);
-        createAllButton(composite, 3);
-        
-        IPath containerPath = selection.getPath();
-        String libraryGroup = DEFAULT_LIBRARIES; 
-        if (containerPath.segmentCount() > 1) {
-            libraryGroup = containerPath.segment(1);
-        }
-        
-        if (DEFAULT_LIBRARIES.equals(libraryGroup)) {
-            defaultButton.setSelection(true);
-        } else {
-            allButton.setSelection(true);
-        }
-    }
+	private IStatus status = OK_STATUS;
+	private static IStatus OK_STATUS = new Status(IStatus.OK, "SystemLibrariesVariantBlock", 0, "", null);
 
-    public void addPropertyChangeListener(IPropertyChangeListener listener) {
-        changeListeners.add(listener);
-    }
+	public SystemLibrariesVariantBlock(IClasspathEntry selection) {
+		this.selection = selection;
+	}
 
-    public void removePropertyChangeListener(IPropertyChangeListener listener) {
-        changeListeners.remove(listener);
-    }
+	/**
+	 * Creates this block's control in the given control.
+	 *
+	 * @param anscestor containing control
+	 */
+	public void createControl(Composite ancestor) {
+		control = newComposite(ancestor);
 
-    public Control getControl() {
-        return control;
-    }
-    
-    public void setTitle(String title) {
-        this.title = title;
-    }
+		Composite composite = newComposite(newGroup(control, title), 3);
+		createDefaultButton(composite, 3);
+		createAllButton(composite, 3);
 
-    public String selection() {
-        if (defaultButton.getSelection()) {
-            return DEFAULT_LIBRARIES;
-        }
+		IPath containerPath = selection.getPath();
+		String libraryGroup = DEFAULT_LIBRARIES;
+		if (containerPath.segmentCount() > 1) {
+			libraryGroup = containerPath.segment(1);
+		}
 
-        return ALL_LIBRARIES;
-    }
+		if (DEFAULT_LIBRARIES.equals(libraryGroup)) {
+			defaultButton.setSelection(true);
+		} else {
+			allButton.setSelection(true);
+		}
+	}
 
-    public IStatus getStatus() {
-        return status;
-    }
+	public void addPropertyChangeListener(IPropertyChangeListener listener) {
+		changeListeners.add(listener);
+	}
 
-    private void setStatus(IStatus status) {
-        this.status = status;
-    }
-    
-    private void createDefaultButton(Composite composite, int horizontalSpan) {
-        defaultButton = createRadioButton(composite, "Libraries for current version", horizontalSpan);
-        defaultButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (defaultButton.getSelection()) {
-                    setStatus(OK_STATUS);
-                    firePropertyChange();
-                }
-            }
-        });
-    }
+	public void removePropertyChangeListener(IPropertyChangeListener listener) {
+		changeListeners.remove(listener);
+	}
 
-    private void createAllButton(Composite composite, int horizontalSpan) {
-        allButton = createRadioButton(composite, "All libraries in entire server", horizontalSpan);
-        allButton.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (allButton.getSelection()) {
-                    setStatus(OK_STATUS);
-                    firePropertyChange();
-                }
-            }
-        });
-    }
+	public Control getControl() {
+		return control;
+	}
 
-    private void firePropertyChange() {
-        PropertyChangeEvent event = new PropertyChangeEvent(this, "Payara library selection", null, selection());
-        for (IPropertyChangeListener listener : changeListeners) {
-            listener.propertyChange(event);
-        }
-    }
-    
-    private static Group newGroup(Composite parent, String text) {
-        Group group = new Group(parent, NONE);
-        group.setLayout(new GridLayout(1, false));
-        group.setText(text);
-        group.setFont(parent.getFont());
-        
-        GridData gridData = new GridData(FILL_HORIZONTAL);
-        gridData.horizontalSpan = 1;
-        group.setLayoutData(gridData);
-        
-        return group;
-    }
-    
-    private static Button createRadioButton(Composite parent, String label, int horizontalSpan) {
-        Button button = new Button(parent, RADIO);
-        button.setFont(parent.getFont());
-        button.setText(label);
-        
-        GridData gridData = new GridData(BEGINNING);
-        gridData.horizontalSpan = 3;
-        gridData.horizontalAlignment = FILL;
-        gridData.widthHint= computeWidth(button);
-        button.setLayoutData(gridData);
-        
-        return button;
-    }
-    
-    private static int computeWidth(Button button) {
-        return max(
-            new PixelConverter(button).convertHorizontalDLUsToPixels(BUTTON_WIDTH), 
-            button.computeSize(DEFAULT, DEFAULT, true).x);
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String selection() {
+		if (defaultButton.getSelection()) {
+			return DEFAULT_LIBRARIES;
+		}
+
+		return ALL_LIBRARIES;
+	}
+
+	public IStatus getStatus() {
+		return status;
+	}
+
+	private void setStatus(IStatus status) {
+		this.status = status;
+	}
+
+	private void createDefaultButton(Composite composite, int horizontalSpan) {
+		defaultButton = createRadioButton(composite, "Libraries for current version", horizontalSpan);
+		defaultButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (defaultButton.getSelection()) {
+					setStatus(OK_STATUS);
+					firePropertyChange();
+				}
+			}
+		});
+	}
+
+	private void createAllButton(Composite composite, int horizontalSpan) {
+		allButton = createRadioButton(composite, "All libraries in entire server", horizontalSpan);
+		allButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (allButton.getSelection()) {
+					setStatus(OK_STATUS);
+					firePropertyChange();
+				}
+			}
+		});
+	}
+
+	private void firePropertyChange() {
+		PropertyChangeEvent event = new PropertyChangeEvent(this, "Payara library selection", null, selection());
+		for (IPropertyChangeListener listener : changeListeners) {
+			listener.propertyChange(event);
+		}
+	}
+
+	private static Group newGroup(Composite parent, String text) {
+		Group group = new Group(parent, NONE);
+		group.setLayout(new GridLayout(1, false));
+		group.setText(text);
+		group.setFont(parent.getFont());
+
+		GridData gridData = new GridData(FILL_HORIZONTAL);
+		gridData.horizontalSpan = 1;
+		group.setLayoutData(gridData);
+
+		return group;
+	}
+
+	private static Button createRadioButton(Composite parent, String label, int horizontalSpan) {
+		Button button = new Button(parent, RADIO);
+		button.setFont(parent.getFont());
+		button.setText(label);
+
+		GridData gridData = new GridData(BEGINNING);
+		gridData.horizontalSpan = 3;
+		gridData.horizontalAlignment = FILL;
+		gridData.widthHint = computeWidth(button);
+		button.setLayoutData(gridData);
+
+		return button;
+	}
+
+	private static int computeWidth(Button button) {
+		return max(new PixelConverter(button).convertHorizontalDLUsToPixels(BUTTON_WIDTH),
+				button.computeSize(DEFAULT, DEFAULT, true).x);
+	}
 }

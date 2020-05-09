@@ -26,39 +26,39 @@ package org.eclipse.payara.tools.sdk.server.config;
  */
 public abstract class JavaSet {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Highest Java specification version implemented. */
-    private final String version;
+	/** Highest Java specification version implemented. */
+	private final String version;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of container of GlassFish Java features configuration.
-     * <p/>
-     *
-     * @param version Highest JavaEE specification version implemented.
-     */
-    public JavaSet(final String version) {
-        this.version = version;
-    }
+	/**
+	 * Creates an instance of container of GlassFish Java features configuration.
+	 * <p/>
+	 *
+	 * @param version Highest JavaEE specification version implemented.
+	 */
+	public JavaSet(final String version) {
+		this.version = version;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get highest JavaEE specification version implemented.
-     * <p/>
-     *
-     * @return Highest JavaEE specification version implemented.
-     */
-    public String getVersion() {
-        return version;
-    }
+	/**
+	 * Get highest JavaEE specification version implemented.
+	 * <p/>
+	 *
+	 * @return Highest JavaEE specification version implemented.
+	 */
+	public String getVersion() {
+		return version;
+	}
 
 }

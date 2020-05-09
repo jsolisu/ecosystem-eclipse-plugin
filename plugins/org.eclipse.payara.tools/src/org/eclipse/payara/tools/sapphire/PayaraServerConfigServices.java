@@ -62,214 +62,204 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 public final class PayaraServerConfigServices {
 
-    public static final class UniqueRuntimeNameValidationService extends ValidationService {
+	public static final class UniqueRuntimeNameValidationService extends ValidationService {
 
-        @Override
-        protected Status compute() {
-            Value<?> name = context(Value.class);
+		@Override
+		protected Status compute() {
+			Value<?> name = context(Value.class);
 
-            if (!name.empty()) {
-                IRuntime thisRuntime = name.element().adapt(IRuntime.class);
+			if (!name.empty()) {
+				IRuntime thisRuntime = name.element().adapt(IRuntime.class);
 
-                if (thisRuntime instanceof IRuntimeWorkingCopy) {
-                    thisRuntime = ((IRuntimeWorkingCopy) thisRuntime).getOriginal();
-                }
+				if (thisRuntime instanceof IRuntimeWorkingCopy) {
+					thisRuntime = ((IRuntimeWorkingCopy) thisRuntime).getOriginal();
+				}
 
-                for (final IRuntime runtime : getRuntimes()) {
-                    if (runtime != thisRuntime && name.text().equals(runtime.getName())) {
-                        return createErrorStatus(bind(duplicateRuntimeName, name.text()));
-                    }
-                }
-            }
+				for (final IRuntime runtime : getRuntimes()) {
+					if (runtime != thisRuntime && name.text().equals(runtime.getName())) {
+						return createErrorStatus(bind(duplicateRuntimeName, name.text()));
+					}
+				}
+			}
 
-            return createOkStatus();
-        }
-    }
+			return createOkStatus();
+		}
+	}
 
-    public static final class UniqueServerNameValidationService extends ValidationService {
-        @Text("Server name {0} is already in use")
-        private static LocalizableText duplicateServerName;
+	public static final class UniqueServerNameValidationService extends ValidationService {
+		@Text("Server name {0} is already in use")
+		private static LocalizableText duplicateServerName;
 
-        static {
-            LocalizableText.init(UniqueServerNameValidationService.class);
-        }
+		static {
+			LocalizableText.init(UniqueServerNameValidationService.class);
+		}
 
-        @Override
-        protected Status compute() {
-            Value<?> name = context(Value.class);
+		@Override
+		protected Status compute() {
+			Value<?> name = context(Value.class);
 
-            if (!name.empty()) {
-                final IServerWorkingCopy thisServerWorkingCopy = name.element().adapt(IServerWorkingCopy.class);
-                final IServer thisServer = thisServerWorkingCopy.getOriginal();
+			if (!name.empty()) {
+				final IServerWorkingCopy thisServerWorkingCopy = name.element().adapt(IServerWorkingCopy.class);
+				final IServer thisServer = thisServerWorkingCopy.getOriginal();
 
-                for (final IServer server : getServers()) {
-                    if (server != thisServer && name.text().equals(server.getName())) {
-                        return createErrorStatus(duplicateServerName.format(name.text()));
-                    }
-                }
-            }
+				for (final IServer server : getServers()) {
+					if (server != thisServer && name.text().equals(server.getName())) {
+						return createErrorStatus(duplicateServerName.format(name.text()));
+					}
+				}
+			}
 
-            return createOkStatus();
-        }
-    }
+			return createOkStatus();
+		}
+	}
 
-    public static final class DomainLocationDefaultValueService extends DefaultValueService {
+	public static final class DomainLocationDefaultValueService extends DefaultValueService {
 
-        private static final String DEFAULT_DOMAINS_DIR = "domains";
-        private static final String DEFAULT_DOMAIN_NAME = "domain1";
+		private static final String DEFAULT_DOMAINS_DIR = "domains";
+		private static final String DEFAULT_DOMAIN_NAME = "domain1";
 
-        @Override
-        protected String compute() {
-            return context(Value.class)
-                    .element()
-                    .adapt(IServerWorkingCopy.class)
-                    .getRuntime()
-                    .getLocation()
-                    .append(DEFAULT_DOMAINS_DIR)
-                    .append(DEFAULT_DOMAIN_NAME)
-                    .toString();
-        }
-    }
+		@Override
+		protected String compute() {
+			return context(Value.class).element().adapt(IServerWorkingCopy.class).getRuntime().getLocation()
+					.append(DEFAULT_DOMAINS_DIR).append(DEFAULT_DOMAIN_NAME).toString();
+		}
+	}
 
-    public static final class JdkDefaultValueService extends JavaLocationDefaultValueService {
-        @Override
-        protected void initDefaultValueService() {
-            super.initDefaultValueService();
+	public static final class JdkDefaultValueService extends JavaLocationDefaultValueService {
+		@Override
+		protected void initDefaultValueService() {
+			super.initDefaultValueService();
 
-            // There is no need to detach the listener as the life cycle of the JDK and
-            // Payara location properties is the same.
+			// There is no need to detach the listener as the life cycle of the JDK and
+			// Payara location properties is the same.
 
-            context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
-                @Override
-                protected void handleTypedEvent(final PropertyEvent event) {
-                    refresh();
-                }
-            });
-        }
+			context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyEvent>() {
+				@Override
+				protected void handleTypedEvent(final PropertyEvent event) {
+					refresh();
+				}
+			});
+		}
 
-        @Override
-        protected boolean acceptable(final IVMInstall jvm) {
-            if (context(IPayaraRuntimeModel.class).getServerRoot().validation().ok()) {
-                final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-                final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
-                return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
-            }
+		@Override
+		protected boolean acceptable(final IVMInstall jvm) {
+			if (context(IPayaraRuntimeModel.class).getServerRoot().validation().ok()) {
+				final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
+				final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
+				return validateJvm(jvm).jdk().version(gf.getJavaVersionConstraint()).result().ok();
+			}
 
-            return false;
-        }
-    }
+			return false;
+		}
+	}
 
-    public static final class JdkValidationService extends JavaLocationValidationService {
-        @Override
-        protected void initValidationService() {
-            super.initValidationService();
+	public static final class JdkValidationService extends JavaLocationValidationService {
+		@Override
+		protected void initValidationService() {
+			super.initValidationService();
 
-            // There is no need to detach the listener as the life cycle of the JDK and
-            // Payara location properties is the same.
+			// There is no need to detach the listener as the life cycle of the JDK and
+			// Payara location properties is the same.
 
-            context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
-                @Override
-                protected void handleTypedEvent(final PropertyContentEvent event) {
-                    refresh();
-                }
-            });
-        }
+			context(IPayaraRuntimeModel.class).getServerRoot().attach(new FilteredListener<PropertyContentEvent>() {
+				@Override
+				protected void handleTypedEvent(final PropertyContentEvent event) {
+					refresh();
+				}
+			});
+		}
 
-        @Override
-        protected Status validate(final File location) {
-            final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
-            final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
-            return validateJvm(location).jdk().version(gf.getJavaVersionConstraint()).result();
-        }
-    }
+		@Override
+		protected Status validate(final File location) {
+			final IRuntime r = context(Value.class).element().adapt(IRuntime.class);
+			final PayaraRuntime gf = (PayaraRuntime) r.loadAdapter(PayaraRuntime.class, null);
+			return validateJvm(location).jdk().version(gf.getJavaVersionConstraint()).result();
+		}
+	}
 
-    public static final class ServerLocationValidationService extends ValidationService {
+	public static final class ServerLocationValidationService extends ValidationService {
 
-        @Override
-        protected Status compute() {
-            IRuntime runtime = context(Value.class).element().adapt(IRuntime.class);
-            PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
-            IStatus status = runtimeDelegate.validateServerLocation();
-            
-            if (!status.isOK()) {
-                return StatusBridge.create(status);
-            }
-            
-            return StatusBridge.create(runtimeDelegate.validateVersion());
-        }
-    }
+		@Override
+		protected Status compute() {
+			IRuntime runtime = context(Value.class).element().adapt(IRuntime.class);
+			PayaraRuntime runtimeDelegate = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, null);
+			IStatus status = runtimeDelegate.validateServerLocation();
 
-    public static final class ServerLocationListener extends Listener {
-        private static final List<Path> subFoldersToSearch = ListFactory.<Path>start()
-                .add(new Path("glassfish"))
-                .add(new Path("glassfish4/glassfish"))
-                .add(new Path("glassfish3/glassfish")).result();
+			if (!status.isOK()) {
+				return StatusBridge.create(status);
+			}
 
-        @Override
-        public void handle(final Event event) {
-            IPayaraRuntimeModel model = ((PropertyEvent) event)
-                    .property()
-                    .nearest(IPayaraRuntimeModel.class);
+			return StatusBridge.create(runtimeDelegate.validateVersion());
+		}
+	}
 
-            Version payaraVersion = null;
+	public static final class ServerLocationListener extends Listener {
+		private static final List<Path> subFoldersToSearch = ListFactory.<Path>start().add(new Path("glassfish"))
+				.add(new Path("glassfish4/glassfish")).add(new Path("glassfish3/glassfish")).result();
 
-            Path payaraRootLocation = model.getServerRoot().content();
+		@Override
+		public void handle(final Event event) {
+			IPayaraRuntimeModel model = ((PropertyEvent) event).property().nearest(IPayaraRuntimeModel.class);
 
-            if (payaraRootLocation != null) {
-                PayaraLocationUtils payaraInstall = find(payaraRootLocation.toFile());
+			Version payaraVersion = null;
 
-                if (payaraInstall == null) {
-                    for (Path subFolder : subFoldersToSearch) {
-                        Path potentialRootLocation = payaraRootLocation.append(subFolder);
-                        payaraInstall = PayaraLocationUtils.find(potentialRootLocation.toFile());
+			Path payaraRootLocation = model.getServerRoot().content();
 
-                        if (payaraInstall != null) {
-                            model.setServerRoot(potentialRootLocation);
-                            break;
-                        }
-                    }
-                }
+			if (payaraRootLocation != null) {
+				PayaraLocationUtils payaraInstall = find(payaraRootLocation.toFile());
 
-                if (payaraInstall != null) {
-                    payaraVersion = payaraInstall.version();
-                }
-            }
+				if (payaraInstall == null) {
+					for (Path subFolder : subFoldersToSearch) {
+						Path potentialRootLocation = payaraRootLocation.append(subFolder);
+						payaraInstall = PayaraLocationUtils.find(potentialRootLocation.toFile());
 
-            model.setName(createDefaultRuntimeName(payaraVersion));
-        }
-    }
+						if (payaraInstall != null) {
+							model.setServerRoot(potentialRootLocation);
+							break;
+						}
+					}
+				}
 
-    public static final class DomainLocationValidationService extends ValidationService {
+				if (payaraInstall != null) {
+					payaraVersion = payaraInstall.version();
+				}
+			}
 
-        @Override
-        protected Status compute() {
-            IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
-            PayaraServer serverDelegate = (PayaraServer) wc.loadAdapter(PayaraServer.class, null);
+			model.setName(createDefaultRuntimeName(payaraVersion));
+		}
+	}
 
-            return StatusBridge.create(serverDelegate.validate());
-        }
+	public static final class DomainLocationValidationService extends ValidationService {
 
-    }
+		@Override
+		protected Status compute() {
+			IServerWorkingCopy wc = context(Value.class).element().adapt(IServerWorkingCopy.class);
+			PayaraServer serverDelegate = (PayaraServer) wc.loadAdapter(PayaraServer.class, null);
 
-    public static final class DomainLocationListener extends Listener {
-        @Override
-        public void handle(final Event event) {
-            final Property property = ((PropertyEvent) event).property();
-            final IServerWorkingCopy wc = property.element().adapt(IServerWorkingCopy.class);
-            final IPayaraServerModel model = property.nearest(IPayaraServerModel.class);
+			return StatusBridge.create(serverDelegate.validate());
+		}
 
-            String name = wc.getRuntime().getName() + " [";
+	}
 
-            if (model.getRemote().content()) {
-                name = name + model.getHostName().content();
-            } else {
-                name = name + model.getDomainPath().content().lastSegment();
-            }
+	public static final class DomainLocationListener extends Listener {
+		@Override
+		public void handle(final Event event) {
+			final Property property = ((PropertyEvent) event).property();
+			final IServerWorkingCopy wc = property.element().adapt(IServerWorkingCopy.class);
+			final IPayaraServerModel model = property.nearest(IPayaraServerModel.class);
 
-            name = name + "]";
+			String name = wc.getRuntime().getName() + " [";
 
-            model.setName(findUniqueServerName(name));
-        }
-    }
+			if (model.getRemote().content()) {
+				name = name + model.getHostName().content();
+			} else {
+				name = name + model.getDomainPath().content().lastSegment();
+			}
+
+			name = name + "]";
+
+			model.setName(findUniqueServerName(name));
+		}
+	}
 
 }

@@ -27,14 +27,15 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 public class GlassfishEjbFacetInstallDelegate implements IDelegate {
 
-    @Override
-    public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor) throws CoreException {
-        IGlassfishDeploymentDescriptor ejbDescriptor = GlassfishDeploymentDescriptorFactory
-                .getEjbDeploymentDescriptor(project);
+	@Override
+	public void execute(IProject project, IProjectFacetVersion fv, Object config, IProgressMonitor monitor)
+			throws CoreException {
+		IGlassfishDeploymentDescriptor ejbDescriptor = GlassfishDeploymentDescriptorFactory
+				.getEjbDeploymentDescriptor(project);
 
-        if (ejbDescriptor != null) {
-            ejbDescriptor.store(monitor);
-        }
-    }
+		if (ejbDescriptor != null) {
+			ejbDescriptor.store(monitor);
+		}
+	}
 
 }

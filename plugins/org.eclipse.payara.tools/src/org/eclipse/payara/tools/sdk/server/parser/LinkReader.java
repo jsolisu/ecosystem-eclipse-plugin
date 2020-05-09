@@ -32,54 +32,53 @@ import org.xml.sax.SAXException;
  */
 public class LinkReader extends TreeParser.NodeListener {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Links retrieved from XML elements. */
-    private List<String> links = new LinkedList<>();
+	/** Links retrieved from XML elements. */
+	private List<String> links = new LinkedList<>();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        links.add(attributes.getValue("url"));
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		links.add(attributes.getValue("url"));
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get links retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    public List<String> getLinks() {
-        return links;
-    }
+	/**
+	 * Get links retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	public List<String> getLinks() {
+		return links;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    public void reset() {
-        links = new LinkedList<>();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	public void reset() {
+		links = new LinkedList<>();
+	}
 
 }

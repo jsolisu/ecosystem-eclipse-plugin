@@ -46,110 +46,110 @@ import org.eclipse.wst.server.core.model.RuntimeLocatorDelegate;
 @SuppressWarnings("restriction")
 public final class PayaraRuntimeLocatorDelegate extends RuntimeLocatorDelegate {
 
-    private static final IRuntimeType RUNTIME_TYPE = ServerCore.findRuntimeType("payara.runtime");
+	private static final IRuntimeType RUNTIME_TYPE = ServerCore.findRuntimeType("payara.runtime");
 
-    @Override
-    public void searchForRuntimes(IPath path, IRuntimeSearchListener listener, IProgressMonitor monitor) {
-        search(path.toFile(), listener, monitor);
-    }
+	@Override
+	public void searchForRuntimes(IPath path, IRuntimeSearchListener listener, IProgressMonitor monitor) {
+		search(path.toFile(), listener, monitor);
+	}
 
-    private void search(File file, IRuntimeSearchListener listener, IProgressMonitor monitor) {
-        if (monitor.isCanceled() || !file.isDirectory() || file.isHidden()) {
-            return;
-        }
+	private void search(File file, IRuntimeSearchListener listener, IProgressMonitor monitor) {
+		if (monitor.isCanceled() || !file.isDirectory() || file.isHidden()) {
+			return;
+		}
 
-        try {
-            IRuntime runtime = create(file);
-            if (runtime != null) {
-                IRuntimeWorkingCopy wc = runtime.createWorkingCopy();
-                listener.runtimeFound(wc);
-                return;
-            }
-        } catch (CoreException e) {
-            PayaraToolsPlugin.log(e);
-            return;
-        }
+		try {
+			IRuntime runtime = create(file);
+			if (runtime != null) {
+				IRuntimeWorkingCopy wc = runtime.createWorkingCopy();
+				listener.runtimeFound(wc);
+				return;
+			}
+		} catch (CoreException e) {
+			PayaraToolsPlugin.log(e);
+			return;
+		}
 
-        File[] children = file.listFiles();
+		File[] children = file.listFiles();
 
-        if (children != null) {
-            for (File child : children) {
-                search(child, listener, monitor);
-            }
-        }
-    }
+		if (children != null) {
+			for (File child : children) {
+				search(child, listener, monitor);
+			}
+		}
+	}
 
-    private static IRuntime create(File gfhome) throws CoreException {
-        PayaraLocationUtils install = PayaraLocationUtils.find(gfhome);
-        if (install == null) {
-            return null;
-        }
+	private static IRuntime create(File gfhome) throws CoreException {
+		PayaraLocationUtils install = PayaraLocationUtils.find(gfhome);
+		if (install == null) {
+			return null;
+		}
 
-        if (findRuntime(gfhome) != null) {
-            return null;
-        }
+		if (findRuntime(gfhome) != null) {
+			return null;
+		}
 
-        String name = PayaraRuntime.createDefaultRuntimeName(install.version());
+		String name = PayaraRuntime.createDefaultRuntimeName(install.version());
 
-        final IRuntimeWorkingCopy created = RUNTIME_TYPE.createRuntime(name, null);
-        created.setLocation(new Path(gfhome.getAbsolutePath()));
-        created.setName(name);
+		final IRuntimeWorkingCopy created = RUNTIME_TYPE.createRuntime(name, null);
+		created.setLocation(new Path(gfhome.getAbsolutePath()));
+		created.setName(name);
 
-        final RuntimeWorkingCopy rwc = (RuntimeWorkingCopy) created;
+		final RuntimeWorkingCopy rwc = (RuntimeWorkingCopy) created;
 
-        final Map<String, String> props = new HashMap<>();
-        props.put("sunappserver.rootdirectory", rwc.getLocation().toPortableString());
-        rwc.setAttribute("generic_server_instance_properties", props);
+		final Map<String, String> props = new HashMap<>();
+		props.put("sunappserver.rootdirectory", rwc.getLocation().toPortableString());
+		rwc.setAttribute("generic_server_instance_properties", props);
 
-        final PayaraRuntime gf = (PayaraRuntime) rwc.loadAdapter(PayaraRuntime.class, null);
-        final IPayaraRuntimeModel gfmodel = gf.getModel();
-        final Value<org.eclipse.sapphire.modeling.Path> javaRuntimeEnvironmentProperty = gfmodel
-                .getJavaRuntimeEnvironment();
+		final PayaraRuntime gf = (PayaraRuntime) rwc.loadAdapter(PayaraRuntime.class, null);
+		final IPayaraRuntimeModel gfmodel = gf.getModel();
+		final Value<org.eclipse.sapphire.modeling.Path> javaRuntimeEnvironmentProperty = gfmodel
+				.getJavaRuntimeEnvironment();
 
-        if (javaRuntimeEnvironmentProperty.content() == null) {
-            final Display display = Display.getDefault();
+		if (javaRuntimeEnvironmentProperty.content() == null) {
+			final Display display = Display.getDefault();
 
-            display.syncExec(new Runnable() {
-                @Override
-                public void run() {
-                    new SapphireDialog(display.getActiveShell(), gfmodel,
-                            DefinitionLoader.sdef(PayaraRuntimeLocatorDelegate.class).dialog()).open();
-                }
-            });
+			display.syncExec(new Runnable() {
+				@Override
+				public void run() {
+					new SapphireDialog(display.getActiveShell(), gfmodel,
+							DefinitionLoader.sdef(PayaraRuntimeLocatorDelegate.class).dialog()).open();
+				}
+			});
 
-            if (javaRuntimeEnvironmentProperty.content() == null) {
-                rwc.dispose();
-                return null;
-            } else {
-                // Force JVM definition to be created
+			if (javaRuntimeEnvironmentProperty.content() == null) {
+				rwc.dispose();
+				return null;
+			} else {
+				// Force JVM definition to be created
 
-                gf.getVMInstall();
+				gf.getVMInstall();
 
-                // Clear the explicit JVM location as the DefaultValueService will now pick it
-                // up
+				// Clear the explicit JVM location as the DefaultValueService will now pick it
+				// up
 
-                javaRuntimeEnvironmentProperty.clear();
-            }
-        }
+				javaRuntimeEnvironmentProperty.clear();
+			}
+		}
 
-        final IStatus validationResult = created.validate(null);
+		final IStatus validationResult = created.validate(null);
 
-        if (validationResult.getSeverity() != IStatus.ERROR) {
-            created.save(true, null);
-            return created.getOriginal();
-        }
+		if (validationResult.getSeverity() != IStatus.ERROR) {
+			created.save(true, null);
+			return created.getOriginal();
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    private static IRuntime findRuntime(File location) {
-        for (IRuntime runtime : ResourceManager.getInstance().getRuntimes()) {
-            if (RUNTIME_TYPE == runtime.getRuntimeType() && location.equals(runtime.getLocation().toFile())) {
-                return runtime;
-            }
-        }
+	private static IRuntime findRuntime(File location) {
+		for (IRuntime runtime : ResourceManager.getInstance().getRuntimes()) {
+			if (RUNTIME_TYPE == runtime.getRuntimeType() && location.equals(runtime.getLocation().toFile())) {
+				return runtime;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

@@ -26,27 +26,27 @@ import org.eclipse.sapphire.services.ValidationService;
 
 public class DomainNameValidationService extends ValidationService {
 
-    @Override
-    protected Status compute() {
-        ICreatePayaraDomainOp op = context(ICreatePayaraDomainOp.class);
-        Path gfInstallPath = op.getLocation().content();
-        if (gfInstallPath != null && gfInstallPath.toFile().exists()) {
-            String name = op.getName().content();
-            if (name != null && name.trim().length() > 0) {
+	@Override
+	protected Status compute() {
+		ICreatePayaraDomainOp op = context(ICreatePayaraDomainOp.class);
+		Path gfInstallPath = op.getLocation().content();
+		if (gfInstallPath != null && gfInstallPath.toFile().exists()) {
+			String name = op.getName().content();
+			if (name != null && name.trim().length() > 0) {
 
-                if (name.indexOf(' ') > 0) {
-                    return Status.createErrorStatus("Invalid value for domain name."); //$NON-NLS-1$
-                }
+				if (name.indexOf(' ') > 0) {
+					return Status.createErrorStatus("Invalid value for domain name."); //$NON-NLS-1$
+				}
 
-                File domainRoot = new File(gfInstallPath.toFile(), "domains");
-                File domainsDir = new File(domainRoot, name);
-                if (domainsDir.exists()) {
-                    return Status.createErrorStatus("A domain already exists at the specified location."); //$NON-NLS-1$
-                }
-                return Status.createOkStatus();
-            }
-        }
-        return Status.createOkStatus();
-    }
+				File domainRoot = new File(gfInstallPath.toFile(), "domains");
+				File domainsDir = new File(domainRoot, name);
+				if (domainsDir.exists()) {
+					return Status.createErrorStatus("A domain already exists at the specified location."); //$NON-NLS-1$
+				}
+				return Status.createOkStatus();
+			}
+		}
+		return Status.createOkStatus();
+	}
 
 }

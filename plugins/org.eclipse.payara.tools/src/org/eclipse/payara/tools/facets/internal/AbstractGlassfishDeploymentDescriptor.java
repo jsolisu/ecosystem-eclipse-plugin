@@ -22,25 +22,24 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.payara.tools.facets.IGlassfishDeploymentDescriptor;
 
-abstract class AbstractGlassfishDeploymentDescriptor implements
-        IGlassfishDeploymentDescriptor {
+abstract class AbstractGlassfishDeploymentDescriptor implements IGlassfishDeploymentDescriptor {
 
-    /**
-     * Created new deployment descriptor if it's not already there.
-     *
-     */
-    @Override
-    public final void store(IProgressMonitor monitor) throws CoreException {
-        if (isPossibleToCreate()) {
-            prepareDescriptor();
-            save();
-        }
-    }
+	/**
+	 * Created new deployment descriptor if it's not already there.
+	 *
+	 */
+	@Override
+	public final void store(IProgressMonitor monitor) throws CoreException {
+		if (isPossibleToCreate()) {
+			prepareDescriptor();
+			save();
+		}
+	}
 
-    protected abstract void save();
+	protected abstract void save();
 
-    protected abstract void prepareDescriptor();
+	protected abstract void prepareDescriptor();
 
-    protected abstract boolean isPossibleToCreate();
+	protected abstract boolean isPossibleToCreate();
 
 }

@@ -26,12 +26,12 @@ package org.eclipse.payara.tools.sdk.server;
  */
 public interface FetchLogEventListener {
 
-    /**
-     * Notification method called when log fetcher state was changed.
-     * <p/>
-     *
-     * @param event GlassFish log fetcher state change event.
-     */
-    public void stateChanged(final FetchLogEvent event);
+	/**
+	 * Notification method called when log fetcher state was changed.
+	 * <p/>
+	 *
+	 * @param event GlassFish log fetcher state change event.
+	 */
+	public void stateChanged(final FetchLogEvent event);
 
 }

@@ -35,70 +35,71 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
  * This wizard fragment plugs-in the wizard flow when
- * <code>Servers -> New Server -> Payara -> Payara</code> is selected and subsequently the
- * <code>next</code> button is pressed.
+ * <code>Servers -> New Server -> Payara -> Payara</code> is selected and
+ * subsequently the <code>next</code> button is pressed.
  *
  * <p>
- * This fragment essentially causes the screen with <code>Name</code>, <code>Host name</code>,
- * <code>Domain path</code> etc to be rendered, although a lot of the actual work is delegated by
- * the {@link BaseWizardFragment} to Sapphire. The UI layout for this wizard fragment is specified
- * in the file <code>PayaraUI.sdef</code> in the "payara.server" section.
+ * This fragment essentially causes the screen with <code>Name</code>,
+ * <code>Host name</code>, <code>Domain path</code> etc to be rendered, although
+ * a lot of the actual work is delegated by the {@link BaseWizardFragment} to
+ * Sapphire. The UI layout for this wizard fragment is specified in the file
+ * <code>PayaraUI.sdef</code> in the "payara.server" section.
  *
  */
 @SuppressWarnings("restriction")
 public final class NewPayaraServerWizardFragment extends BaseWizardFragment {
 
-    @Override
-    protected String getTitle() {
-        return server().getServerType().getName();
-    }
+	@Override
+	protected String getTitle() {
+		return server().getServerType().getName();
+	}
 
-    @Override
-    protected String getDescription() {
-        return wzdServerDescription;
-    }
+	@Override
+	protected String getDescription() {
+		return wzdServerDescription;
+	}
 
-    /**
-     * The section in <code>PayaraUI.sdef</code> that contains the UI layout for this wizard
-     * fragment.
-     */
-    @Override
-    protected String getUserInterfaceDef() {
-        return "payara.server";
-    }
+	/**
+	 * The section in <code>PayaraUI.sdef</code> that contains the UI layout for
+	 * this wizard fragment.
+	 */
+	@Override
+	protected String getUserInterfaceDef() {
+		return "payara.server";
+	}
 
-    @Override
-    protected Element getModel() {
-        try {
-            server().setAttribute(PROP_AUTO_PUBLISH_SETTING, AUTO_PUBLISH_RESOURCE);
-            server().setAttribute(PROP_AUTO_PUBLISH_TIME, 1);
-        } catch (Exception e) {
-            log(e);
-        }
+	@Override
+	protected Element getModel() {
+		try {
+			server().setAttribute(PROP_AUTO_PUBLISH_SETTING, AUTO_PUBLISH_RESOURCE);
+			server().setAttribute(PROP_AUTO_PUBLISH_TIME, 1);
+		} catch (Exception e) {
+			log(e);
+		}
 
-        // IPayaraServerModel contains the entries corresponding to PayaraUI.sdef, which are the fields
-        // that will be rendered by Saphire, e.g. Name, HostName, Remote, etc
-        
-        return load(server(), PayaraServer.class).getModel();
-    }
+		// IPayaraServerModel contains the entries corresponding to PayaraUI.sdef, which
+		// are the fields
+		// that will be rendered by Saphire, e.g. Name, HostName, Remote, etc
 
-    @Override
-    public void enter() {
-        super.enter();
+		return load(server(), PayaraServer.class).getModel();
+	}
 
-        // Set the default domain location
-        ((IPayaraServerModel) getModel())
-                .getDomainPath()
-                .write(getDefaultDomainDir(server().getRuntime().getLocation()).toOSString());
-    }
+	@Override
+	public void enter() {
+		super.enter();
 
-    @Override
-    protected String getInitialFocus() {
-        return PROP_NAME.name();
-    }
-    
-    private IServerWorkingCopy server() {
-        return (IServerWorkingCopy) getTaskModel().getObject(TASK_SERVER);
-    }
+		// Set the default domain location
+		((IPayaraServerModel) getModel()).getDomainPath()
+				.write(getDefaultDomainDir(server().getRuntime().getLocation()).toOSString());
+	}
+
+	@Override
+	protected String getInitialFocus() {
+		return PROP_NAME.name();
+	}
+
+	private IServerWorkingCopy server() {
+		return (IServerWorkingCopy) getTaskModel().getObject(TASK_SERVER);
+	}
 
 }

@@ -36,55 +36,54 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestListApplications.class, command = "list-applications")
 public class CommandListComponents extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for list components command. */
-    private static final String COMMAND = "list-components";
+	/** Command string for list components command. */
+	private static final String COMMAND = "list-components";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "List components failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "List components failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * List components.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param target Target server instance or cluster.
-     * @return List components task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultMap<String, List<String>> listComponents(
-            final PayaraServer server, final String target)
-            throws PayaraIdeException {
-        Command command = new CommandListComponents(target);
-        Future<ResultMap<String, List<String>>> future = ServerAdmin
-                .<ResultMap<String, List<String>>>exec(server, command);
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * List components.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param target Target server instance or cluster.
+	 * @return List components task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultMap<String, List<String>> listComponents(final PayaraServer server, final String target)
+			throws PayaraIdeException {
+		Command command = new CommandListComponents(target);
+		Future<ResultMap<String, List<String>>> future = ServerAdmin.<ResultMap<String, List<String>>>exec(server,
+				command);
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server list components command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance or cluster.
-     */
-    public CommandListComponents(final String target) {
-        super(COMMAND, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server list components command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance or cluster.
+	 */
+	public CommandListComponents(final String target) {
+		super(COMMAND, target);
+	}
 
 }

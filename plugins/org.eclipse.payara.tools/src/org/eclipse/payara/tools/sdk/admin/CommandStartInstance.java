@@ -39,51 +39,52 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestStartInstance.class)
 public class CommandStartInstance extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for start-instance command. */
-    private static final String COMMAND = "start-instance";
+	/** Command string for start-instance command. */
+	private static final String COMMAND = "start-instance";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "Instance start failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "Instance start failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Starts server instance.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param target Instance name.
-     * @return Start instance task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString startInstance(PayaraServer server, String target) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, new CommandStartInstance(target));
-        
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Starts server instance.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param target Instance name.
+	 * @return Start instance task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString startInstance(PayaraServer server, String target) throws PayaraIdeException {
+		Future<ResultString> future = exec(server, new CommandStartInstance(target));
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    /**
-     * Constructs an instance of GlassFish server start-instance command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance.
-     */
-    public CommandStartInstance(final String target) {
-        super(COMMAND, target);
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Constructs an instance of GlassFish server start-instance command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandStartInstance(final String target) {
+		super(COMMAND, target);
+	}
 
 }

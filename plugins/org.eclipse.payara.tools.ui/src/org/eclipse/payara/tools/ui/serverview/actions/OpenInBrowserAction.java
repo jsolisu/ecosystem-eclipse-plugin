@@ -43,51 +43,52 @@ import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public class OpenInBrowserAction extends Action {
 
-    ISelection selection;
+	ISelection selection;
 
-    public OpenInBrowserAction(ISelection selection) {
-        setText("Open in Browser");
+	public OpenInBrowserAction(ISelection selection) {
+		setText("Open in Browser");
 
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-        setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
-        setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
-        setActionDefinitionId(FILE_PRINT);
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
+		setActionDefinitionId(FILE_PRINT);
 
-        this.selection = selection;
-    }
+		this.selection = selection;
+	}
 
-    @Override
-    public void runWithEvent(Event event) {
-        if (selection instanceof TreeSelection) {
-            TreeSelection ts = (TreeSelection) selection;
-            Object obj = ts.getFirstElement();
-            if (obj instanceof TreeNode) {
-                TreeNode module = (TreeNode) obj;
-                DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
+	@Override
+	public void runWithEvent(Event event) {
+		if (selection instanceof TreeSelection) {
+			TreeSelection ts = (TreeSelection) selection;
+			Object obj = ts.getFirstElement();
+			if (obj instanceof TreeNode) {
+				TreeNode module = (TreeNode) obj;
+				DeployedApplicationsNode target = (DeployedApplicationsNode) module.getParent();
 
-                try {
-                    PayaraServerBehaviour be = target.getServer().getServerBehaviourAdapter();
+				try {
+					PayaraServerBehaviour be = target.getServer().getServerBehaviourAdapter();
 
-                    IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
-                    IWebBrowser browser = browserSupport.createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null);
-                    PayaraServer server = be.getPayaraServerDelegate();
-                    String host = server.getServer().getHost();
-                    int port = server.getPort();
+					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+					IWebBrowser browser = browserSupport.createBrowser(LOCATION_BAR | NAVIGATION_BAR, null, null, null);
+					PayaraServer server = be.getPayaraServerDelegate();
+					String host = server.getServer().getHost();
+					int port = server.getPort();
 
-                    URI uri = new URI(getHttpListenerProtocol(host, port), null, host, port, "/" + module.getName(), null, null); // NOI18N
-                    browser.openURL(uri.toURL());
+					URI uri = new URI(getHttpListenerProtocol(host, port), null, host, port, "/" + module.getName(),
+							null, null); // NOI18N
+					browser.openURL(uri.toURL());
 
-                } catch (Exception e) {
-                    PayaraToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
-                }
-            }
-            super.run();
-        }
-    }
+				} catch (Exception e) {
+					PayaraToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
+				}
+			}
+			super.run();
+		}
+	}
 
-    @Override
-    public void run() {
-        this.runWithEvent(null);
-    }
+	@Override
+	public void run() {
+		this.runWithEvent(null);
+	}
 
 }

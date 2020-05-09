@@ -47,13 +47,15 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
 /**
- * This class contributes content to the "Server Editor", which is the editor that opens when you
- * double click the Payara / GlassFish server in the Servers views.
+ * This class contributes content to the "Server Editor", which is the editor
+ * that opens when you double click the Payara / GlassFish server in the Servers
+ * views.
  *
  * <p>
- * This is the editor that shows the "Runtime Environment", "Open Launch Configuration" links and
- * has the "Publishing" and "Timeouts' preferences. This class adds a link to the properties page
- * (see {@link ServerPropertyPage}) that that editor.
+ * This is the editor that shows the "Runtime Environment", "Open Launch
+ * Configuration" links and has the "Publishing" and "Timeouts' preferences.
+ * This class adds a link to the properties page (see
+ * {@link ServerPropertyPage}) that that editor.
  * </p>
  *
  * @author ludo
@@ -61,66 +63,59 @@ import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 @SuppressWarnings("restriction")
 public class ServerSection extends ServerEditorSection implements PropertyChangeListener {
 
-    @Override
-    public void dispose() {
-        server.removePropertyChangeListener(this);
-        super.dispose();
-    }
+	@Override
+	public void dispose() {
+		server.removePropertyChangeListener(this);
+		super.dispose();
+	}
 
-    @Override
-    public void createSection(Composite parent) {
-        super.createSection(parent);
+	@Override
+	public void createSection(Composite parent) {
+		super.createSection(parent);
 
-        FormToolkit toolkit = getFormToolkit(parent.getDisplay());
+		FormToolkit toolkit = getFormToolkit(parent.getDisplay());
 
-        Section section = toolkit.createSection(parent, TITLE_BAR | DESCRIPTION | TWISTIE | EXPANDED | FOCUS_TITLE);
-        section.setText(wizardSectionTitle);
-        section.setDescription(Messages.wizardSectionDescription);
-        section.setLayoutData(new GridData(FILL, FILL, false, false));
+		Section section = toolkit.createSection(parent, TITLE_BAR | DESCRIPTION | TWISTIE | EXPANDED | FOCUS_TITLE);
+		section.setText(wizardSectionTitle);
+		section.setDescription(Messages.wizardSectionDescription);
+		section.setLayoutData(new GridData(FILL, FILL, false, false));
 
-        Composite composite = toolkit.createComposite(section);
-        GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
-        gridLayout.verticalSpacing = 5;
-        gridLayout.marginWidth = 10;
-        gridLayout.marginHeight = 5;
-        composite.setLayout(gridLayout);
-        composite.setLayoutData(new GridData(FILL, FILL, false, false));
+		Composite composite = toolkit.createComposite(section);
+		GridLayout gridLayout = new GridLayout();
+		gridLayout.numColumns = 3;
+		gridLayout.verticalSpacing = 5;
+		gridLayout.marginWidth = 10;
+		gridLayout.marginHeight = 5;
+		composite.setLayout(gridLayout);
+		composite.setLayoutData(new GridData(FILL, FILL, false, false));
 
-        section.setClient(composite);
+		section.setClient(composite);
 
-        Hyperlink link = toolkit.createHyperlink(composite, "Open server properties page...", UNDERLINE_LINK);
-        link.addHyperlinkListener(new IHyperlinkListener() {
+		Hyperlink link = toolkit.createHyperlink(composite, "Open server properties page...", UNDERLINE_LINK);
+		link.addHyperlinkListener(new IHyperlinkListener() {
 
-            @Override
-            public void linkActivated(HyperlinkEvent e) {
-                createDialogOn(
-                        Display.getDefault().getActiveShell(),
-                        "org.eclipse.wst.server.ui.properties", //$NON-NLS-1$
-                        server)
-                                .open();
-            }
+			@Override
+			public void linkActivated(HyperlinkEvent e) {
+				createDialogOn(Display.getDefault().getActiveShell(), "org.eclipse.wst.server.ui.properties", //$NON-NLS-1$
+						server).open();
+			}
 
-            @Override
-            public void linkExited(HyperlinkEvent e) {
-            }
+			@Override
+			public void linkExited(HyperlinkEvent e) {
+			}
 
-            @Override
-            public void linkEntered(HyperlinkEvent e) {
-            }
-        });
+			@Override
+			public void linkEntered(HyperlinkEvent e) {
+			}
+		});
 
-        GridDataFactory.fillDefaults()
-                .grab(true, false)
-                .span(3, 1)
-                .hint(50, DEFAULT)
-                .applyTo(link);
+		GridDataFactory.fillDefaults().grab(true, false).span(3, 1).hint(50, DEFAULT).applyTo(link);
 
-    }
+	}
 
-    // note that this is currently not working due to issue 140
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-    }
+	// note that this is currently not working due to issue 140
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+	}
 
 }

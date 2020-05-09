@@ -34,8 +34,8 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.TextPropertyDescriptor;
 
 /**
- * This node shows is the root node below which the dynamically retrieved "managed resources" (such
- * as JDBC datasources, mail resources, etc) reside.
+ * This node shows is the root node below which the dynamically retrieved
+ * "managed resources" (such as JDBC datasources, mail resources, etc) reside.
  *
  * <p>
  * The following depicts this element in the "Servers" views:
@@ -53,144 +53,144 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  * </p>
  *
  * <p>
- * Payara / GlassFish is dynamically queried for this list, hence it can only be retrieved for a
- * running server. </>
+ * Payara / GlassFish is dynamically queried for this list, hence it can only be
+ * retrieved for a running server. </>
  *
  */
 public class ResourcesNode extends TreeNode {
 
-    private PayaraServer server;
-    private ResourcesNode[] children;
-    private boolean containerNode;
-    private ResourceDesc resDescriptor;
-    private Map<String, String> map;
+	private PayaraServer server;
+	private ResourcesNode[] children;
+	private boolean containerNode;
+	private ResourceDesc resDescriptor;
+	private Map<String, String> map;
 
-    public ResourcesNode(PayaraServer server) {
-        this("Resources", RESOURCES, server, null);
-        containerNode = true;
-    }
+	public ResourcesNode(PayaraServer server) {
+		this("Resources", RESOURCES, server, null);
+		containerNode = true;
+	}
 
-    public ResourcesNode(String name, String type, PayaraServer server, ResourceDesc resDescriptor) {
-        super(name, type, null);
+	public ResourcesNode(String name, String type, PayaraServer server, ResourceDesc resDescriptor) {
+		super(name, type, null);
 
-        this.server = server;
-        this.resDescriptor = resDescriptor;
+		this.server = server;
+		this.resDescriptor = resDescriptor;
 
-        String[] childTypes = NodeTypes.getChildTypes(type);
+		String[] childTypes = NodeTypes.getChildTypes(type);
 
-        if (childTypes != null) {
-            for (String childtype : childTypes) {
+		if (childTypes != null) {
+			for (String childtype : childTypes) {
 
-                ResourcesNode n = new ResourcesNode(childtype, childtype, server, null);
+				ResourcesNode n = new ResourcesNode(childtype, childtype, server, null);
 
-                if (NodeTypes.getChildTypes(childtype) != null) {
-                    n.setContainerNode();
-                }
+				if (NodeTypes.getChildTypes(childtype) != null) {
+					n.setContainerNode();
+				}
 
-                addChild(n);
-            }
-        }
-    }
+				addChild(n);
+			}
+		}
+	}
 
-    public PayaraServer getServer() {
-        return server;
-    }
+	public PayaraServer getServer() {
+		return server;
+	}
 
-    public void setContainerNode() {
-        containerNode = true;
-    }
+	public void setContainerNode() {
+		containerNode = true;
+	}
 
-    public boolean isContainerNode() {
-        return containerNode;
-    }
+	public boolean isContainerNode() {
+		return containerNode;
+	}
 
-    public ResourceDesc getResource() {
-        return resDescriptor;
-    }
+	public ResourceDesc getResource() {
+		return resDescriptor;
+	}
 
-    @Override
-    public Object[] getChildren() {
+	@Override
+	public Object[] getChildren() {
 
-        // If a container node or a node that does shows a resource, return std
-        // child
+		// If a container node or a node that does shows a resource, return std
+		// child
 
-        if (containerNode || resDescriptor != null) {
-            return childModules.toArray();
-        }
+		if (containerNode || resDescriptor != null) {
+			return childModules.toArray();
+		}
 
-        ArrayList<ResourcesNode> list = new ArrayList<>();
+		ArrayList<ResourcesNode> list = new ArrayList<>();
 
-        if (children == null) {
+		if (children == null) {
 
-            try {
-                if (server == null) {
-                    children = list.toArray(new ResourcesNode[list.size()]);
-                    return children;
-                }
+			try {
+				if (server == null) {
+					children = list.toArray(new ResourcesNode[list.size()]);
+					return children;
+				}
 
-                try {
-                    List<ResourceDesc> resourcesList = NodesUtils.getResources(server, type);
+				try {
+					List<ResourceDesc> resourcesList = NodesUtils.getResources(server, type);
 
-                    for (ResourceDesc resource : resourcesList) {
-                        list.add(new ResourcesNode(resource.getName(), type, server, resource));
-                    }
+					for (ResourceDesc resource : resourcesList) {
+						list.add(new ResourcesNode(resource.getName(), type, server, resource));
+					}
 
-                } catch (Exception ex) {
-                    logError("get GlassFish Resources is failing=", ex); //$NON-NLS-1$
-                }
-            } catch (Exception e) {
-            }
+				} catch (Exception ex) {
+					logError("get GlassFish Resources is failing=", ex); //$NON-NLS-1$
+				}
+			} catch (Exception e) {
+			}
 
-            children = list.toArray(new ResourcesNode[list.size()]);
+			children = list.toArray(new ResourcesNode[list.size()]);
 
-        }
+		}
 
-        return children;
-    }
+		return children;
+	}
 
-    public void refresh() {
-        children = null;
-    }
+	public void refresh() {
+		children = null;
+	}
 
-    @Override
-    public IPropertyDescriptor[] getPropertyDescriptors() {
+	@Override
+	public IPropertyDescriptor[] getPropertyDescriptors() {
 
-        List<IPropertyDescriptor> properties = new ArrayList<>();
+		List<IPropertyDescriptor> properties = new ArrayList<>();
 
-        try {
-            if (resDescriptor != null) {
+		try {
+			if (resDescriptor != null) {
 
-                map = getResourceData(server, resDescriptor.getName());
+				map = getResourceData(server, resDescriptor.getName());
 
-                Set<String> s = map.keySet();
+				Set<String> s = map.keySet();
 
-                for (String prop : s) {
-                    String realvalue = prop.substring(prop.lastIndexOf(".") + 1, prop.length());
-                    properties.add(new TextPropertyDescriptor(prop, realvalue));
-                }
-            }
+				for (String prop : s) {
+					String realvalue = prop.substring(prop.lastIndexOf(".") + 1, prop.length());
+					properties.add(new TextPropertyDescriptor(prop, realvalue));
+				}
+			}
 
-            return properties.toArray(new IPropertyDescriptor[0]);
+			return properties.toArray(new IPropertyDescriptor[0]);
 
-        } catch (Exception ex) {
-            logError("get GlassFish Resources is failing=", ex); //$NON-NLS-1$
-        }
+		} catch (Exception ex) {
+			logError("get GlassFish Resources is failing=", ex); //$NON-NLS-1$
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public Object getPropertyValue(Object id) {
+	@Override
+	public Object getPropertyValue(Object id) {
 
-        if (resDescriptor == null) {
-            return null;
-        }
+		if (resDescriptor == null) {
+			return null;
+		}
 
-        if (map == null) {
-            return null;
-        }
+		if (map == null) {
+			return null;
+		}
 
-        return map.get(id);
-    }
+		return map.get(id);
+	}
 
 }

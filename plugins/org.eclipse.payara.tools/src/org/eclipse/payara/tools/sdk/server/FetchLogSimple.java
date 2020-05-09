@@ -28,41 +28,40 @@ import java.io.InputStream;
  */
 public class FetchLogSimple extends FetchLog {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of Payara server log fetcher using provided stream.
-     * <p/>
-     * Super class constructor will not call <code>initInputStream</code> method so this method should
-     * be ignored. Old log lines are never skipped so whole log is always available in
-     * <code>InputStream</code>
-     * <p/>
-     *
-     * @param in Input stream to access server log.
-     */
-    public FetchLogSimple(InputStream in) {
-        super(in, false);
-    }
+	/**
+	 * Constructs an instance of Payara server log fetcher using provided stream.
+	 * <p/>
+	 * Super class constructor will not call <code>initInputStream</code> method so
+	 * this method should be ignored. Old log lines are never skipped so whole log
+	 * is always available in <code>InputStream</code>
+	 * <p/>
+	 *
+	 * @param in Input stream to access server log.
+	 */
+	public FetchLogSimple(InputStream in) {
+		super(in, false);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Implemented Abstract Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructor callback makes no sense in this child class.
-     * <p/>
-     * This method throws an exception when called.
-     * <p/>
-     *
-     * @return <code>FileInputStream</code> where log lines received from server will be available to
-     * read.
-     */
-    @Override
-    InputStream initInputStream() {
-        throw new UnsupportedOperationException(
-                "Method initInputStream should not be called in " +
-                        "FetchLogSimple class!");
-    }
+	/**
+	 * Constructor callback makes no sense in this child class.
+	 * <p/>
+	 * This method throws an exception when called.
+	 * <p/>
+	 *
+	 * @return <code>FileInputStream</code> where log lines received from server
+	 *         will be available to read.
+	 */
+	@Override
+	InputStream initInputStream() {
+		throw new UnsupportedOperationException(
+				"Method initInputStream should not be called in " + "FetchLogSimple class!");
+	}
 }

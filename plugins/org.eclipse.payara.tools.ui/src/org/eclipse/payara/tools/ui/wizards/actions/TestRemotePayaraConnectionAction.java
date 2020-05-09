@@ -43,8 +43,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
- * Action that's available on the new server wizard that allows testing the connection to a remote
- * server.
+ * Action that's available on the new server wizard that allows testing the
+ * connection to a remote server.
  *
  * <p>
  * Note that is only available for remote servers, not for local servers.
@@ -54,77 +54,63 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 @SuppressWarnings("restriction")
 public class TestRemotePayaraConnectionAction extends SapphireActionHandler {
 
-    @Override
-    protected Object run(Presentation context) {
-        IServerWorkingCopy wc = context.part().getModelElement().adapt(IServerWorkingCopy.class);
-        PayaraServer payaraServer = load(wc, PayaraServer.class);
+	@Override
+	protected Object run(Presentation context) {
+		IServerWorkingCopy wc = context.part().getModelElement().adapt(IServerWorkingCopy.class);
+		PayaraServer payaraServer = load(wc, PayaraServer.class);
 
-        ServerStatus serverStatus = checkServerStatus(payaraServer);
+		ServerStatus serverStatus = checkServerStatus(payaraServer);
 
-        if (!serverStatus.equals(RUNNING_DOMAIN_MATCHING)) {
-            StringBuilder errorMessage = new StringBuilder();
-            errorMessage.append("Cannot communicate with ")
-                    .append(payaraServer.getServer().getHost())
-                    .append(":")
-                    .append(payaraServer.getAdminPort())
-                    .append(" remote server.");
+		if (!serverStatus.equals(RUNNING_DOMAIN_MATCHING)) {
+			StringBuilder errorMessage = new StringBuilder();
+			errorMessage.append("Cannot communicate with ").append(payaraServer.getServer().getHost()).append(":")
+					.append(payaraServer.getAdminPort()).append(" remote server.");
 
-            // Give some hints
-            if (serverStatus.equals(STOPPED_NOT_LISTENING)) {
-                errorMessage.append(" Is it up?");
-            } else if (serverStatus.equals(RUNNING_REMOTE_NOT_SECURE)) {
-                errorMessage.append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
-            } else if (serverStatus.equals(RUNNING_CREDENTIAL_PROBLEM)) {
-                errorMessage.append(" Wrong user name or password. Check your credentials.");
-            } else if (serverStatus.equals(RUNNING_PROXY_ERROR)) {
-                errorMessage.append(" Check your proxy settings.");
-            } else if (serverStatus.equals(RUNNING_CONNECTION_ERROR)) {
-                // Add all possible hints
-                errorMessage.append(" Is it up?")
-                        .append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
-            }
+			// Give some hints
+			if (serverStatus.equals(STOPPED_NOT_LISTENING)) {
+				errorMessage.append(" Is it up?");
+			} else if (serverStatus.equals(RUNNING_REMOTE_NOT_SECURE)) {
+				errorMessage.append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
+			} else if (serverStatus.equals(RUNNING_CREDENTIAL_PROBLEM)) {
+				errorMessage.append(" Wrong user name or password. Check your credentials.");
+			} else if (serverStatus.equals(RUNNING_PROXY_ERROR)) {
+				errorMessage.append(" Check your proxy settings.");
+			} else if (serverStatus.equals(RUNNING_CONNECTION_ERROR)) {
+				// Add all possible hints
+				errorMessage.append(" Is it up?").append(" Is it secure? (Hint: run asadmin enable-secure-admin)");
+			}
 
-            openMessage(
-                    Display.getDefault().getActiveShell(),
-                    "Error", "Error connecting to remote server",
-                    new Status(ERROR, SYMBOLIC_NAME, errorMessage.toString()));
+			openMessage(Display.getDefault().getActiveShell(), "Error", "Error connecting to remote server",
+					new Status(ERROR, SYMBOLIC_NAME, errorMessage.toString()));
 
-        } else {
+		} else {
 
-            // Check server version
+			// Check server version
 
-            String remoteServerVersion = PayaraServerBehaviour.getVersion(payaraServer);
-            String thisServerVersion = wc.getRuntime()
-                    .getAdapter(PayaraRuntime.class)
-                    .getVersion()
-                    .toString();
+			String remoteServerVersion = PayaraServerBehaviour.getVersion(payaraServer);
+			String thisServerVersion = wc.getRuntime().getAdapter(PayaraRuntime.class).getVersion().toString();
 
-            int n = thisServerVersion.indexOf(".X");
-            if (n > 0) {
-                thisServerVersion = thisServerVersion.substring(0, n + 1);
-            }
+			int n = thisServerVersion.indexOf(".X");
+			if (n > 0) {
+				thisServerVersion = thisServerVersion.substring(0, n + 1);
+			}
 
-            if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
+			if (remoteServerVersion != null && remoteServerVersion.indexOf(thisServerVersion) < 0) {
 
-                openMessage(
-                        Display.getDefault().getActiveShell(),
-                        "Error",
-                        versionsNotMatching,
-                        new Status(ERROR, SYMBOLIC_NAME, "The remote server version is " + remoteServerVersion));
+				openMessage(Display.getDefault().getActiveShell(), "Error", versionsNotMatching,
+						new Status(ERROR, SYMBOLIC_NAME, "The remote server version is " + remoteServerVersion));
 
-            } else {
+			} else {
 
-                // Everything seems to be OK
-                openMessage(
-                        Display.getDefault().getActiveShell(),
-                        "Connection successful",
-                        "Connection to server was successful",
-                        new Status(INFO, SYMBOLIC_NAME, "Connection to server was successful"));
-            }
-        }
+				// Everything seems to be OK
+				openMessage(Display.getDefault().getActiveShell(), "Connection successful",
+						"Connection to server was successful",
+						new Status(INFO, SYMBOLIC_NAME, "Connection to server was successful"));
+			}
+		}
 
-        return null;
+		return null;
 
-    }
+	}
 
 }

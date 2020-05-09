@@ -32,52 +32,53 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestList extends RunnerRest {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Result object - contains list of JDBC resources names. */
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    ResultList<String> result;
+	/** Result object - contains list of JDBC resources names. */
+	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
+	ResultList<String> result;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestList(final PayaraServer server, final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestList(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Implemented Abstract Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Create <code>ResultList</code> object corresponding to server log command execution value to be
-     * returned.
-     */
-    @Override
-    protected ResultList<String> createResult() {
-        return result = new ResultList<>();
-    }
+	/**
+	 * Create <code>ResultList</code> object corresponding to server log command
+	 * execution value to be returned.
+	 */
+	@Override
+	protected ResultList<String> createResult() {
+		return result = new ResultList<>();
+	}
 
-    @Override
-    protected boolean processResponse() {
-        List<MessagePart> childMessages = report.getTopMessagePart().getChildren();
-        if ((childMessages != null) && !childMessages.isEmpty()) {
-            result.value = new ArrayList<>(childMessages.size());
-            for (MessagePart msg : childMessages) {
-                result.getValue().add(msg.getMessage());
-            }
-        }
-        return true;
-    }
+	@Override
+	protected boolean processResponse() {
+		List<MessagePart> childMessages = report.getTopMessagePart().getChildren();
+		if ((childMessages != null) && !childMessages.isEmpty()) {
+			result.value = new ArrayList<>(childMessages.size());
+			for (MessagePart msg : childMessages) {
+				result.getValue().add(msg.getMessage());
+			}
+		}
+		return true;
+	}
 
 }

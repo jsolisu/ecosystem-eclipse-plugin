@@ -20,20 +20,21 @@ package org.eclipse.payara.tools.log;
 
 public interface ILogFilter {
 
-    /**
-     * Resets log filter after reading complete log record.
-     */
-    void reset();
+	/**
+	 * Resets log filter after reading complete log record.
+	 */
+	void reset();
 
-    /**
-     * Processes read line.
-     *
-     * @param line - mustn't contain new line character
-     * @return Complete log record or null if the read line haven't completed the log record.
-     */
-    String process(String line);
-    
-    default boolean hasProcessedPayara() {
-        return false;
-    }
+	/**
+	 * Processes read line.
+	 *
+	 * @param line - mustn't contain new line character
+	 * @return Complete log record or null if the read line haven't completed the
+	 *         log record.
+	 */
+	String process(String line);
+
+	default boolean hasProcessedPayara() {
+		return false;
+	}
 }

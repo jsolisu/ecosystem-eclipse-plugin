@@ -43,48 +43,54 @@ import org.eclipse.sapphire.modeling.xml.annotations.XmlBinding;
 
 public interface IPayaraRuntimeModel extends Element {
 
-    ElementType TYPE = new ElementType(IPayaraRuntimeModel.class);
+	ElementType TYPE = new ElementType(IPayaraRuntimeModel.class);
 
-    // *** Name ***
+	// *** Name ***
 
-    @XmlBinding(path = "name")
-    @Label(standard = "na&me")
-    @Required
-    @Service(impl = UniqueRuntimeNameValidationService.class)
-    ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
-    Value<String> getName();
-    void setName(String value);
+	@XmlBinding(path = "name")
+	@Label(standard = "na&me")
+	@Required
+	@Service(impl = UniqueRuntimeNameValidationService.class)
+	ValueProperty PROP_NAME = new ValueProperty(TYPE, "Name");
 
-    
-    // *** ServerRoot ***
+	Value<String> getName();
 
-    @Type(base = Path.class)
-    @MustExist
-    @AbsolutePath
-    @ValidFileSystemResourceType(FOLDER)
-    @XmlBinding(path = "server-root")
-    @Label(standard = "&Payara location")
-    @Required
-    @Service(impl = ServerLocationValidationService.class)
-    @Listeners(ServerLocationListener.class)
-    ValueProperty PROP_SERVER_ROOT = new ValueProperty(TYPE, "ServerRoot");
-    Value<Path> getServerRoot();
-    void setServerRoot(Path value);
-    void setServerRoot(String value);
+	void setName(String value);
 
-    
-    // *** JavaRuntimeEnvironment ***
+	// *** ServerRoot ***
 
-    @Type(base = Path.class)
-    @MustExist
-    @AbsolutePath
-    @ValidFileSystemResourceType(FOLDER)
-    @Label(standard = "&Java location")
-    @Required
-    @Service(impl = JdkValidationService.class)
-    @Service(impl = JdkDefaultValueService.class)
-    ValueProperty PROP_JAVA_RUNTIME_ENVIRONMENT = new ValueProperty(TYPE, "JavaRuntimeEnvironment");
-    Value<Path> getJavaRuntimeEnvironment();
-    void setJavaRuntimeEnvironment(Path value);
-    void setJavaRuntimeEnvironment(String value);
+	@Type(base = Path.class)
+	@MustExist
+	@AbsolutePath
+	@ValidFileSystemResourceType(FOLDER)
+	@XmlBinding(path = "server-root")
+	@Label(standard = "&Payara location")
+	@Required
+	@Service(impl = ServerLocationValidationService.class)
+	@Listeners(ServerLocationListener.class)
+	ValueProperty PROP_SERVER_ROOT = new ValueProperty(TYPE, "ServerRoot");
+
+	Value<Path> getServerRoot();
+
+	void setServerRoot(Path value);
+
+	void setServerRoot(String value);
+
+	// *** JavaRuntimeEnvironment ***
+
+	@Type(base = Path.class)
+	@MustExist
+	@AbsolutePath
+	@ValidFileSystemResourceType(FOLDER)
+	@Label(standard = "&Java location")
+	@Required
+	@Service(impl = JdkValidationService.class)
+	@Service(impl = JdkDefaultValueService.class)
+	ValueProperty PROP_JAVA_RUNTIME_ENVIRONMENT = new ValueProperty(TYPE, "JavaRuntimeEnvironment");
+
+	Value<Path> getJavaRuntimeEnvironment();
+
+	void setJavaRuntimeEnvironment(Path value);
+
+	void setJavaRuntimeEnvironment(String value);
 }

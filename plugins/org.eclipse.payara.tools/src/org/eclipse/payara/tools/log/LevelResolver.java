@@ -36,42 +36,42 @@ import org.eclipse.payara.tools.log.AbstractLogFilter.ILevelResolver;
 
 class LevelResolver implements ILevelResolver {
 
-    private Map<String, String> localizedLevels;
+	private Map<String, String> localizedLevels;
 
-    LevelResolver() {
-        Locale defaultLocale = null;
+	LevelResolver() {
+		Locale defaultLocale = null;
 
-        try {
-            Locale logLocale = getLogLocale();
-            if (!logLocale.equals(Locale.getDefault())) {
-                defaultLocale = Locale.getDefault();
-                Locale.setDefault(logLocale);
-            }
+		try {
+			Locale logLocale = getLogLocale();
+			if (!logLocale.equals(Locale.getDefault())) {
+				defaultLocale = Locale.getDefault();
+				Locale.setDefault(logLocale);
+			}
 
-            localizedLevels = new HashMap<>();
-            for (Level level : new Level[] { ALL, CONFIG, FINE, FINER, FINEST, INFO, SEVERE, WARNING }) {
-                localizedLevels.put(level.getName(), level.getLocalizedName());
-            }
-        } finally {
-            if (defaultLocale != null) {
-                Locale.setDefault(defaultLocale);
-            }
-        }
-    }
+			localizedLevels = new HashMap<>();
+			for (Level level : new Level[] { ALL, CONFIG, FINE, FINER, FINEST, INFO, SEVERE, WARNING }) {
+				localizedLevels.put(level.getName(), level.getLocalizedName());
+			}
+		} finally {
+			if (defaultLocale != null) {
+				Locale.setDefault(defaultLocale);
+			}
+		}
+	}
 
-    private Locale getLogLocale() {
-        // XXX detect and use server language/country/variant instead of IDE's.
-        String language = System.getProperty("user.language");
-        if (language != null) {
-            return new Locale(language, System.getProperty("user.country", ""), System.getProperty("user.variant", ""));
-        }
-        return Locale.getDefault();
-    }
+	private Locale getLogLocale() {
+		// XXX detect and use server language/country/variant instead of IDE's.
+		String language = System.getProperty("user.language");
+		if (language != null) {
+			return new Locale(language, System.getProperty("user.country", ""), System.getProperty("user.variant", ""));
+		}
+		return Locale.getDefault();
+	}
 
-    @Override
-    public String resolve(String level) {
-        String localizedLevel = localizedLevels.get(level);
-        return localizedLevel != null ? localizedLevel : level;
-    }
+	@Override
+	public String resolve(String level) {
+		String localizedLevel = localizedLevels.get(level);
+		return localizedLevel != null ? localizedLevel : level;
+	}
 
 }

@@ -37,59 +37,59 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.Image;
 
 /**
- * This provides provides the icons and text associated with the dynamic nodes provided by
- * {@link ServerViewDynamicNodeProvider}
+ * This provides provides the icons and text associated with the dynamic nodes
+ * provided by {@link ServerViewDynamicNodeProvider}
  *
  */
 public class ServerViewLabelProvider extends LabelProvider implements ITableFontProvider {
 
-    @Override
-    public Image getImage(Object element) {
-        if (element instanceof ApplicationNode) {
-            switch (((ApplicationNode) element).getApplicationInfo().getType()) {
-            case "web":
-                return getImg(WEB_MODULE_IMG);
-            case "ejb":
-                return getImg(EJB_MODULE_IMG);
-            case "ear":
-                return getImg(EAR_MODULE_IMG);
-            }
-        } else if (element instanceof ResourcesNode) {
-            ResourcesNode rn = (ResourcesNode) element;
+	@Override
+	public Image getImage(Object element) {
+		if (element instanceof ApplicationNode) {
+			switch (((ApplicationNode) element).getApplicationInfo().getType()) {
+			case "web":
+				return getImg(WEB_MODULE_IMG);
+			case "ejb":
+				return getImg(EJB_MODULE_IMG);
+			case "ear":
+				return getImg(EAR_MODULE_IMG);
+			}
+		} else if (element instanceof ResourcesNode) {
+			ResourcesNode rn = (ResourcesNode) element;
 
-            if (rn.getResource() == null) {
-                return getImg(RESOURCES_IMG);
-            }
+			if (rn.getResource() == null) {
+				return getImg(RESOURCES_IMG);
+			}
 
-            return getImg(GF_SERVER_IMG);
-        } else if (element instanceof DeployedWebServicesNode) {
-            return getImg(WEBSERVICE_IMG);
-        } else if (element instanceof WebServiceNode) {
-            return getImg(WEBSERVICE_IMG);
-        }
+			return getImg(GF_SERVER_IMG);
+		} else if (element instanceof DeployedWebServicesNode) {
+			return getImg(WEBSERVICE_IMG);
+		} else if (element instanceof WebServiceNode) {
+			return getImg(WEBSERVICE_IMG);
+		}
 
-        return getImg(GF_SERVER_IMG);
-    }
+		return getImg(GF_SERVER_IMG);
+	}
 
-    @Override
-    public String getText(Object element) {
-        if (element instanceof TreeNode) {
-            TreeNode module = (TreeNode) element;
-            String name = module.getName();
-            if (name.endsWith("/") && !name.equals("/")) {
-                name = name.substring(0, name.length() - 1);
-            }
+	@Override
+	public String getText(Object element) {
+		if (element instanceof TreeNode) {
+			TreeNode module = (TreeNode) element;
+			String name = module.getName();
+			if (name.endsWith("/") && !name.equals("/")) {
+				name = name.substring(0, name.length() - 1);
+			}
 
-            return name;
-        }
+			return name;
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @Override
-    public Font getFont(Object arg0, int arg1) {
-        return null;
+	@Override
+	public Font getFont(Object arg0, int arg1) {
+		return null;
 
-    }
+	}
 
 }

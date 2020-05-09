@@ -30,79 +30,80 @@ import org.xml.sax.SAXException;
  */
 public class ToolsAsadminReader extends AbstractReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** <code>asadmin</code> XML element name. */
-    private static final String NODE = "asadmin";
+	/** <code>asadmin</code> XML element name. */
+	private static final String NODE = "asadmin";
 
-    /** <code>type</code> XML element attribute name. */
-    private static final String JAR_ATTR = "jar";
+	/** <code>type</code> XML element attribute name. */
+	private static final String JAR_ATTR = "jar";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Platforms retrieved from XML elements. */
-    private String jar;
+	/** Platforms retrieved from XML elements. */
+	private String jar;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of <code>asadmin</code> tool configuration XML element reader.
-     * <p/>
-     *
-     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
-     */
-    ToolsAsadminReader(final String pathPrefix) throws ServerConfigException {
-        super(pathPrefix, NODE);
-        jar = null;
-    }
+	/**
+	 * Creates an instance of <code>asadmin</code> tool configuration XML element
+	 * reader.
+	 * <p/>
+	 *
+	 * @param pathPrefix Tree parser path prefix to be prepended before current XML
+	 *                   element.
+	 */
+	ToolsAsadminReader(final String pathPrefix) throws ServerConfigException {
+		super(pathPrefix, NODE);
+		jar = null;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        jar = attributes.getValue(JAR_ATTR);
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		jar = attributes.getValue(JAR_ATTR);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get asadmin tool JAR.
-     * <p/>
-     *
-     * @return Asadmin tool JAR.
-     */
-    String getJar() {
-        return jar;
-    }
+	/**
+	 * Get asadmin tool JAR.
+	 * <p/>
+	 *
+	 * @return Asadmin tool JAR.
+	 */
+	String getJar() {
+		return jar;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    void reset() {
-        jar = null;
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	void reset() {
+		jar = null;
+	}
 
 }

@@ -20,6 +20,6 @@ package org.eclipse.payara.tools.exceptions;
 
 public class UniqueNameNotFound extends Exception {
 
-    private static final long serialVersionUID = -1463584291761928966L;
+	private static final long serialVersionUID = -1463584291761928966L;
 
 }

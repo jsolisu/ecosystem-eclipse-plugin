@@ -28,16 +28,16 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public abstract class AbstractPayaraConsole extends MessageConsole implements IPayaraConsole {
 
-    protected List<LogReader> readers;
-    protected MessageConsoleStream out;
-    protected CountDownLatch latch;
-    protected ILogFilter filter;
-    protected ScheduledFuture<?> stopJobResult;
+	protected List<LogReader> readers;
+	protected MessageConsoleStream out;
+	protected CountDownLatch latch;
+	protected ILogFilter filter;
+	protected ScheduledFuture<?> stopJobResult;
 
-    public AbstractPayaraConsole(String name, ImageDescriptor imageDescriptor, ILogFilter filter) {
-        super(name, imageDescriptor);
-        this.filter = filter;
-        this.out = newMessageStream();
-    }
+	public AbstractPayaraConsole(String name, ImageDescriptor imageDescriptor, ILogFilter filter) {
+		super(name, imageDescriptor);
+		this.filter = filter;
+		this.out = newMessageStream();
+	}
 
 }

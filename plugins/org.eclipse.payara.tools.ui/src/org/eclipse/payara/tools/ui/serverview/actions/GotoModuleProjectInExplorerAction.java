@@ -26,71 +26,71 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.ui.IServerModule;
 
 /**
- * This action allows the user to navigate from the a module deployed to a server in the servers view
- * to the project from which the module was created in the project explorer. 
+ * This action allows the user to navigate from the a module deployed to a
+ * server in the servers view to the project from which the module was created
+ * in the project explorer.
  * 
  * @author Arjan Tijms
  *
  */
 public class GotoModuleProjectInExplorerAction extends Action {
 
-    private ISelection selection;
+	private ISelection selection;
 
-    public GotoModuleProjectInExplorerAction(ISelection selection) {
-        setText("Goto Project");
+	public GotoModuleProjectInExplorerAction(ISelection selection) {
+		setText("Goto Project");
 
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-        setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
-        setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD));
+		setDisabledImageDescriptor(sharedImages.getImageDescriptor(IMG_TOOL_FORWARD_DISABLED));
 
-        this.selection = selection;
-    }
+		this.selection = selection;
+	}
 
-    @Override
-    public void runWithEvent(Event event) {
-        if (selection instanceof TreeSelection) {
-            TreeSelection treeSelection = (TreeSelection) selection;
-            Object firstElement = treeSelection.getFirstElement();
-            if (firstElement instanceof IServerModule) {
+	@Override
+	public void runWithEvent(Event event) {
+		if (selection instanceof TreeSelection) {
+			TreeSelection treeSelection = (TreeSelection) selection;
+			Object firstElement = treeSelection.getFirstElement();
+			if (firstElement instanceof IServerModule) {
 
-                IServerModule serverModule = (IServerModule) firstElement;
-                IModule[] modules = serverModule.getModule();
+				IServerModule serverModule = (IServerModule) firstElement;
+				IModule[] modules = serverModule.getModule();
 
-                // Make sure we have a selection that actually contains modules
-                if (modules.length > 0) {
-                    
-                    // Get the project associated with the selection
-                    IProject project = modules[0].getProject();
-                    
-                    try {
-                        
-                        // Obtain the Project Explorer
-                        ProjectExplorer projectExplorer = (ProjectExplorer) PlatformUI.getWorkbench()
-                                  .getActiveWorkbenchWindow()
-                                  .getActivePage()
-                                  .showView(ProjectExplorer.VIEW_ID);
-                        
-                        // Give focus to the explorer
-                        projectExplorer.setFocus();
-                        
-                        // Set the selection within the explorer to the project
-                        projectExplorer.selectReveal(new StructuredSelection(project));
+				// Make sure we have a selection that actually contains modules
+				if (modules.length > 0) {
 
-                        // Open the project node (expand nodes so the project and its direct children are visible)
-                        projectExplorer.getCommonViewer().expandToLevel(project, 1);
-                    } catch (Exception e) {
-                        logMessage("Error navigating to project: " + e.getMessage());
-                    }
-                }
-            }
-          
-            super.run();
-        }
-    }
+					// Get the project associated with the selection
+					IProject project = modules[0].getProject();
 
-    @Override
-    public void run() {
-        this.runWithEvent(null);
-    }
+					try {
+
+						// Obtain the Project Explorer
+						ProjectExplorer projectExplorer = (ProjectExplorer) PlatformUI.getWorkbench()
+								.getActiveWorkbenchWindow().getActivePage().showView(ProjectExplorer.VIEW_ID);
+
+						// Give focus to the explorer
+						projectExplorer.setFocus();
+
+						// Set the selection within the explorer to the project
+						projectExplorer.selectReveal(new StructuredSelection(project));
+
+						// Open the project node (expand nodes so the project and its direct children
+						// are visible)
+						projectExplorer.getCommonViewer().expandToLevel(project, 1);
+					} catch (Exception e) {
+						logMessage("Error navigating to project: " + e.getMessage());
+					}
+				}
+			}
+
+			super.run();
+		}
+	}
+
+	@Override
+	public void run() {
+		this.runWithEvent(null);
+	}
 
 }

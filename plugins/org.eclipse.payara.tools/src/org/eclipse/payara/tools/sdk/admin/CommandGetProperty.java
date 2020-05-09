@@ -38,95 +38,90 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestGetProperty.class)
 public class CommandGetProperty extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(CommandGetProperty.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(CommandGetProperty.class);
 
-    /** Command string for create-cluster command. */
-    private static final String COMMAND = "get";
+	/** Command string for create-cluster command. */
+	private static final String COMMAND = "get";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Pattern that defines properties to retrieve. */
-    String propertyPattern;
+	/** Pattern that defines properties to retrieve. */
+	String propertyPattern;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Retrieve properties from server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param propertyPattern Pattern that defines properties to retrieve.
-     * @return GlassFish command result containing map with key-value pairs returned by server.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultMap<String, String> getProperties(
-            final PayaraServer server, final String propertyPattern)
-            throws PayaraIdeException {
-        final String METHOD = "getProperties";
-        Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(
-                server, new CommandGetProperty(propertyPattern));
-        try {
-            return future.get();
-        } catch (ExecutionException | InterruptedException
-                | CancellationException ee) {
-            throw new PayaraIdeException(
-                    LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
-        }
-    }
+	/**
+	 * Retrieve properties from server.
+	 * <p/>
+	 *
+	 * @param server          GlassFish server entity.
+	 * @param propertyPattern Pattern that defines properties to retrieve.
+	 * @return GlassFish command result containing map with key-value pairs returned
+	 *         by server.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultMap<String, String> getProperties(final PayaraServer server, final String propertyPattern)
+			throws PayaraIdeException {
+		final String METHOD = "getProperties";
+		Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(server,
+				new CommandGetProperty(propertyPattern));
+		try {
+			return future.get();
+		} catch (ExecutionException | InterruptedException | CancellationException ee) {
+			throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
+		}
+	}
 
-    /**
-     * Retrieve properties from server with timeout.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param propertyPattern Pattern that defines properties to retrieve.
-     * @param timeout Administration command execution timeout [ms].
-     * @return GlassFish command result containing map with key-value pairs returned by server.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultMap<String, String> getProperties(
-            final PayaraServer server, final String propertyPattern,
-            final long timeout)
-            throws PayaraIdeException {
-        final String METHOD = "getProperties";
-        Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(
-                server, new CommandGetProperty(propertyPattern));
-        try {
-            return future.get(timeout, TimeUnit.MILLISECONDS);
-        } catch (ExecutionException | InterruptedException
-                | CancellationException ee) {
-            throw new PayaraIdeException(
-                    LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
-        } catch (TimeoutException te) {
-            throw new PayaraIdeException(
-                    LOGGER.excMsg(METHOD, "exceptionWithTimeout",
-                            propertyPattern, Long.toString(timeout)),
-                    te);
-        }
+	/**
+	 * Retrieve properties from server with timeout.
+	 * <p/>
+	 *
+	 * @param server          GlassFish server entity.
+	 * @param propertyPattern Pattern that defines properties to retrieve.
+	 * @param timeout         Administration command execution timeout [ms].
+	 * @return GlassFish command result containing map with key-value pairs returned
+	 *         by server.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultMap<String, String> getProperties(final PayaraServer server, final String propertyPattern,
+			final long timeout) throws PayaraIdeException {
+		final String METHOD = "getProperties";
+		Future<ResultMap<String, String>> future = ServerAdmin.<ResultMap<String, String>>exec(server,
+				new CommandGetProperty(propertyPattern));
+		try {
+			return future.get(timeout, TimeUnit.MILLISECONDS);
+		} catch (ExecutionException | InterruptedException | CancellationException ee) {
+			throw new PayaraIdeException(LOGGER.excMsg(METHOD, "exception", propertyPattern), ee);
+		} catch (TimeoutException te) {
+			throw new PayaraIdeException(
+					LOGGER.excMsg(METHOD, "exceptionWithTimeout", propertyPattern, Long.toString(timeout)), te);
+		}
 
-    }
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server get property command entity.
-     * <p/>
-     *
-     * @param property Pattern that defines property tor retrieve.
-     */
-    public CommandGetProperty(final String property) {
-        super(COMMAND);
-        propertyPattern = property;
-    }
+	/**
+	 * Constructs an instance of GlassFish server get property command entity.
+	 * <p/>
+	 *
+	 * @param property Pattern that defines property tor retrieve.
+	 */
+	public CommandGetProperty(final String property) {
+		super(COMMAND);
+		propertyPattern = property;
+	}
 }

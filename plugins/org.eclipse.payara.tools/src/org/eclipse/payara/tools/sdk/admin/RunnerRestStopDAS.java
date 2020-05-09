@@ -26,37 +26,38 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestStopDAS extends RunnerRest {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestStopDAS(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestStopDAS(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    // @Override
-    // protected String constructCommandUrl() throws CommandException {
-    // String protocol = "http";
-    // URI uri;
-    // try {
-    // uri = new URI(protocol, null, server.getHost(), server.getAdminPort(), path + "stop", query,
-    // null);
-    // } catch (URISyntaxException use) {
-    // throw new CommandException(CommandException.RUNNER_HTTP_URL, use);
-    // }
-    // return uri.toASCIIString();
-    // }
-    //
-    // @Override
-    // protected String getRequestMethod() {
-    // return "POST";
-    // }
+	// @Override
+	// protected String constructCommandUrl() throws CommandException {
+	// String protocol = "http";
+	// URI uri;
+	// try {
+	// uri = new URI(protocol, null, server.getHost(), server.getAdminPort(), path +
+	// "stop", query,
+	// null);
+	// } catch (URISyntaxException use) {
+	// throw new CommandException(CommandException.RUNNER_HTTP_URL, use);
+	// }
+	// return uri.toASCIIString();
+	// }
+	//
+	// @Override
+	// protected String getRequestMethod() {
+	// return "POST";
+	// }
 }

@@ -28,31 +28,31 @@ import org.eclipse.ui.console.TextConsole;
 @SuppressWarnings("restriction")
 public class PayaraConsoleTracker implements IPatternMatchListenerDelegate {
 
-    /**
-     * The console associated with this line tracker
-     */
-    private TextConsole payaraConsole;
+	/**
+	 * The console associated with this line tracker
+	 */
+	private TextConsole payaraConsole;
 
-    @Override
-    public void connect(TextConsole console) {
-        payaraConsole = console;
-    }
+	@Override
+	public void connect(TextConsole console) {
+		payaraConsole = console;
+	}
 
-    @Override
-    public void disconnect() {
-        payaraConsole = null;
-    }
+	@Override
+	public void disconnect() {
+		payaraConsole = null;
+	}
 
-    @Override
-    public void matchFound(PatternMatchEvent event) {
-        try {
-            int offset = event.getOffset();
-            int length = event.getLength();
-            IHyperlink link = new JavaStackTraceHyperlink(payaraConsole);
-            payaraConsole.addHyperlink(link, offset + 1, length - 2);
-        } catch (BadLocationException e) {
-            // Ignore
-        }
-    }
+	@Override
+	public void matchFound(PatternMatchEvent event) {
+		try {
+			int offset = event.getOffset();
+			int length = event.getLength();
+			IHyperlink link = new JavaStackTraceHyperlink(payaraConsole);
+			payaraConsole.addHyperlink(link, offset + 1, length - 2);
+		} catch (BadLocationException e) {
+			// Ignore
+		}
+	}
 
 }

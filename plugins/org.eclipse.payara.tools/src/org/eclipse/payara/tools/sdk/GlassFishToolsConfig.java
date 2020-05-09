@@ -28,44 +28,44 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
  */
 public class GlassFishToolsConfig {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(GlassFishToolsConfig.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(GlassFishToolsConfig.class);
 
-    /** Proxy settings usage for loopback addresses. */
-    private static volatile boolean proxyForLoopback = true;
+	/** Proxy settings usage for loopback addresses. */
+	private static volatile boolean proxyForLoopback = true;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Do not use proxy settings for loopback addresses.
-     */
-    public static void noProxyForLoopback() {
-        proxyForLoopback = false;
-    }
+	/**
+	 * Do not use proxy settings for loopback addresses.
+	 */
+	public static void noProxyForLoopback() {
+		proxyForLoopback = false;
+	}
 
-    /**
-     * Use proxy settings for loopback addresses.
-     * <p/>
-     * This is default behavior.
-     */
-    public static void useProxyForLoopback() {
-        proxyForLoopback = true;
-    }
+	/**
+	 * Use proxy settings for loopback addresses.
+	 * <p/>
+	 * This is default behavior.
+	 */
+	public static void useProxyForLoopback() {
+		proxyForLoopback = true;
+	}
 
-    /**
-     * Get proxy settings usage for loopback addresses configuration value.
-     * <p/>
-     *
-     * @return Proxy settings usage for loopback addresses configuration value.
-     */
-    public static boolean getProxyForLoopback() {
-        return proxyForLoopback;
-    }
+	/**
+	 * Get proxy settings usage for loopback addresses configuration value.
+	 * <p/>
+	 *
+	 * @return Proxy settings usage for loopback addresses configuration value.
+	 */
+	public static boolean getProxyForLoopback() {
+		return proxyForLoopback;
+	}
 
 }

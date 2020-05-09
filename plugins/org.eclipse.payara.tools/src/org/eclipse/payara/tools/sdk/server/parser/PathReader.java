@@ -32,75 +32,76 @@ import org.xml.sax.SAXException;
  */
 public class PathReader extends AbstractReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** <code>file</code> XML element name. */
-    static final String NODE = "file";
+	/** <code>file</code> XML element name. */
+	static final String NODE = "file";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Paths retrieved from XML elements. */
-    private List<String> paths = new LinkedList<>();
+	/** Paths retrieved from XML elements. */
+	private List<String> paths = new LinkedList<>();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of Java EE platform check configuration XML element reader.
-     * <p/>
-     *
-     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
-     */
-    PathReader(final String pathPrefix) {
-        super(pathPrefix, NODE);
-    }
+	/**
+	 * Creates an instance of Java EE platform check configuration XML element
+	 * reader.
+	 * <p/>
+	 *
+	 * @param pathPrefix Tree parser path prefix to be prepended before current XML
+	 *                   element.
+	 */
+	PathReader(final String pathPrefix) {
+		super(pathPrefix, NODE);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        paths.add(attributes.getValue("path"));
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		paths.add(attributes.getValue("path"));
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get paths retrieved from XML elements.
-     * <p/>
-     *
-     * @return Paths sets retrieved from XML elements.
-     */
-    public List<String> getPaths() {
-        return paths;
-    }
+	/**
+	 * Get paths retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Paths sets retrieved from XML elements.
+	 */
+	public List<String> getPaths() {
+		return paths;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    public void reset() {
-        paths = new LinkedList<>();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	public void reset() {
+		paths = new LinkedList<>();
+	}
 
 }

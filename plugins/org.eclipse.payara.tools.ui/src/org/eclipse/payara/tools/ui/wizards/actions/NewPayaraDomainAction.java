@@ -37,47 +37,44 @@ import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 
 /**
- * Action that is invoked when the user clicks on the "new domain" icon next to the "Domain Path"
- * input field in the "new server" wizard.
+ * Action that is invoked when the user clicks on the "new domain" icon next to
+ * the "Domain Path" input field in the "new server" wizard.
  *
  */
 public class NewPayaraDomainAction extends SapphireActionHandler {
 
-    @Override
-    protected Object run(Presentation context) {
-        IRuntime runtime = load(context.part().getModelElement().adapt(IServerWorkingCopy.class), PayaraServer.class)
-                .getServer()
-                .getRuntime();
+	@Override
+	protected Object run(Presentation context) {
+		IRuntime runtime = load(context.part().getModelElement().adapt(IServerWorkingCopy.class), PayaraServer.class)
+				.getServer().getRuntime();
 
-        ICreatePayaraDomainOp createDomainOperation = ICreatePayaraDomainOp.TYPE.instantiate();
+		ICreatePayaraDomainOp createDomainOperation = ICreatePayaraDomainOp.TYPE.instantiate();
 
-        // Set existing domain location
-        createDomainOperation.setLocation(fromPortableString(runtime.getLocation().toPortableString()));
+		// Set existing domain location
+		createDomainOperation.setLocation(fromPortableString(runtime.getLocation().toPortableString()));
 
-        // Set existing JDK location
-        createDomainOperation.setJavaLocation(
-                load(runtime, PayaraRuntime.class).getVMInstall().getInstallLocation().getAbsolutePath());
+		// Set existing JDK location
+		createDomainOperation.setJavaLocation(
+				load(runtime, PayaraRuntime.class).getVMInstall().getInstallLocation().getAbsolutePath());
 
-        // Explicitly open Sapphire dialog that asks the user to fill out fields for new domain
-        WizardDialog dlg = new WizardDialog(
-                Display.getDefault().getActiveShell(),
-                new SapphireWizard<>(
-                        createDomainOperation,
-                        context(BaseWizardFragment.class)
-                                .sdef("org.eclipse.payara.tools.ui.PayaraUI")
-                                .wizard("new-domain-wizard")));
+		// Explicitly open Sapphire dialog that asks the user to fill out fields for new
+		// domain
+		WizardDialog dlg = new WizardDialog(Display.getDefault().getActiveShell(),
+				new SapphireWizard<>(createDomainOperation, context(BaseWizardFragment.class)
+						.sdef("org.eclipse.payara.tools.ui.PayaraUI").wizard("new-domain-wizard")));
 
-        // If user okay'ed dialog, copy the provided values to our model
-        if (dlg.open() == OK) {
-            IPayaraServerModel model = (IPayaraServerModel) context.part().getModelElement();
+		// If user okay'ed dialog, copy the provided values to our model
+		if (dlg.open() == OK) {
+			IPayaraServerModel model = (IPayaraServerModel) context.part().getModelElement();
 
-            model.setDomainPath(createDomainOperation.getDomainDir().content().append(createDomainOperation.getName().content()));
-            model.setDebugPort(createDomainOperation.getPortBase().content() + 9);
-        }
+			model.setDomainPath(
+					createDomainOperation.getDomainDir().content().append(createDomainOperation.getName().content()));
+			model.setDebugPort(createDomainOperation.getPortBase().content() + 9);
+		}
 
-        createDomainOperation.dispose();
+		createDomainOperation.dispose();
 
-        return null;
-    }
+		return null;
+	}
 
 }

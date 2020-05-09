@@ -56,326 +56,319 @@ import org.eclipse.sapphire.Version;
 import org.eclipse.sapphire.util.ListFactory;
 
 /**
- * This container manages the Payara "system" libraries, which is a selection from the
- * jar files in mostly glassfish/modules
+ * This container manages the Payara "system" libraries, which is a selection
+ * from the jar files in mostly glassfish/modules
  * 
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 public final class SystemLibrariesContainer implements IClasspathContainer {
-    
-    public static final String ID = "org.eclipse.payara.tools.lib.system";
-    private static final IPath PATH = new Path(ID);
 
-    private static final String FPROJ_METADATA_FILE = ".settings/org.eclipse.wst.common.project.facet.core.xml";
+	public static final String ID = "org.eclipse.payara.tools.lib.system";
+	private static final IPath PATH = new Path(ID);
 
-    private static boolean initialized;
-    private static ContainersRefresherThread containersRefresherThread;
+	private static final String FPROJ_METADATA_FILE = ".settings/org.eclipse.wst.common.project.facet.core.xml";
 
-    private final List<IClasspathEntry> classpathEntries;
+	private static boolean initialized;
+	private static ContainersRefresherThread containersRefresherThread;
 
-    private static synchronized void initialize() {
-        if (!initialized) {
-            initialized = true;
+	private final List<IClasspathEntry> classpathEntries;
 
-            ResourceChangeListener.register();
+	private static synchronized void initialize() {
+		if (!initialized) {
+			initialized = true;
 
-            containersRefresherThread = new ContainersRefresherThread();
-            containersRefresherThread.setName("PayaraLibraryContainersRefresher");
-            containersRefresherThread.start();
-        }
-    }
+			ResourceChangeListener.register();
 
-    private SystemLibrariesContainer(IPath containerPath, IJavaProject project) {
-        PayaraLocationUtils locationUtils = PayaraLocationUtils.find(project);
-        
-        String libraryGroup = DEFAULT_LIBRARIES; 
-        if (containerPath.segmentCount() > 1) {
-            libraryGroup = containerPath.segment(1);
-        }
-        
-        // Sets
-        classpathEntries = locationUtils == null ? 
-            emptyList() : 
-            createClasspathEntriesForLibraries(
-                project.getProject(), locationUtils.version(), locationUtils.getLibraries(libraryGroup));
-    }
+			containersRefresherThread = new ContainersRefresherThread();
+			containersRefresherThread.setName("PayaraLibraryContainersRefresher");
+			containersRefresherThread.start();
+		}
+	}
 
-    @Override
-    public IClasspathEntry[] getClasspathEntries() {
-        return classpathEntries.toArray(new IClasspathEntry[classpathEntries.size()]);
-    }
+	private SystemLibrariesContainer(IPath containerPath, IJavaProject project) {
+		PayaraLocationUtils locationUtils = PayaraLocationUtils.find(project);
 
-    @Override
-    public String getDescription() {
-        return Resources.containerLabel;
-    }
+		String libraryGroup = DEFAULT_LIBRARIES;
+		if (containerPath.segmentCount() > 1) {
+			libraryGroup = containerPath.segment(1);
+		}
 
-    @Override
-    public int getKind() {
-        return K_APPLICATION;
-    }
+		// Sets
+		classpathEntries = locationUtils == null ? emptyList()
+				: createClasspathEntriesForLibraries(project.getProject(), locationUtils.version(),
+						locationUtils.getLibraries(libraryGroup));
+	}
 
-    @Override
-    public IPath getPath() {
-        return PATH;
-    }
-    
-    public static ContainersRefresherThread getContainersRefresherThread() {
-        return containersRefresherThread;
-    }
+	@Override
+	public IClasspathEntry[] getClasspathEntries() {
+		return classpathEntries.toArray(new IClasspathEntry[classpathEntries.size()]);
+	}
 
-    public static boolean isOnClasspath(IProject project) throws CoreException {
-        if (isJavaProject(project)) {
-            return isOnClasspath(JavaCore.create(project));
-        }
+	@Override
+	public String getDescription() {
+		return Resources.containerLabel;
+	}
 
-        return false;
-    }
+	@Override
+	public int getKind() {
+		return K_APPLICATION;
+	}
 
-    private static boolean isOnClasspath(IJavaProject project) throws CoreException {
-        for (IClasspathEntry classpathEntry : project.getRawClasspath()) {
-            if (isSystemLibrariesContainer(classpathEntry)) {
-                return true;
-            }
-        }
+	@Override
+	public IPath getPath() {
+		return PATH;
+	}
 
-        return false;
-    }
+	public static ContainersRefresherThread getContainersRefresherThread() {
+		return containersRefresherThread;
+	}
 
-    private static boolean isSystemLibrariesContainer(IClasspathEntry classpathEntry) {
-        return classpathEntry.getPath().equals(PATH);
-    }
+	public static boolean isOnClasspath(IProject project) throws CoreException {
+		if (isJavaProject(project)) {
+			return isOnClasspath(JavaCore.create(project));
+		}
 
-    static void refresh(IProject project) throws CoreException {
-        if (isJavaProject(project)) {
-            refresh(JavaCore.create(project));
-        }
-    }
+		return false;
+	}
 
-    private static void refresh(IJavaProject project) throws CoreException {
-        IPath containerPath = null;
+	private static boolean isOnClasspath(IJavaProject project) throws CoreException {
+		for (IClasspathEntry classpathEntry : project.getRawClasspath()) {
+			if (isSystemLibrariesContainer(classpathEntry)) {
+				return true;
+			}
+		}
 
-        for (IClasspathEntry classpathEntry : project.getRawClasspath()) {
-            if (isSystemLibrariesContainer(classpathEntry)) {
-                containerPath = classpathEntry.getPath();
-                break;
-            }
-        }
+		return false;
+	}
 
-        if (containerPath != null) {
-            SystemLibrariesContainer existingContainer = (SystemLibrariesContainer) getClasspathContainer(containerPath, project);
-            SystemLibrariesContainer newContainer = new SystemLibrariesContainer(containerPath, project);
+	private static boolean isSystemLibrariesContainer(IClasspathEntry classpathEntry) {
+		return classpathEntry.getPath().equals(PATH);
+	}
 
-            if (!existingContainer.equals(newContainer)) {
-                IJavaProject[] projectsArray = { project };
-                IClasspathContainer[] containersArray = { newContainer };
+	static void refresh(IProject project) throws CoreException {
+		if (isJavaProject(project)) {
+			refresh(JavaCore.create(project));
+		}
+	}
 
-                JavaCore.setClasspathContainer(containerPath, projectsArray, containersArray, null);
-            }
-        }
-    }
+	private static void refresh(IJavaProject project) throws CoreException {
+		IPath containerPath = null;
 
-    /**
-     * Checks whether the specified project is a Java project.
-     *
-     * @param project the project to check
-     * @return <code>true</code> if the project is a Java project
-     */
+		for (IClasspathEntry classpathEntry : project.getRawClasspath()) {
+			if (isSystemLibrariesContainer(classpathEntry)) {
+				containerPath = classpathEntry.getPath();
+				break;
+			}
+		}
 
-    private static boolean isJavaProject(IProject project) {
-        try {
-            return project.getNature(JavaCore.NATURE_ID) != null;
-        } catch (CoreException e) {
-        }
+		if (containerPath != null) {
+			SystemLibrariesContainer existingContainer = (SystemLibrariesContainer) getClasspathContainer(containerPath,
+					project);
+			SystemLibrariesContainer newContainer = new SystemLibrariesContainer(containerPath, project);
 
-        return false;
-    }
+			if (!existingContainer.equals(newContainer)) {
+				IJavaProject[] projectsArray = { project };
+				IClasspathContainer[] containersArray = { newContainer };
 
-    public static final class Initializer extends ClasspathContainerInitializer {
-        @Override
-        public void initialize(IPath containerPath, IJavaProject project) throws CoreException {
-            SystemLibrariesContainer.initialize();
+				JavaCore.setClasspathContainer(containerPath, projectsArray, containersArray, null);
+			}
+		}
+	}
 
-            setClasspathContainer(
-                containerPath, 
-                new IJavaProject[] { project },
-                new IClasspathContainer[] { new SystemLibrariesContainer(containerPath, project) },
-                null);
-        }
+	/**
+	 * Checks whether the specified project is a Java project.
+	 *
+	 * @param project the project to check
+	 * @return <code>true</code> if the project is a Java project
+	 */
 
-        @Override
-        public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
-            return true;
-        }
+	private static boolean isJavaProject(IProject project) {
+		try {
+			return project.getNature(JavaCore.NATURE_ID) != null;
+		} catch (CoreException e) {
+		}
 
-        @Override
-        public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project, IClasspathContainer containerSuggestion) throws CoreException {
-            super.requestClasspathContainerUpdate(containerPath, project, containerSuggestion);
+		return false;
+	}
 
-            // Save source path in meta data file
-            IProject proj = project.getProject();
-            SystemLibrariesSetting settings = SystemLibrariesSetting.load(proj);
-            if (settings == null) {
-                settings = new SystemLibrariesSetting();
-            }
-            
-            List<Library> libraries = settings.getLibraryList();
+	public static final class Initializer extends ClasspathContainerInitializer {
+		@Override
+		public void initialize(IPath containerPath, IJavaProject project) throws CoreException {
+			SystemLibrariesContainer.initialize();
 
-            boolean needUpdate = false;
-            for (IClasspathEntry classpathEntry : containerSuggestion.getClasspathEntries()) {
-                IPath srcPath = classpathEntry.getSourceAttachmentPath();
+			setClasspathContainer(containerPath, new IJavaProject[] { project },
+					new IClasspathContainer[] { new SystemLibrariesContainer(containerPath, project) }, null);
+		}
 
-                if (srcPath != null) {
-                    needUpdate = true;
+		@Override
+		public boolean canUpdateClasspathContainer(IPath containerPath, IJavaProject project) {
+			return true;
+		}
 
-                    boolean foudEntry = false;
-                    for (Library library : libraries) {
-                        String cpePath = classpathEntry.getPath().toString();
-                        if (library.getPath().equals(cpePath)) {
-                            // Update source path
-                            library.setSource(srcPath.toPortableString());
-                            foudEntry = true;
-                            break;
-                        }
-                    }
-                    
-                    if (!foudEntry) {
-                        Library newLibrary = new Library();
-                        newLibrary.setPath(classpathEntry.getPath().toString());
-                        newLibrary.setSource(srcPath.toString());
-                        libraries.add(newLibrary);
-                    }
-                } else {
-                    // Remove entry from settings file
-                    
-                    Iterator<Library> it = libraries.iterator();
-                    while (it.hasNext()) {
-                        Library lib = it.next();
-                        String cpePath = classpathEntry.getPath().toString();
-                        if (lib.getPath().equals(cpePath)) {
-                            it.remove();
-                            needUpdate = true;
-                            break;
-                        }
-                    }
+		@Override
+		public void requestClasspathContainerUpdate(IPath containerPath, IJavaProject project,
+				IClasspathContainer containerSuggestion) throws CoreException {
+			super.requestClasspathContainerUpdate(containerPath, project, containerSuggestion);
 
-                }
-            }
-            
-            if (needUpdate) {
-                SystemLibrariesSetting.save(proj, settings);
-                // Update the classpath container to reflect the changes
-                initialize(containerPath, project);
-            }
-        }
-    }
-    
-    public static List<IClasspathEntry> createClasspathEntriesForLibraries(IProject project, Version version, List<File> libraries) {
-        ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
+			// Save source path in meta data file
+			IProject proj = project.getProject();
+			SystemLibrariesSetting settings = SystemLibrariesSetting.load(proj);
+			if (settings == null) {
+				settings = new SystemLibrariesSetting();
+			}
 
-        URL doc;
-        String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
+			List<Library> libraries = settings.getLibraryList();
 
-        try {
-            if ("8".equals(javaEEVersion)) {
-                doc = new URL("https://javaee.github.io/javaee-spec/javadocs/");
-            } else {
-                doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+			boolean needUpdate = false;
+			for (IClasspathEntry classpathEntry : containerSuggestion.getClasspathEntries()) {
+				IPath srcPath = classpathEntry.getSourceAttachmentPath();
 
-        SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(project);
-        
-        if (libSettings != null) {
-            
-            // We have settings for our system library, check it for each entry
-            // if we have a source attachment
-            
-            for (File library : libraries) {
-                classpathListFactory.add(
-                    createLibraryEntry(
-                        new Path(library.toString()), 
-                        libSettings.getSourcePath(library), 
-                        doc));
-            }
-        } else {
-            
-            // No settings for our system library, source is always null
-            
-            for (File library : libraries) {
-                classpathListFactory.add(
-                    createLibraryEntry(
-                        new Path(library.toString()), 
-                        null, 
-                        doc));
-            }
-        }
-       
+				if (srcPath != null) {
+					needUpdate = true;
 
-        return classpathListFactory.result();
-    }
-    
-    private static IClasspathEntry createLibraryEntry(IPath library, File src, URL javadoc) {
-        IPath librarySourcePath = src == null ? null : new Path(src.getAbsolutePath());
-        IAccessRule[] access = {};
-        IClasspathAttribute[] libraryJavadocAttributes;
+					boolean foudEntry = false;
+					for (Library library : libraries) {
+						String cpePath = classpathEntry.getPath().toString();
+						if (library.getPath().equals(cpePath)) {
+							// Update source path
+							library.setSource(srcPath.toPortableString());
+							foudEntry = true;
+							break;
+						}
+					}
 
-        if (javadoc == null) {
-            libraryJavadocAttributes = new IClasspathAttribute[0];
-        } else {
-            libraryJavadocAttributes = new IClasspathAttribute[] { newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
-        }
+					if (!foudEntry) {
+						Library newLibrary = new Library();
+						newLibrary.setPath(classpathEntry.getPath().toString());
+						newLibrary.setSource(srcPath.toString());
+						libraries.add(newLibrary);
+					}
+				} else {
+					// Remove entry from settings file
 
-        return newLibraryEntry(library, librarySourcePath, null, access, libraryJavadocAttributes, false);
-    }
+					Iterator<Library> it = libraries.iterator();
+					while (it.hasNext()) {
+						Library lib = it.next();
+						String cpePath = classpathEntry.getPath().toString();
+						if (lib.getPath().equals(cpePath)) {
+							it.remove();
+							needUpdate = true;
+							break;
+						}
+					}
 
-    private static final class ResourceChangeListener implements IResourceChangeListener {
-        private final List<IPath> triggerFiles;
+				}
+			}
 
-        public static void register() {
-            ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), POST_CHANGE);
-        }
+			if (needUpdate) {
+				SystemLibrariesSetting.save(proj, settings);
+				// Update the classpath container to reflect the changes
+				initialize(containerPath, project);
+			}
+		}
+	}
 
-        private ResourceChangeListener() {
-            triggerFiles = new ArrayList<>();
-            triggerFiles.add(new Path(FPROJ_METADATA_FILE));
-        }
+	public static List<IClasspathEntry> createClasspathEntriesForLibraries(IProject project, Version version,
+			List<File> libraries) {
+		ListFactory<IClasspathEntry> classpathListFactory = ListFactory.start();
 
-        @Override
-        public void resourceChanged(IResourceChangeEvent event) {
-            for (IResourceDelta subdelta : event.getDelta().getAffectedChildren()) {
-                IProject project = (IProject) subdelta.getResource();
-                boolean relevant = false;
+		URL doc;
+		String javaEEVersion = (version.matches("[5") ? "8" : (version.matches("[4") ? "7" : "6"));
 
-                for (IPath triggerFile : triggerFiles) {
-                    if (subdelta.findMember(triggerFile) != null) {
-                        try {
-                            if (isOnClasspath(project)) {
-                                relevant = true;
-                            }
-                        } catch (CoreException e) {
-                            PayaraToolsPlugin.log(e);
-                        }
+		try {
+			if ("8".equals(javaEEVersion)) {
+				doc = new URL("https://javaee.github.io/javaee-spec/javadocs/");
+			} else {
+				doc = new URL("http://docs.oracle.com/javaee/" + javaEEVersion + "/api/");
+			}
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
 
-                        break;
-                    }
-                }
+		SystemLibrariesSetting libSettings = SystemLibrariesSetting.load(project);
 
-                if (relevant) {
-                    containersRefresherThread.addProjectToQueue(project);
-                }
-            }
-        }
-    }
+		if (libSettings != null) {
 
-    private static final class Resources extends NLS {
-        public static String containerLabel;
+			// We have settings for our system library, check it for each entry
+			// if we have a source attachment
 
-        static {
-            initializeMessages(SystemLibrariesContainer.class.getName(), Resources.class);
-        }
-    }
+			for (File library : libraries) {
+				classpathListFactory
+						.add(createLibraryEntry(new Path(library.toString()), libSettings.getSourcePath(library), doc));
+			}
+		} else {
+
+			// No settings for our system library, source is always null
+
+			for (File library : libraries) {
+				classpathListFactory.add(createLibraryEntry(new Path(library.toString()), null, doc));
+			}
+		}
+
+		return classpathListFactory.result();
+	}
+
+	private static IClasspathEntry createLibraryEntry(IPath library, File src, URL javadoc) {
+		IPath librarySourcePath = src == null ? null : new Path(src.getAbsolutePath());
+		IAccessRule[] access = {};
+		IClasspathAttribute[] libraryJavadocAttributes;
+
+		if (javadoc == null) {
+			libraryJavadocAttributes = new IClasspathAttribute[0];
+		} else {
+			libraryJavadocAttributes = new IClasspathAttribute[] {
+					newClasspathAttribute(JAVADOC_LOCATION_ATTRIBUTE_NAME, javadoc.toExternalForm()) };
+		}
+
+		return newLibraryEntry(library, librarySourcePath, null, access, libraryJavadocAttributes, false);
+	}
+
+	private static final class ResourceChangeListener implements IResourceChangeListener {
+		private final List<IPath> triggerFiles;
+
+		public static void register() {
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(new ResourceChangeListener(), POST_CHANGE);
+		}
+
+		private ResourceChangeListener() {
+			triggerFiles = new ArrayList<>();
+			triggerFiles.add(new Path(FPROJ_METADATA_FILE));
+		}
+
+		@Override
+		public void resourceChanged(IResourceChangeEvent event) {
+			for (IResourceDelta subdelta : event.getDelta().getAffectedChildren()) {
+				IProject project = (IProject) subdelta.getResource();
+				boolean relevant = false;
+
+				for (IPath triggerFile : triggerFiles) {
+					if (subdelta.findMember(triggerFile) != null) {
+						try {
+							if (isOnClasspath(project)) {
+								relevant = true;
+							}
+						} catch (CoreException e) {
+							PayaraToolsPlugin.log(e);
+						}
+
+						break;
+					}
+				}
+
+				if (relevant) {
+					containersRefresherThread.addProjectToQueue(project);
+				}
+			}
+		}
+	}
+
+	private static final class Resources extends NLS {
+		public static String containerLabel;
+
+		static {
+			initializeMessages(SystemLibrariesContainer.class.getName(), Resources.class);
+		}
+	}
 
 }

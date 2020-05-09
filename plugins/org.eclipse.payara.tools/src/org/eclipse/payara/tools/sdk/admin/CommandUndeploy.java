@@ -30,35 +30,35 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestUndeploy.class)
 public class CommandUndeploy extends CommandTargetName {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for undeploy command. */
-    private static final String COMMAND = "undeploy";
+	/** Command string for undeploy command. */
+	private static final String COMMAND = "undeploy";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of the Payara server undeploy command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance.
-     */
-    public CommandUndeploy(String name) {
-        this(name, null);
-    }
+	/**
+	 * Constructs an instance of the Payara server undeploy command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandUndeploy(String name) {
+		this(name, null);
+	}
 
-    /**
-     * Constructs an instance of Payara server undeploy command entity.
-     * <p/>
-     *
-     * @param target Target Payara instance.
-     */
-    public CommandUndeploy(String name, String target) {
-        super(COMMAND, name, target);
-    }
+	/**
+	 * Constructs an instance of Payara server undeploy command entity.
+	 * <p/>
+	 *
+	 * @param target Target Payara instance.
+	 */
+	public CommandUndeploy(String name, String target) {
+		super(COMMAND, name, target);
+	}
 
 }

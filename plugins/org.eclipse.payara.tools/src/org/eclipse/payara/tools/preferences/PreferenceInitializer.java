@@ -29,18 +29,18 @@ import org.eclipse.payara.tools.PayaraToolsPlugin;
  */
 public class PreferenceInitializer extends AbstractPreferenceInitializer {
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see
-     * org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#initializeDefaultPreferences()
-     */
-    @Override
-    public void initializeDefaultPreferences() {
-        IPreferenceStore store = PayaraToolsPlugin.getInstance().getPreferenceStore();
-        store.setDefault(PreferenceConstants.ENABLE_LOG, false);
-        store.setDefault(PreferenceConstants.ENABLE_START_VERBOSE, false);
-        store.setDefault(PreferenceConstants.ENABLE_COLORS_CONSOLE, true);
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
+	 * initializeDefaultPreferences()
+	 */
+	@Override
+	public void initializeDefaultPreferences() {
+		IPreferenceStore store = PayaraToolsPlugin.getInstance().getPreferenceStore();
+		store.setDefault(PreferenceConstants.ENABLE_LOG, false);
+		store.setDefault(PreferenceConstants.ENABLE_START_VERBOSE, false);
+		store.setDefault(PreferenceConstants.ENABLE_COLORS_CONSOLE, true);
+	}
 
 }

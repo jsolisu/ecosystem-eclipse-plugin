@@ -26,29 +26,29 @@ import org.eclipse.ui.part.IPageBookViewPage;
 
 public class PayaraLogPageParticipant implements IConsolePageParticipant {
 
-    @Override
-    public void init(IPageBookViewPage page, IConsole console) {
-        if (page.getControl() instanceof StyledText) {
-            StyledText viewer = (StyledText) page.getControl();
-            viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
-        }
-    }
+	@Override
+	public void init(IPageBookViewPage page, IConsole console) {
+		if (page.getControl() instanceof StyledText) {
+			StyledText viewer = (StyledText) page.getControl();
+			viewer.addLineStyleListener(new LogStyle(((TextConsole) console).getDocument()));
+		}
+	}
 
-    @Override
-    public void activated() {
-    }
+	@Override
+	public void activated() {
+	}
 
-    @Override
-    public void deactivated() {
-    }
+	@Override
+	public void deactivated() {
+	}
 
-    @Override
-    public void dispose() {
-    }
+	@Override
+	public void dispose() {
+	}
 
-    @Override
-    public <T> T getAdapter(Class<T> adapter) {
-        return null;
-    }
+	@Override
+	public <T> T getAdapter(Class<T> adapter) {
+		return null;
+	}
 
 }

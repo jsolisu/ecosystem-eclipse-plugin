@@ -27,59 +27,61 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.ui.IServerModule;
 
 /**
- * This action opens an assembled module (e.g. a .war archive or exploded folder) that's deployed to a Payara server 
- * in the file browser from the operating system.
+ * This action opens an assembled module (e.g. a .war archive or exploded
+ * folder) that's deployed to a Payara server in the file browser from the
+ * operating system.
  * 
  * <p>
- * Inspecting the actual assembled module is sometimes necessary to resolve and diagnose deployment errors.
- *   
+ * Inspecting the actual assembled module is sometimes necessary to resolve and
+ * diagnose deployment errors.
+ * 
  * @author Arjan Tijms
  *
  */
 public class OpenModuleInFileBrowserAction extends Action {
 
-    ISelection selection;
+	ISelection selection;
 
-    public OpenModuleInFileBrowserAction(ISelection selection) {
-        setText("Open in File Browser");
+	public OpenModuleInFileBrowserAction(ISelection selection) {
+		setText("Open in File Browser");
 
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-        setImageDescriptor(sharedImages.getImageDescriptor(IMG_OBJ_FOLDER));
+		ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+		setImageDescriptor(sharedImages.getImageDescriptor(IMG_OBJ_FOLDER));
 
-        this.selection = selection;
-    }
+		this.selection = selection;
+	}
 
-    @Override
-    public void runWithEvent(Event event) {
-        if (selection instanceof TreeSelection) {
-            TreeSelection ts = (TreeSelection) selection;
-            Object firstElement = ts.getFirstElement();
-            if (firstElement instanceof IServerModule) {
+	@Override
+	public void runWithEvent(Event event) {
+		if (selection instanceof TreeSelection) {
+			TreeSelection ts = (TreeSelection) selection;
+			Object firstElement = ts.getFirstElement();
+			if (firstElement instanceof IServerModule) {
 
-                IServerModule module = (IServerModule) firstElement;
+				IServerModule module = (IServerModule) firstElement;
 
-                IServer server = module.getServer();
-                IModule[] modules = module.getModule();
+				IServer server = module.getServer();
+				IModule[] modules = module.getModule();
 
-                if (modules.length > 0) {
+				if (modules.length > 0) {
 
-                    PayaraServerBehaviour serverBehaviour = load(server, PayaraServerBehaviour.class);
-                    
-                    try {
-                        showURI(getModuleDeployURI(serverBehaviour, modules[0]));
-                    } catch (Exception e) {
-                        logMessage("Error opening browser: " + e.getMessage());
-                    }
-                }
-            }
-          
-            super.run();
-        }
-    }
+					PayaraServerBehaviour serverBehaviour = load(server, PayaraServerBehaviour.class);
 
-    @Override
-    public void run() {
-        this.runWithEvent(null);
-    }
+					try {
+						showURI(getModuleDeployURI(serverBehaviour, modules[0]));
+					} catch (Exception e) {
+						logMessage("Error opening browser: " + e.getMessage());
+					}
+				}
+			}
+
+			super.run();
+		}
+	}
+
+	@Override
+	public void run() {
+		this.runWithEvent(null);
+	}
 
 }

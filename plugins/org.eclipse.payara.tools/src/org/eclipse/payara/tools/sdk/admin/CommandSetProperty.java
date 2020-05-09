@@ -39,159 +39,156 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestSetProperty.class)
 public class CommandSetProperty extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for create-cluster command. */
-    private static final String COMMAND = "set";
+	/** Command string for create-cluster command. */
+	private static final String COMMAND = "set";
 
-    /** Error message prefix for administration command execution exception . */
-    private static final String ERROR_MESSAGE_PREFIX = "Could not set value ";
+	/** Error message prefix for administration command execution exception . */
+	private static final String ERROR_MESSAGE_PREFIX = "Could not set value ";
 
-    /**
-     * Error message middle part for administration command execution exception .
-     */
-    private static final String ERROR_MESSAGE_MIDDLE = " of property ";
+	/**
+	 * Error message middle part for administration command execution exception .
+	 */
+	private static final String ERROR_MESSAGE_MIDDLE = " of property ";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Build error message from command property name and it's value.
-     * <p/>
-     *
-     * @param command Command used to build error message.
-     * @return Error message for administration command execution exception.
-     */
-    private static String errorMessage(final CommandSetProperty command) {
-        int valueLen = command.value != null
-                ? command.value.length()
-                : 0;
-                
-        int propertyLen = command.property != null
-                ? command.property.length()
-                : 0;
-                
-        return new StringBuilder(ERROR_MESSAGE_PREFIX.length() + ERROR_MESSAGE_MIDDLE.length() + valueLen + propertyLen)
-            .append(ERROR_MESSAGE_PREFIX)
-            .append(valueLen > 0 ? command.value : "")
-            .append(ERROR_MESSAGE_MIDDLE)
-            .append(propertyLen > 0 ? command.property : "")
-            .toString();
-    }
+	/**
+	 * Build error message from command property name and it's value.
+	 * <p/>
+	 *
+	 * @param command Command used to build error message.
+	 * @return Error message for administration command execution exception.
+	 */
+	private static String errorMessage(final CommandSetProperty command) {
+		int valueLen = command.value != null ? command.value.length() : 0;
 
-    /**
-     * Put property to server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param command Command to set property value.
-     * @return GlassFish command result containing <code>String</code> with result message.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString setProperty(PayaraServer server, CommandSetProperty command) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, command);
-        
-        try {
-            return future.get();
-        } catch (ExecutionException | InterruptedException | CancellationException ee) {
-            throw new PayaraIdeException(errorMessage(command), ee);
-        }
-    }
+		int propertyLen = command.property != null ? command.property.length() : 0;
 
-    /**
-     * Put property to server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param command Command to set property value.
-     * @param timeout Administration command execution timeout [ms].
-     * @return GlassFish command result containing <code>String</code> with result message.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString setProperty(PayaraServer server, CommandSetProperty command, long timeout) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, command);
-        
-        try {
-            return future.get(timeout, MILLISECONDS);
-        } catch (ExecutionException | InterruptedException | CancellationException ee) {
-            throw new PayaraIdeException(errorMessage(command), ee);
-        } catch (TimeoutException te) {
-            throw new PayaraIdeException(errorMessage(command)
-                    + " in " + timeout + "ms", te);
-        }
-    }
+		return new StringBuilder(ERROR_MESSAGE_PREFIX.length() + ERROR_MESSAGE_MIDDLE.length() + valueLen + propertyLen)
+				.append(ERROR_MESSAGE_PREFIX).append(valueLen > 0 ? command.value : "").append(ERROR_MESSAGE_MIDDLE)
+				.append(propertyLen > 0 ? command.property : "").toString();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Put property to server.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity.
+	 * @param command Command to set property value.
+	 * @return GlassFish command result containing <code>String</code> with result
+	 *         message.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString setProperty(PayaraServer server, CommandSetProperty command) throws PayaraIdeException {
+		Future<ResultString> future = exec(server, command);
 
-    /** Name of the property to set. */
-    final String property;
+		try {
+			return future.get();
+		} catch (ExecutionException | InterruptedException | CancellationException ee) {
+			throw new PayaraIdeException(errorMessage(command), ee);
+		}
+	}
 
-    /** Value of the property to set. */
-    final String value;
+	/**
+	 * Put property to server.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity.
+	 * @param command Command to set property value.
+	 * @param timeout Administration command execution timeout [ms].
+	 * @return GlassFish command result containing <code>String</code> with result
+	 *         message.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString setProperty(PayaraServer server, CommandSetProperty command, long timeout)
+			throws PayaraIdeException {
+		Future<ResultString> future = exec(server, command);
 
-    /** Format for the query string. */
-    final String format;
+		try {
+			return future.get(timeout, MILLISECONDS);
+		} catch (ExecutionException | InterruptedException | CancellationException ee) {
+			throw new PayaraIdeException(errorMessage(command), ee);
+		} catch (TimeoutException te) {
+			throw new PayaraIdeException(errorMessage(command) + " in " + timeout + "ms", te);
+		}
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server set property command entity.
-     * <p/>
-     *
-     * @param property Name of the property to set.
-     * @param value Value of the property to set.
-     * @param format Format for the query string.
-     */
-    public CommandSetProperty(String property, String value, String format) {
-        super(COMMAND);
-        this.property = property;
-        this.value = value;
-        this.format = format;
-    }
+	/** Name of the property to set. */
+	final String property;
 
-    /**
-     * Constructs an instance of GlassFish server set property command entity.
-     * <p/>
-     *
-     * @param property Name of the property to set.
-     * @param value Value of the property to set.
-     */
-    public CommandSetProperty(String property, String value) {
-        super(COMMAND);
-        this.property = property;
-        this.value = value;
-        this.format = "DEFAULT={0}={1}";
-    }
+	/** Value of the property to set. */
+	final String value;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters //
-    ////////////////////////////////////////////////////////////////////////////
+	/** Format for the query string. */
+	final String format;
 
-    /**
-     * Get name of the property to set.
-     * <p/>
-     *
-     * @return Name of the property to set.
-     */
-    public String getProperty() {
-        return property;
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get value of the property to set.
-     * <p/>
-     *
-     * @return Value of the property to set.
-     */
-    public String getValue() {
-        return value;
-    }
+	/**
+	 * Constructs an instance of GlassFish server set property command entity.
+	 * <p/>
+	 *
+	 * @param property Name of the property to set.
+	 * @param value    Value of the property to set.
+	 * @param format   Format for the query string.
+	 */
+	public CommandSetProperty(String property, String value, String format) {
+		super(COMMAND);
+		this.property = property;
+		this.value = value;
+		this.format = format;
+	}
+
+	/**
+	 * Constructs an instance of GlassFish server set property command entity.
+	 * <p/>
+	 *
+	 * @param property Name of the property to set.
+	 * @param value    Value of the property to set.
+	 */
+	public CommandSetProperty(String property, String value) {
+		super(COMMAND);
+		this.property = property;
+		this.value = value;
+		this.format = "DEFAULT={0}={1}";
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+	// Getters //
+	////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Get name of the property to set.
+	 * <p/>
+	 *
+	 * @return Name of the property to set.
+	 */
+	public String getProperty() {
+		return property;
+	}
+
+	/**
+	 * Get value of the property to set.
+	 * <p/>
+	 *
+	 * @return Value of the property to set.
+	 */
+	public String getValue() {
+		return value;
+	}
 
 }

@@ -24,26 +24,26 @@ package org.eclipse.payara.tools.serverview;
  */
 public class WSDesc {
 
-    private final String testUrl;
-    private final String wsdlUrl;
-    private final String name;
+	private final String testUrl;
+	private final String wsdlUrl;
+	private final String name;
 
-    public WSDesc(final String name, final String wsdlUrl, final String testUrl) {
-        this.name = name;
-        this.testUrl = testUrl;
-        this.wsdlUrl = wsdlUrl;
-    }
+	public WSDesc(final String name, final String wsdlUrl, final String testUrl) {
+		this.name = name;
+		this.testUrl = testUrl;
+		this.wsdlUrl = wsdlUrl;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getTestURL() {
-        return testUrl;
-    }
+	public String getTestURL() {
+		return testUrl;
+	}
 
-    public String getWsdlUrl() {
-        return wsdlUrl;
-    }
+	public String getWsdlUrl() {
+		return wsdlUrl;
+	}
 
 }

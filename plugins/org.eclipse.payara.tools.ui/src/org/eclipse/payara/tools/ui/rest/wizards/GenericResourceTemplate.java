@@ -55,8 +55,8 @@ public class GenericResourceTemplate {
     protected static final String TEXT_3 = NL;
     protected static final String TEXT_4 = NL + "import ";
     protected static final String TEXT_5 = ";";
-    protected static final String TEXT_6 = NL;
-    protected static final String TEXT_7 = NL + "@Path(\"";
+	protected static final String TEXT_6 = NL;
+	protected static final String TEXT_7 = NL + "@Path(\"";
     protected static final String TEXT_8 = "\")";
     protected static final String TEXT_9 = NL + "public ";
     protected static final String TEXT_10 = "abstract ";

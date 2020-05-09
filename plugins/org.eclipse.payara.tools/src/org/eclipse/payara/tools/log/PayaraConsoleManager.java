@@ -30,10 +30,11 @@ import org.eclipse.ui.console.IConsoleManager;
  * This factory class enforces certain rules regarding Payara consoles.
  * 
  * <ol>
- *     <li>There is only one standard Payara console.</li>
- *     <li>A user can trigger showing the server log file console that shows the whole server.log file. </li>
- *     <li>A startup process console exists during the startup process of Payara. Unless the startup
- *         does not fail it will not be shown to the user.</li>
+ * <li>There is only one standard Payara console.</li>
+ * <li>A user can trigger showing the server log file console that shows the
+ * whole server.log file.</li>
+ * <li>A startup process console exists during the startup process of Payara.
+ * Unless the startup does not fail it will not be shown to the user.</li>
  * </ol>
  *
  * @author Peter Benedikovic
@@ -41,96 +42,98 @@ import org.eclipse.ui.console.IConsoleManager;
  */
 public class PayaraConsoleManager {
 
-    private static IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
+	private static IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
 
-    public static IPayaraConsole showConsole(IPayaraConsole console) {
-        manager.addConsoles(new IConsole[] { console });
-        manager.showConsoleView(console);
-        return console;
-    }
+	public static IPayaraConsole showConsole(IPayaraConsole console) {
+		manager.addConsoles(new IConsole[] { console });
+		manager.showConsoleView(console);
+		return console;
+	}
 
-    /**
-     * Returns standard console for specified server. For each server there is only one console. It
-     * reads information from server.log file but only newly added lines.
-     *
-     * @param server
-     * @return
-     */
-    public static IPayaraConsole getStandardConsole(PayaraServer server) {
-        String consoleID = createStandardConsoleName(server);
-        IPayaraConsole gfConsole = findConsole(consoleID);
-        if (gfConsole == null) {
-            gfConsole = new PayaraConsole(consoleID, AbstractLogFilter.createFilter(server));
-        }
+	/**
+	 * Returns standard console for specified server. For each server there is only
+	 * one console. It reads information from server.log file but only newly added
+	 * lines.
+	 *
+	 * @param server
+	 * @return
+	 */
+	public static IPayaraConsole getStandardConsole(PayaraServer server) {
+		String consoleID = createStandardConsoleName(server);
+		IPayaraConsole gfConsole = findConsole(consoleID);
+		if (gfConsole == null) {
+			gfConsole = new PayaraConsole(consoleID, AbstractLogFilter.createFilter(server));
+		}
 
-        return gfConsole;
-    }
+		return gfConsole;
+	}
 
-    /**
-     * Returns console for showing contents of the whole server.log file. For the same server.log file
-     * there is only one console at the time.
-     *
-     * @param server
-     * @return
-     */
-    public static IPayaraConsole getServerLogFileConsole(PayaraServer server) {
-        String consoleID = createServerLogConsoleName(server);
-        IPayaraConsole gfConsole = findConsole(consoleID);
-        if (gfConsole == null) {
-            gfConsole = new PayaraConsole(consoleID, createFilter(server));
-        }
+	/**
+	 * Returns console for showing contents of the whole server.log file. For the
+	 * same server.log file there is only one console at the time.
+	 *
+	 * @param server
+	 * @return
+	 */
+	public static IPayaraConsole getServerLogFileConsole(PayaraServer server) {
+		String consoleID = createServerLogConsoleName(server);
+		IPayaraConsole gfConsole = findConsole(consoleID);
+		if (gfConsole == null) {
+			gfConsole = new PayaraConsole(consoleID, createFilter(server));
+		}
 
-        return gfConsole;
-    }
+		return gfConsole;
+	}
 
-    /**
-     * Creates new startup process console. There should be only one for a particular Payara server.
-     *
-     * @param server
-     * @return
-     */
-    public static IPayaraConsole getStartupProcessConsole(PayaraServer server, Process launchProcess) {
-        String consoleID = createStartupProcessConsoleName(server);
-        IPayaraConsole payaraConsole = findConsole(consoleID);
-        if (payaraConsole == null) {
-            payaraConsole = new PayaraStartupConsole(consoleID, new NoOpFilter());
-        }
+	/**
+	 * Creates new startup process console. There should be only one for a
+	 * particular Payara server.
+	 *
+	 * @param server
+	 * @return
+	 */
+	public static IPayaraConsole getStartupProcessConsole(PayaraServer server, Process launchProcess) {
+		String consoleID = createStartupProcessConsoleName(server);
+		IPayaraConsole payaraConsole = findConsole(consoleID);
+		if (payaraConsole == null) {
+			payaraConsole = new PayaraStartupConsole(consoleID, new NoOpFilter());
+		}
 
-        return payaraConsole;
-    }
+		return payaraConsole;
+	}
 
-    public static void removeServerLogFileConsole(PayaraServer server) {
-        String consoleID = createServerLogConsoleName(server);
-        IPayaraConsole payaraConsole = findConsole(consoleID);
-        if (payaraConsole != null) {
-            manager.removeConsoles(new IConsole[] { payaraConsole });
-        }
-    }
+	public static void removeServerLogFileConsole(PayaraServer server) {
+		String consoleID = createServerLogConsoleName(server);
+		IPayaraConsole payaraConsole = findConsole(consoleID);
+		if (payaraConsole != null) {
+			manager.removeConsoles(new IConsole[] { payaraConsole });
+		}
+	}
 
-    private static String createServerLogConsoleName(PayaraServer server) {
-        return server.isRemote() ? server.getServer().getName()
-                : server.getDomainsFolder() + separator + server.getDomainName() + separator + "logs"
-                        + separator + "server.log";
-    }
+	private static String createServerLogConsoleName(PayaraServer server) {
+		return server.isRemote() ? server.getServer().getName()
+				: server.getDomainsFolder() + separator + server.getDomainName() + separator + "logs" + separator
+						+ "server.log";
+	}
 
-    private static String createStartupProcessConsoleName(PayaraServer server) {
-        return server.getServer().getName() + " startup process";
-    }
+	private static String createStartupProcessConsoleName(PayaraServer server) {
+		return server.getServer().getName() + " startup process";
+	}
 
-    private static String createStandardConsoleName(PayaraServer server) {
-        return server.getServer().getName();
-    }
+	private static String createStandardConsoleName(PayaraServer server) {
+		return server.getServer().getName();
+	}
 
-    private static IPayaraConsole findConsole(String name) {
-        IConsole[] existing = manager.getConsoles();
+	private static IPayaraConsole findConsole(String name) {
+		IConsole[] existing = manager.getConsoles();
 
-        for (IConsole element : existing) {
-            if (name.equals(element.getName())) {
-                return (IPayaraConsole) element;
-            }
-        }
+		for (IConsole element : existing) {
+			if (name.equals(element.getName())) {
+				return (IPayaraConsole) element;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 }

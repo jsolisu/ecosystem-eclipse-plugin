@@ -39,7 +39,7 @@ public enum GlassFishStatusCheck {
     PORT,
 
     /** Version command check. */
-    VERSION,
+	VERSION,
 
     /** Locations command check. */
     LOCATIONS;

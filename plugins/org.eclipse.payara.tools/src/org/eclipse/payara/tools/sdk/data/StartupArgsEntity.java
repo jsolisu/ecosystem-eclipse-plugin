@@ -31,135 +31,135 @@ import java.util.Map;
  */
 public class StartupArgsEntity implements StartupArgs {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command line arguments passed to bootstrap jar. */
-    private List<String> glassfishArgs;
+	/** Command line arguments passed to bootstrap jar. */
+	private List<String> glassfishArgs;
 
-    /** Command line arguments passed to JVM. */
-    private List<String> javaArgs;
+	/** Command line arguments passed to JVM. */
+	private List<String> javaArgs;
 
-    /** Environment variables set before JVM execution. */
-    private Map<String, String> environmentVars;
+	/** Environment variables set before JVM execution. */
+	private Map<String, String> environmentVars;
 
-    /** Installation home of Java SDK used to run GlassFish. */
-    private String javaHome;
+	/** Installation home of Java SDK used to run GlassFish. */
+	private String javaHome;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs empty class instance. No default values are set.
-     */
-    public StartupArgsEntity() {
-    }
+	/**
+	 * Constructs empty class instance. No default values are set.
+	 */
+	public StartupArgsEntity() {
+	}
 
-    /**
-     * Constructs class instance with all values supplied.
-     * <p/>
-     *
-     * @param glassfishArgs Command line arguments passed to bootstrap jar.
-     * @param javaArgs Command line arguments passed to JVM.
-     * @param environmentVars Environment variables set before JVM execution.
-     * @param javaHome Installation home of Java SDK used to run GlassFish.
-     */
-    public StartupArgsEntity(List<String> glassfishArgs, List<String> javaArgs,
-            Map<String, String> environmentVars, String javaHome) {
-        this.glassfishArgs = glassfishArgs;
-        this.javaArgs = javaArgs;
-        this.environmentVars = environmentVars;
-        this.javaHome = javaHome;
-    }
+	/**
+	 * Constructs class instance with all values supplied.
+	 * <p/>
+	 *
+	 * @param glassfishArgs   Command line arguments passed to bootstrap jar.
+	 * @param javaArgs        Command line arguments passed to JVM.
+	 * @param environmentVars Environment variables set before JVM execution.
+	 * @param javaHome        Installation home of Java SDK used to run GlassFish.
+	 */
+	public StartupArgsEntity(List<String> glassfishArgs, List<String> javaArgs, Map<String, String> environmentVars,
+			String javaHome) {
+		this.glassfishArgs = glassfishArgs;
+		this.javaArgs = javaArgs;
+		this.environmentVars = environmentVars;
+		this.javaHome = javaHome;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and Setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get command line arguments passed to bootstrap jar.
-     * <p/>
-     *
-     * @return Command line arguments passed to bootstrap jar.
-     */
-    @Override
-    public List<String> getGlassfishArgs() {
-        return glassfishArgs;
-    }
+	/**
+	 * Get command line arguments passed to bootstrap jar.
+	 * <p/>
+	 *
+	 * @return Command line arguments passed to bootstrap jar.
+	 */
+	@Override
+	public List<String> getGlassfishArgs() {
+		return glassfishArgs;
+	}
 
-    /**
-     * Set command line arguments passed to bootstrap jar.
-     * <p/>
-     *
-     * @param glassfishArgs Command line arguments passed to bootstrap jar.
-     */
-    public void setGlassfishArgs(List<String> glassfishArgs) {
-        this.glassfishArgs = glassfishArgs;
-    }
+	/**
+	 * Set command line arguments passed to bootstrap jar.
+	 * <p/>
+	 *
+	 * @param glassfishArgs Command line arguments passed to bootstrap jar.
+	 */
+	public void setGlassfishArgs(List<String> glassfishArgs) {
+		this.glassfishArgs = glassfishArgs;
+	}
 
-    /**
-     * Get command line arguments passed to JVM.
-     * <p/>
-     *
-     * @return Command line arguments passed to JVM.
-     */
-    @Override
-    public List<String> getJavaArgs() {
-        return javaArgs;
-    }
+	/**
+	 * Get command line arguments passed to JVM.
+	 * <p/>
+	 *
+	 * @return Command line arguments passed to JVM.
+	 */
+	@Override
+	public List<String> getJavaArgs() {
+		return javaArgs;
+	}
 
-    /**
-     * Set command line arguments passed to JVM.
-     * <p/>
-     *
-     * @param javaArgs Command line arguments passed to JVM.
-     */
-    public void getJavaArgs(List<String> javaArgs) {
-        this.javaArgs = javaArgs;
-    }
+	/**
+	 * Set command line arguments passed to JVM.
+	 * <p/>
+	 *
+	 * @param javaArgs Command line arguments passed to JVM.
+	 */
+	public void getJavaArgs(List<String> javaArgs) {
+		this.javaArgs = javaArgs;
+	}
 
-    /**
-     * Get environment variables set before JVM execution.
-     * <p/>
-     *
-     * @return Environment variables set before JVM execution.
-     */
-    @Override
-    public Map<String, String> getEnvironmentVars() {
-        return environmentVars;
-    }
+	/**
+	 * Get environment variables set before JVM execution.
+	 * <p/>
+	 *
+	 * @return Environment variables set before JVM execution.
+	 */
+	@Override
+	public Map<String, String> getEnvironmentVars() {
+		return environmentVars;
+	}
 
-    /**
-     * Set environment variables set before JVM execution.
-     * <p/>
-     *
-     * @param environmentVars Environment variables set before JVM execution.
-     */
-    public void setEnvironmentVars(Map<String, String> environmentVars) {
-        this.environmentVars = environmentVars;
-    }
+	/**
+	 * Set environment variables set before JVM execution.
+	 * <p/>
+	 *
+	 * @param environmentVars Environment variables set before JVM execution.
+	 */
+	public void setEnvironmentVars(Map<String, String> environmentVars) {
+		this.environmentVars = environmentVars;
+	}
 
-    /**
-     * Get installation home of Java SDK used to run GlassFish.
-     * <p/>
-     *
-     * @return Installation home of Java SDK used to run GlassFish.
-     */
-    @Override
-    public String getJavaHome() {
-        return javaHome;
-    }
+	/**
+	 * Get installation home of Java SDK used to run GlassFish.
+	 * <p/>
+	 *
+	 * @return Installation home of Java SDK used to run GlassFish.
+	 */
+	@Override
+	public String getJavaHome() {
+		return javaHome;
+	}
 
-    /**
-     * Set installation home of Java SDK used to run GlassFish.
-     * <p/>
-     *
-     * @param javaHome Installation home of Java SDK used to run GlassFish.
-     */
-    public void getJavaHome(String javaHome) {
-        this.javaHome = javaHome;
-    }
+	/**
+	 * Set installation home of Java SDK used to run GlassFish.
+	 * <p/>
+	 *
+	 * @param javaHome Installation home of Java SDK used to run GlassFish.
+	 */
+	public void getJavaHome(String javaHome) {
+		this.javaHome = javaHome;
+	}
 
 }

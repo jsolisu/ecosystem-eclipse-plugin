@@ -30,26 +30,26 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestEnable.class)
 public class CommandEnable extends CommandTargetName {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for enable command. */
-    private static final String COMMAND = "enable";
+	/** Command string for enable command. */
+	private static final String COMMAND = "enable";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server enable command entity.
-     * <p/>
-     *
-     * @param name Name of module to enable.
-     * @param target Target GlassFish instance.
-     */
-    public CommandEnable(String name, String target) {
-        super(COMMAND, name, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server enable command entity.
+	 * <p/>
+	 *
+	 * @param name   Name of module to enable.
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandEnable(String name, String target) {
+		super(COMMAND, name, target);
+	}
 
 }

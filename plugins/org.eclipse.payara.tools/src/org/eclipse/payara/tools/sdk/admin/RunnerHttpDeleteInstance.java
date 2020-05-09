@@ -24,11 +24,12 @@ import org.eclipse.payara.tools.sdk.logging.Logger;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
- * GlassFish instance and cluster admin command with <code>DEFAULT=&lt;target&gt;</code> query
- * execution using HTTP interface.
+ * GlassFish instance and cluster admin command with
+ * <code>DEFAULT=&lt;target&gt;</code> query execution using HTTP interface.
  * <p/>
- * Contains common code for commands that are called with <code>DEFAULT=&lt;target&gt;</code> query
- * string. Individual child classes are not needed at this stage. Class implements GlassFish server
+ * Contains common code for commands that are called with
+ * <code>DEFAULT=&lt;target&gt;</code> query string. Individual child classes
+ * are not needed at this stage. Class implements GlassFish server
  * administration functionality trough HTTP interface.
  * <p/>
  *
@@ -36,44 +37,44 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerHttpDeleteInstance extends RunnerHttpTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerHttpDeleteInstance(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerHttpDeleteInstance(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Implemented Abstract Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Implemented Abstract Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Extracts result value from internal <code>Manifest</code> object. Value of <i>message</i>
-     * attribute in <code>Manifest</code> object is stored as <i>value</i> into
-     * <code>ResultString</code> result object.
-     * <p/>
-     *
-     * @return true if result was extracted correctly. <code>null</code> <i>message</i>value is
-     * considered as failure.
-     */
-    @Override
-    protected boolean processResponse() {
-        try {
-            result.value = manifest.getMainAttributes().getValue("message");
-            result.value = result.value.replace("%%%EOL%%%", "\n");
-        } catch (IllegalArgumentException iae) {
-            Logger.log(Level.WARNING, "Caught IllegalArgumentException", iae);
-        }
-        return result.value != null;
-    }
+	/**
+	 * Extracts result value from internal <code>Manifest</code> object. Value of
+	 * <i>message</i> attribute in <code>Manifest</code> object is stored as
+	 * <i>value</i> into <code>ResultString</code> result object.
+	 * <p/>
+	 *
+	 * @return true if result was extracted correctly. <code>null</code>
+	 *         <i>message</i>value is considered as failure.
+	 */
+	@Override
+	protected boolean processResponse() {
+		try {
+			result.value = manifest.getMainAttributes().getValue("message");
+			result.value = result.value.replace("%%%EOL%%%", "\n");
+		} catch (IllegalArgumentException iae) {
+			Logger.log(Level.WARNING, "Caught IllegalArgumentException", iae);
+		}
+		return result.value != null;
+	}
 
 }

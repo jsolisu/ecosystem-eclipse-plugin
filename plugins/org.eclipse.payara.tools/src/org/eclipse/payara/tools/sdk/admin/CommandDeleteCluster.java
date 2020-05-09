@@ -30,25 +30,25 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestDeleteCluster.class)
 public class CommandDeleteCluster extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for delete-cluster command. */
-    private static final String COMMAND = "delete-cluster";
+	/** Command string for delete-cluster command. */
+	private static final String COMMAND = "delete-cluster";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server delete-cluster command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance.
-     */
-    public CommandDeleteCluster(String target) {
-        super(COMMAND, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server delete-cluster command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandDeleteCluster(String target) {
+		super(COMMAND, target);
+	}
 
 }

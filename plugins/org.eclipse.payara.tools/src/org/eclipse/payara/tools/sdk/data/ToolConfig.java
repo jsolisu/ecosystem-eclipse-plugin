@@ -26,16 +26,16 @@ package org.eclipse.payara.tools.sdk.data;
  */
 public interface ToolConfig {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get tool JAR path (relative under GlassFish home).
-     * <p/>
-     *
-     * @return ToolConfig JAR path (relative under GlassFish home)
-     */
-    public String getJar();
+	/**
+	 * Get tool JAR path (relative under GlassFish home).
+	 * <p/>
+	 *
+	 * @return ToolConfig JAR path (relative under GlassFish home)
+	 */
+	public String getJar();
 
 }

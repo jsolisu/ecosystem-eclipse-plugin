@@ -33,50 +33,50 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  */
 public class WebServiceNode extends TreeNode {
 
-    private PayaraServer server;
-    private WSDesc app;
+	private PayaraServer server;
+	private WSDesc app;
 
-    public WebServiceNode(DeployedWebServicesNode root, PayaraServer server, WSDesc app) {
-        super(app.getName(), null, root);
-        this.server = server;
-        this.app = app;
-    }
+	public WebServiceNode(DeployedWebServicesNode root, PayaraServer server, WSDesc app) {
+		super(app.getName(), null, root);
+		this.server = server;
+		this.app = app;
+	}
 
-    public PayaraServer getServer() {
-        return this.server;
-    }
+	public PayaraServer getServer() {
+		return this.server;
+	}
 
-    public WSDesc getWSInfo() {
-        return this.app;
-    }
+	public WSDesc getWSInfo() {
+		return this.app;
+	}
 
-    @Override
-    public IPropertyDescriptor[] getPropertyDescriptors() {
-        ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
-        
-        properties.add(new TextPropertyDescriptor("testurl", "Test URL"));
-        properties.add(new TextPropertyDescriptor("name", "name"));
-        properties.add(new TextPropertyDescriptor("wsdlurl", "WSDL URL"));
+	@Override
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
 
-        return properties.toArray(new IPropertyDescriptor[0]);
-    }
+		properties.add(new TextPropertyDescriptor("testurl", "Test URL"));
+		properties.add(new TextPropertyDescriptor("name", "name"));
+		properties.add(new TextPropertyDescriptor("wsdlurl", "WSDL URL"));
 
-    @Override
+		return properties.toArray(new IPropertyDescriptor[0]);
+	}
 
-    public Object getPropertyValue(Object id) {
-        if (id.equals("testurl")) {
-            return app.getTestURL();
-        }
+	@Override
 
-        if (id.equals("name")) {
-            return app.getName();
-        }
+	public Object getPropertyValue(Object id) {
+		if (id.equals("testurl")) {
+			return app.getTestURL();
+		}
 
-        if (id.equals("wsdlurl")) {
-            return app.getWsdlUrl();
-        }
+		if (id.equals("name")) {
+			return app.getName();
+		}
 
-        return null;
-    }
+		if (id.equals("wsdlurl")) {
+			return app.getWsdlUrl();
+		}
+
+		return null;
+	}
 
 }

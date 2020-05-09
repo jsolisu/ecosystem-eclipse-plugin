@@ -30,65 +30,66 @@ import java.util.Set;
  */
 public class JavaSESet extends JavaSet {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Platforms retrieved from XML elements. */
-    private final List<String> platforms;
+	/** Platforms retrieved from XML elements. */
+	private final List<String> platforms;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of container of GlassFish JavaSE features configuration.
-     * <p/>
-     *
-     * @param platforms Platforms retrieved from XML elements.
-     * @param version Highest JavaSE specification version implemented.
-     */
-    public JavaSESet(final List<String> platforms, final String version) {
-        super(version);
-        this.platforms = platforms;
-    }
+	/**
+	 * Creates an instance of container of GlassFish JavaSE features configuration.
+	 * <p/>
+	 *
+	 * @param platforms Platforms retrieved from XML elements.
+	 * @param version   Highest JavaSE specification version implemented.
+	 */
+	public JavaSESet(final List<String> platforms, final String version) {
+		super(version);
+		this.platforms = platforms;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get platforms retrieved from XML elements.
-     * <p/>
-     *
-     * @return Platforms retrieved from XML elements.
-     */
-    public List<String> getPlatforms() {
-        return platforms;
-    }
+	/**
+	 * Get platforms retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Platforms retrieved from XML elements.
+	 */
+	public List<String> getPlatforms() {
+		return platforms;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Build {@link Set} of {@link JavaSEPlatform} for known platforms retrieved from XML elements.
-     * <p/>
-     *
-     * @return {@link Set} of {@link JavaSEPlatform} for known platforms.
-     */
-    public Set<JavaSEPlatform> platforms() {
-        int size = platforms != null ? platforms.size() : 0;
-        EnumSet<JavaSEPlatform> platformsSet = EnumSet.noneOf(JavaSEPlatform.class);
-        if (size > 0) {
-            for (String name : platforms) {
-                JavaSEPlatform type = JavaSEPlatform.toValue(name);
-                if (type != null) {
-                    platformsSet.add(type);
-                }
-            }
-        }
-        return platformsSet;
-    }
+	/**
+	 * Build {@link Set} of {@link JavaSEPlatform} for known platforms retrieved
+	 * from XML elements.
+	 * <p/>
+	 *
+	 * @return {@link Set} of {@link JavaSEPlatform} for known platforms.
+	 */
+	public Set<JavaSEPlatform> platforms() {
+		int size = platforms != null ? platforms.size() : 0;
+		EnumSet<JavaSEPlatform> platformsSet = EnumSet.noneOf(JavaSEPlatform.class);
+		if (size > 0) {
+			for (String name : platforms) {
+				JavaSEPlatform type = JavaSEPlatform.toValue(name);
+				if (type != null) {
+					platformsSet.add(type);
+				}
+			}
+		}
+		return platformsSet;
+	}
 
 }

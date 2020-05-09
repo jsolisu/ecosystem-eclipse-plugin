@@ -23,24 +23,20 @@ import org.eclipse.ui.console.IConsole;
 
 public interface IPayaraConsole extends IConsole {
 
-    void startLogging();
+	void startLogging();
 
-    void startLogging(FetchLog... logFetchers);
-    
-    void setLogFilter(ILogFilter filter);
-    
-    boolean isLogging();
-    
-    boolean hasLogged();
-    
-    boolean hasLoggedPayara();
+	void startLogging(FetchLog... logFetchers);
 
-    void stopLogging();
+	void setLogFilter(ILogFilter filter);
 
-    void stopLogging(int afterSeconds);
+	boolean isLogging();
 
-    
+	boolean hasLogged();
 
-    
+	boolean hasLoggedPayara();
+
+	void stopLogging();
+
+	void stopLogging(int afterSeconds);
 
 }

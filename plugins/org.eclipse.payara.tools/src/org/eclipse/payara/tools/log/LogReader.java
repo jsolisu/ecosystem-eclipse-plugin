@@ -29,56 +29,57 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class LogReader implements Runnable {
 
-    private FetchLog logFetcher;
-    private MessageConsoleStream output;
-    private CountDownLatch latch;
-    private ILogFilter filter;
-    
-    private boolean hasLogged;
-    private boolean hasProcessedPayara;
+	private FetchLog logFetcher;
+	private MessageConsoleStream output;
+	private CountDownLatch latch;
+	private ILogFilter filter;
 
-    LogReader(FetchLog logFetcher, MessageConsoleStream outputStream, CountDownLatch latch, ILogFilter filter) {
-        this.logFetcher = logFetcher;
-        this.output = outputStream;
-        this.latch = latch;
-        this.filter = filter;
-    }
+	private boolean hasLogged;
+	private boolean hasProcessedPayara;
 
-    @Override
-    public void run() {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(logFetcher.getInputStream(), StandardCharsets.UTF_8));
+	LogReader(FetchLog logFetcher, MessageConsoleStream outputStream, CountDownLatch latch, ILogFilter filter) {
+		this.logFetcher = logFetcher;
+		this.output = outputStream;
+		this.latch = latch;
+		this.filter = filter;
+	}
 
-            for (String line = null; (line = reader.readLine()) != null;) {
-                line = filter.process(line);
-                if (line != null) {
-                    hasLogged = true;
-                    if (!hasProcessedPayara) {
-                        hasProcessedPayara = filter.hasProcessedPayara();
-                    }
-                    output.println(line);
-                }
-            }
-            output.flush();
-        } catch (IOException e) {
-            // this happens when input stream is closed, no need to print
-            // e.printStackTrace();
-        } finally {
-            logFetcher.close();
-            latch.countDown();
-        }
-    }
-    
-    public synchronized boolean hasLogged() {
-        return hasLogged;
-    }
-    
-    public synchronized boolean hasProcessedPayara() {
-        return hasProcessedPayara;
-    }
+	@Override
+	public void run() {
+		try {
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(logFetcher.getInputStream(), StandardCharsets.UTF_8));
 
-    public synchronized void stop() {
-        logFetcher.close();
-    }
+			for (String line = null; (line = reader.readLine()) != null;) {
+				line = filter.process(line);
+				if (line != null) {
+					hasLogged = true;
+					if (!hasProcessedPayara) {
+						hasProcessedPayara = filter.hasProcessedPayara();
+					}
+					output.println(line);
+				}
+			}
+			output.flush();
+		} catch (IOException e) {
+			// this happens when input stream is closed, no need to print
+			// e.printStackTrace();
+		} finally {
+			logFetcher.close();
+			latch.countDown();
+		}
+	}
+
+	public synchronized boolean hasLogged() {
+		return hasLogged;
+	}
+
+	public synchronized boolean hasProcessedPayara() {
+		return hasProcessedPayara;
+	}
+
+	public synchronized void stop() {
+		logFetcher.close();
+	}
 
 }

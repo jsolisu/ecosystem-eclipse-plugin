@@ -21,27 +21,28 @@ package org.eclipse.payara.tools.sdk.admin;
 import org.eclipse.payara.tools.server.PayaraServer;
 
 /**
- * Command runner for commands that retrieve list of applications deployed on server.
+ * Command runner for commands that retrieve list of applications deployed on
+ * server.
  * <p>
  *
  * @author Tomas Kraus, Peter Benedikovic
  */
 public class RunnerRestListApplications extends RunnerRestList {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestListApplications(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestListApplications(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
 }

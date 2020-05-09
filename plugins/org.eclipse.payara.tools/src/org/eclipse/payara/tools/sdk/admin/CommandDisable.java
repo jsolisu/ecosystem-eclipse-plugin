@@ -30,26 +30,26 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestDisable.class)
 public class CommandDisable extends CommandTargetName {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for disable command. */
-    private static final String COMMAND = "disable";
+	/** Command string for disable command. */
+	private static final String COMMAND = "disable";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server disable command entity.
-     * <p/>
-     *
-     * @param name Name of module to disable.
-     * @param target Target GlassFish instance.
-     */
-    public CommandDisable(String name, String target) {
-        super(COMMAND, name, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server disable command entity.
+	 * <p/>
+	 *
+	 * @param name   Name of module to disable.
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandDisable(String name, String target) {
+		super(COMMAND, name, target);
+	}
 
 }

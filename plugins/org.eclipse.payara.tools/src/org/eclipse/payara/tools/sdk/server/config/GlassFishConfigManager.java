@@ -30,14 +30,14 @@ import org.eclipse.payara.tools.sdk.data.GlassFishConfig;
  */
 public class GlassFishConfigManager {
 
-    /**
-     * Get GlassFish configuration access object.
-     * <p/>
-     *
-     * @param configFile GlassFish configuration XML file.
-     * @return GlassFish configuration API.
-     */
-    public static GlassFishConfig getConfig(URL configFile) {
-        return new GlassFishConfigXMLImpl(configFile);
-    }
+	/**
+	 * Get GlassFish configuration access object.
+	 * <p/>
+	 *
+	 * @param configFile GlassFish configuration XML file.
+	 * @return GlassFish configuration API.
+	 */
+	public static GlassFishConfig getConfig(URL configFile) {
+		return new GlassFishConfigXMLImpl(configFile);
+	}
 }

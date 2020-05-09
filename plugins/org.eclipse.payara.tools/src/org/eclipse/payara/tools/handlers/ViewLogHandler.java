@@ -32,31 +32,32 @@ import org.eclipse.wst.server.core.IServer;
 
 public class ViewLogHandler extends AbstractPayaraSelectionHandler {
 
-    @Override
-    public void processSelection(IServer server) {
-        try {
-            PayaraServer serverAdapter = load(server, PayaraServer.class);
+	@Override
+	public void processSelection(IServer server) {
+		try {
+			PayaraServer serverAdapter = load(server, PayaraServer.class);
 
-            if (serverAdapter.isRemote()) {
-                if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true).equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
-                    showMessageDialog();
-                    return;
-                }
+			if (serverAdapter.isRemote()) {
+				if (!serverAdapter.getServerBehaviourAdapter().getServerStatus(true)
+						.equals(ServerStatus.RUNNING_DOMAIN_MATCHING)) {
+					showMessageDialog();
+					return;
+				}
 
-                removeServerLogFileConsole(serverAdapter);
-            }
+				removeServerLogFileConsole(serverAdapter);
+			}
 
-            IPayaraConsole console = getServerLogFileConsole(serverAdapter);
-            showConsole(getServerLogFileConsole(serverAdapter));
+			IPayaraConsole console = getServerLogFileConsole(serverAdapter);
+			showConsole(getServerLogFileConsole(serverAdapter));
 
-            if (!console.isLogging()) {
-                console.startLogging(FetchLogPiped.create(serverAdapter, false));
-            }
+			if (!console.isLogging()) {
+				console.startLogging(FetchLogPiped.create(serverAdapter, false));
+			}
 
-        } catch (Exception e) {
-            logMessage("Error opening log: " + e.getMessage());
+		} catch (Exception e) {
+			logMessage("Error opening log: " + e.getMessage());
 
-        }
-    }
+		}
+	}
 
 }

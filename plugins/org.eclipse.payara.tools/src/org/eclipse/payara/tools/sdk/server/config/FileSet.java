@@ -29,100 +29,98 @@ import java.util.Map;
  */
 public class FileSet {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Paths retrieved from XML elements. */
-    private final List<String> paths;
+	/** Paths retrieved from XML elements. */
+	private final List<String> paths;
 
-    /** Links retrieved from XML elements. */
-    private final List<String> links;
+	/** Links retrieved from XML elements. */
+	private final List<String> links;
 
-    /** File sets retrieved from XML elements. */
-    private final Map<String, List<String>> filesets;
+	/** File sets retrieved from XML elements. */
+	private final Map<String, List<String>> filesets;
 
-    /** Links retrieved from XML elements. */
-    private final List<String> lookups;
+	/** Links retrieved from XML elements. */
+	private final List<String> lookups;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of Library content for GlassFish libraries configuration.
-     * <p/>
-     *
-     * @param paths Paths retrieved from XML elements.
-     * @param links Links retrieved from XML elements.
-     * @param filesets File sets retrieved from XML elements.
-     * @param lookups Lookups retrieved from XML elements.
-     */
-    public FileSet(final List<String> paths, final List<String> links,
-            final Map<String, List<String>> filesets,
-            final List<String> lookups) {
-        this.paths = paths;
-        this.links = links;
-        this.filesets = filesets;
-        this.lookups = lookups;
-    }
+	/**
+	 * Creates an instance of Library content for GlassFish libraries configuration.
+	 * <p/>
+	 *
+	 * @param paths    Paths retrieved from XML elements.
+	 * @param links    Links retrieved from XML elements.
+	 * @param filesets File sets retrieved from XML elements.
+	 * @param lookups  Lookups retrieved from XML elements.
+	 */
+	public FileSet(final List<String> paths, final List<String> links, final Map<String, List<String>> filesets,
+			final List<String> lookups) {
+		this.paths = paths;
+		this.links = links;
+		this.filesets = filesets;
+		this.lookups = lookups;
+	}
 
-    /**
-     * Creates an instance of Library content for GlassFish libraries configuration.
-     * <p/>
-     * Content of links and lookups is set to <code>null</code>.
-     * <p/>
-     *
-     * @param paths Paths retrieved from XML elements.
-     * @param filesets File sets retrieved from XML elements.
-     */
-    public FileSet(final List<String> paths,
-            final Map<String, List<String>> filesets) {
-        this(paths, null, filesets, null);
-    }
+	/**
+	 * Creates an instance of Library content for GlassFish libraries configuration.
+	 * <p/>
+	 * Content of links and lookups is set to <code>null</code>.
+	 * <p/>
+	 *
+	 * @param paths    Paths retrieved from XML elements.
+	 * @param filesets File sets retrieved from XML elements.
+	 */
+	public FileSet(final List<String> paths, final Map<String, List<String>> filesets) {
+		this(paths, null, filesets, null);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get paths retrieved from XML elements.
-     * <p/>
-     *
-     * @return Paths sets retrieved from XML elements.
-     */
-    public List<String> getPaths() {
-        return paths;
-    }
+	/**
+	 * Get paths retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Paths sets retrieved from XML elements.
+	 */
+	public List<String> getPaths() {
+		return paths;
+	}
 
-    /**
-     * Get links retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    public List<String> getLinks() {
-        return links;
-    }
+	/**
+	 * Get links retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	public List<String> getLinks() {
+		return links;
+	}
 
-    /**
-     * Get file sets retrieved from XML elements.
-     * <p/>
-     *
-     * @return File sets retrieved from XML elements.
-     */
-    public Map<String, List<String>> getFilesets() {
-        return filesets;
-    }
+	/**
+	 * Get file sets retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return File sets retrieved from XML elements.
+	 */
+	public Map<String, List<String>> getFilesets() {
+		return filesets;
+	}
 
-    /**
-     * Get lookups retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    public List<String> getLookups() {
-        return lookups;
-    }
+	/**
+	 * Get lookups retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	public List<String> getLookups() {
+		return lookups;
+	}
 
 }

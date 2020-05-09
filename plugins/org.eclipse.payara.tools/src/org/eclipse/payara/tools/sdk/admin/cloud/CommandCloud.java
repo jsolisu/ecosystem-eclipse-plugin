@@ -30,42 +30,42 @@ import org.eclipse.payara.tools.sdk.admin.Command;
  */
 public class CommandCloud extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Cloud account identifier. */
-    final String account;
+	/** Cloud account identifier. */
+	final String account;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish cloud administration command entity with specified cloud
-     * account and command.
-     * <p/>
-     *
-     * @param command Cloud command represented by this object.
-     * @param account Cloud account identifier.
-     */
-    CommandCloud(final String command, final String account) {
-        super(command);
-        this.account = account;
-    }
+	/**
+	 * Constructs an instance of GlassFish cloud administration command entity with
+	 * specified cloud account and command.
+	 * <p/>
+	 *
+	 * @param command Cloud command represented by this object.
+	 * @param account Cloud account identifier.
+	 */
+	CommandCloud(final String command, final String account) {
+		super(command);
+		this.account = account;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and Setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Returns cloud account identifier of this command.
-     * <p/>
-     *
-     * @return Cloud account identifier.
-     */
-    public String getAccount() {
-        return account;
-    }
+	/**
+	 * Returns cloud account identifier of this command.
+	 * <p/>
+	 *
+	 * @return Cloud account identifier.
+	 */
+	public String getAccount() {
+		return account;
+	}
 
 }

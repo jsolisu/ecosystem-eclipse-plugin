@@ -31,24 +31,24 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
  */
 public class ConfigReaderClasspath extends ConfigReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// XML reader methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Provide paths to listen on.
-     * <p/>
-     * Sets readers for internal <code>javadocs</code> elements.
-     * <p/>
-     *
-     * @return Paths that the reader listens to.
-     */
-    @Override
-    public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<>();
-        paths.add(new Path("/server/library/classpath/file", pathReader));
-        paths.add(new Path("/server/library/classpath/fileset", filesetReader));
-        return paths;
-    }
+	/**
+	 * Provide paths to listen on.
+	 * <p/>
+	 * Sets readers for internal <code>javadocs</code> elements.
+	 * <p/>
+	 *
+	 * @return Paths that the reader listens to.
+	 */
+	@Override
+	public List<TreeParser.Path> getPathsToListen() {
+		LinkedList<TreeParser.Path> paths = new LinkedList<>();
+		paths.add(new Path("/server/library/classpath/file", pathReader));
+		paths.add(new Path("/server/library/classpath/fileset", filesetReader));
+		return paths;
+	}
 
 }

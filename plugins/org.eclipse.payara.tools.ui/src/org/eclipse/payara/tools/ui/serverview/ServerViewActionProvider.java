@@ -40,98 +40,98 @@ import org.eclipse.ui.navigator.ICommonViewerSite;
 import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
 
 /**
- * This provider adds context actions to some of the dynamic tree nodes provided by
- * {@link ServerViewDynamicNodeProvider}.
+ * This provider adds context actions to some of the dynamic tree nodes provided
+ * by {@link ServerViewDynamicNodeProvider}.
  *
  * <p>
- * E.g. it adds the "unregister" action when you right click on a resource such as a JDBC data
- * source
+ * E.g. it adds the "unregister" action when you right click on a resource such
+ * as a JDBC data source
  * </p>
  *
  */
 public class ServerViewActionProvider extends GenericActionProvider {
 
-    private ICommonActionExtensionSite actionSite;
+	private ICommonActionExtensionSite actionSite;
 
-    @Override
-    public void init(ICommonActionExtensionSite actionExtensionSite) {
-        super.init(actionExtensionSite);
-        this.actionSite = actionExtensionSite;
-    }
+	@Override
+	public void init(ICommonActionExtensionSite actionExtensionSite) {
+		super.init(actionExtensionSite);
+		this.actionSite = actionExtensionSite;
+	}
 
-    @Override
-    public void fillContextMenu(IMenuManager menu) {
-        super.fillContextMenu(menu);
+	@Override
+	public void fillContextMenu(IMenuManager menu) {
+		super.fillContextMenu(menu);
 
-        ICommonViewerSite site = actionSite.getViewSite();
+		ICommonViewerSite site = actionSite.getViewSite();
 
-        if (site instanceof ICommonViewerWorkbenchSite) {
+		if (site instanceof ICommonViewerWorkbenchSite) {
 
-            ISelection selection = site.getSelectionProvider().getSelection();
+			ISelection selection = site.getSelectionProvider().getSelection();
 
-            if (selection instanceof TreeSelection) {
+			if (selection instanceof TreeSelection) {
 
-                Object obj = ((TreeSelection) selection).getFirstElement();
+				Object obj = ((TreeSelection) selection).getFirstElement();
 
-                if (obj instanceof ResourcesNode) {
+				if (obj instanceof ResourcesNode) {
 
-                    // Add unregister action to resources
+					// Add unregister action to resources
 
-                    ResourcesNode resourcesNode = (ResourcesNode) obj;
+					ResourcesNode resourcesNode = (ResourcesNode) obj;
 
-                    if (resourcesNode.getResource() != null) {
-                        menu.add(new Separator());
-                        menu.add(new UnregisterResourceAction(selection, actionSite));
-                    }
+					if (resourcesNode.getResource() != null) {
+						menu.add(new Separator());
+						menu.add(new UnregisterResourceAction(selection, actionSite));
+					}
 
-                } else if (obj instanceof ApplicationNode) {
+				} else if (obj instanceof ApplicationNode) {
 
-                    // Add undeploy and open in browser to applications
+					// Add undeploy and open in browser to applications
 
-                    menu.add(new Separator());
-                    menu.add(new UndeployAction(selection, actionSite));
-                    menu.add(new OpenInBrowserAction(selection));
+					menu.add(new Separator());
+					menu.add(new UndeployAction(selection, actionSite));
+					menu.add(new OpenInBrowserAction(selection));
 
-                } else if (obj instanceof WebServiceNode) {
+				} else if (obj instanceof WebServiceNode) {
 
-                    // Add test and info actions to (soap) web services
+					// Add test and info actions to (soap) web services
 
-                    menu.add(new TestWebServiceAction(selection));
-                    menu.add(new WSDLInfoWebServiceAction(selection));
-                } 
-            }
-        }
-    }
+					menu.add(new TestWebServiceAction(selection));
+					menu.add(new WSDLInfoWebServiceAction(selection));
+				}
+			}
+		}
+	}
 
-    @Override
-    public void fillActionBars(IActionBars o) {
-        super.fillActionBars(o);
-    }
+	@Override
+	public void fillActionBars(IActionBars o) {
+		super.fillActionBars(o);
+	}
 
-    @Override
-    protected void refresh(Object selection) {
-        super.refresh(selection);
+	@Override
+	protected void refresh(Object selection) {
+		super.refresh(selection);
 
-        DeployedApplicationsNode root = null;
+		DeployedApplicationsNode root = null;
 
-        if (selection instanceof DeployedApplicationsNode) {
-            root = (DeployedApplicationsNode) selection;
-        } else if (selection instanceof TreeNode) {
-            TreeNode treeNode = (TreeNode) selection;
-            if (treeNode.getName().equals(GLASSFISH_MANAGEMENT)) {
-                for (Object child : treeNode.getChildren()) {
-                    if (child instanceof DeployedApplicationsNode) {
-                        root = (DeployedApplicationsNode) child;
-                        break;
-                    }
-                }
-            }
-        }
+		if (selection instanceof DeployedApplicationsNode) {
+			root = (DeployedApplicationsNode) selection;
+		} else if (selection instanceof TreeNode) {
+			TreeNode treeNode = (TreeNode) selection;
+			if (treeNode.getName().equals(GLASSFISH_MANAGEMENT)) {
+				for (Object child : treeNode.getChildren()) {
+					if (child instanceof DeployedApplicationsNode) {
+						root = (DeployedApplicationsNode) child;
+						break;
+					}
+				}
+			}
+		}
 
-        if (root != null) {
-            root.refresh();
-        }
+		if (root != null) {
+			root.refresh();
+		}
 
-    }
+	}
 
 }

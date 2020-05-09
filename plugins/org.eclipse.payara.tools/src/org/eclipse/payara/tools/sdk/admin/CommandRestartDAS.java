@@ -37,61 +37,60 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(command = "restart")
 public class CommandRestartDAS extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for version command. */
-    private static final String COMMAND = "restart-domain";
+	/** Command string for version command. */
+	private static final String COMMAND = "restart-domain";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "DAS restart failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "DAS restart failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Restarts running DAS server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param debug Specifies whether the domain is restarted with JPDA.
-     * @return Restart DAS task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString restartDAS(final PayaraServer server,
-            final boolean debug) throws PayaraIdeException {
-        Command command = new CommandRestartDAS(debug);
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Restarts running DAS server.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param debug  Specifies whether the domain is restarted with JPDA.
+	 * @return Restart DAS task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString restartDAS(final PayaraServer server, final boolean debug) throws PayaraIdeException {
+		Command command = new CommandRestartDAS(debug);
+		Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Specifies whether the domain is restarted with JPDA. */
-    final boolean debug;
+	/** Specifies whether the domain is restarted with JPDA. */
+	final boolean debug;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server version command entity.
-     * <p/>
-     *
-     * @param debug Specifies whether the domain is restarted with JPDA.
-     */
-    public CommandRestartDAS(final boolean debug) {
-        super(COMMAND);
-        this.debug = debug;
-    }
+	/**
+	 * Constructs an instance of GlassFish server version command entity.
+	 * <p/>
+	 *
+	 * @param debug Specifies whether the domain is restarted with JPDA.
+	 */
+	public CommandRestartDAS(final boolean debug) {
+		super(COMMAND);
+		this.debug = debug;
+	}
 
 }

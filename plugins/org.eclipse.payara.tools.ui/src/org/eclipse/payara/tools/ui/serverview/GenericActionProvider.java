@@ -40,81 +40,81 @@ import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
  */
 public abstract class GenericActionProvider extends CommonActionProvider {
 
-    private Action refreshAction;
-    protected ICommonActionExtensionSite actionSite;
+	private Action refreshAction;
+	protected ICommonActionExtensionSite actionSite;
 
-    @Override
-    public void init(ICommonActionExtensionSite aSite) {
-        super.init(aSite);
+	@Override
+	public void init(ICommonActionExtensionSite aSite) {
+		super.init(aSite);
 
-        this.actionSite = aSite;
+		this.actionSite = aSite;
 
-        ICommonViewerSite site = aSite.getViewSite();
+		ICommonViewerSite site = aSite.getViewSite();
 
-        if (site instanceof ICommonViewerWorkbenchSite) {
-            StructuredViewer v = aSite.getStructuredViewer();
-            if (v instanceof CommonViewer) {
-                CommonViewer cv = (CommonViewer) v;
-                ICommonViewerWorkbenchSite wsSite = (ICommonViewerWorkbenchSite) site;
-                makeActions(cv, wsSite.getSelectionProvider());
-            }
-        }
-    }
+		if (site instanceof ICommonViewerWorkbenchSite) {
+			StructuredViewer v = aSite.getStructuredViewer();
+			if (v instanceof CommonViewer) {
+				CommonViewer cv = (CommonViewer) v;
+				ICommonViewerWorkbenchSite wsSite = (ICommonViewerWorkbenchSite) site;
+				makeActions(cv, wsSite.getSelectionProvider());
+			}
+		}
+	}
 
-    private void makeActions(CommonViewer cv, ISelectionProvider selectionProvider) {
-        refreshAction = new RefreshAction(selectionProvider.getSelection());
-    }
+	private void makeActions(CommonViewer cv, ISelectionProvider selectionProvider) {
+		refreshAction = new RefreshAction(selectionProvider.getSelection());
+	}
 
-    @Override
-    public void fillContextMenu(IMenuManager menu) {
-        super.fillContextMenu(menu);
+	@Override
+	public void fillContextMenu(IMenuManager menu) {
+		super.fillContextMenu(menu);
 
-        ICommonViewerSite site = actionSite.getViewSite();
-        IStructuredSelection selection = null;
+		ICommonViewerSite site = actionSite.getViewSite();
+		IStructuredSelection selection = null;
 
-        if (site instanceof ICommonViewerWorkbenchSite) {
-            ICommonViewerWorkbenchSite wsSite = (ICommonViewerWorkbenchSite) site;
-            selection = (IStructuredSelection) wsSite.getSelectionProvider().getSelection();
+		if (site instanceof ICommonViewerWorkbenchSite) {
+			ICommonViewerWorkbenchSite wsSite = (ICommonViewerWorkbenchSite) site;
+			selection = (IStructuredSelection) wsSite.getSelectionProvider().getSelection();
 
-            refreshAction = new RefreshAction(selection);
-            menu.add(refreshAction);
-            menu.add(new Separator());
-        }
+			refreshAction = new RefreshAction(selection);
+			menu.add(refreshAction);
+			menu.add(new Separator());
+		}
 
-    }
+	}
 
-    protected void refresh(Object selection) {
+	protected void refresh(Object selection) {
 
-    }
+	}
 
-    class RefreshAction extends Action {
+	class RefreshAction extends Action {
 
-        ISelection selection;
+		ISelection selection;
 
-        public RefreshAction(ISelection selection) {
-            setText("Refresh");
-            this.selection = selection;
-        }
+		public RefreshAction(ISelection selection) {
+			setText("Refresh");
+			this.selection = selection;
+		}
 
-        @Override
-        public void runWithEvent(Event event) {
-            if (selection instanceof TreeSelection) {
-                TreeSelection treeSelection = (TreeSelection) selection;
-                
-                Object obj = treeSelection.getFirstElement();
-                
-                refresh(obj);
-                actionSite.getStructuredViewer().refresh(obj);
-            }
+		@Override
+		public void runWithEvent(Event event) {
+			if (selection instanceof TreeSelection) {
+				TreeSelection treeSelection = (TreeSelection) selection;
 
-            super.run();
+				Object obj = treeSelection.getFirstElement();
 
-        }
+				refresh(obj);
+				actionSite.getStructuredViewer().refresh(obj);
+			}
 
-        @Override
-        public void run() {
-            runWithEvent(null);
-        }
-    }
+			super.run();
+
+		}
+
+		@Override
+		public void run() {
+			runWithEvent(null);
+		}
+	}
 
 }

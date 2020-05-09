@@ -26,30 +26,30 @@ package org.eclipse.payara.tools.sdk.server.parser;
  */
 public class HttpData {
 
-    private final String id;
-    private final int port;
-    private final boolean secure;
+	private final String id;
+	private final int port;
+	private final boolean secure;
 
-    public HttpData(String id, int port, boolean secure) {
-        this.id = id;
-        this.port = port;
-        this.secure = secure;
-    }
+	public HttpData(String id, int port, boolean secure) {
+		this.id = id;
+		this.port = port;
+		this.secure = secure;
+	}
 
-    public String getId() {
-        return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public int getPort() {
-        return port;
-    }
+	public int getPort() {
+		return port;
+	}
 
-    public boolean isSecure() {
-        return secure;
-    }
+	public boolean isSecure() {
+		return secure;
+	}
 
-    @Override
-    public String toString() {
-        return "{ " + id + ", " + port + ", " + secure + " }"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
+	@Override
+	public String toString() {
+		return "{ " + id + ", " + port + ", " + secure + " }"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
 }

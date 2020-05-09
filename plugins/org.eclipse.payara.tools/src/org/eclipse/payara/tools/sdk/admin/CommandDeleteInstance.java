@@ -30,25 +30,25 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestDeleteInstance.class)
 public class CommandDeleteInstance extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for delete-instance command. */
-    private static final String COMMAND = "delete-instance";
+	/** Command string for delete-instance command. */
+	private static final String COMMAND = "delete-instance";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server delete-instance command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance.
-     */
-    public CommandDeleteInstance(String target) {
-        super(COMMAND, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server delete-instance command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandDeleteInstance(String target) {
+		super(COMMAND, target);
+	}
 
 }

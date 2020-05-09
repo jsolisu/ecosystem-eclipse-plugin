@@ -30,7 +30,8 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  * A deployed app node in the server view
  *
  * <p>
- * This node represents each application below the "Deployed Applications" parent node.
+ * This node represents each application below the "Deployed Applications"
+ * parent node.
  * </p>
  *
  * <p>
@@ -51,81 +52,81 @@ import org.eclipse.ui.views.properties.TextPropertyDescriptor;
  * </p>
  *
  * <p>
- * Payara / GlassFish is dynamically queried for this list, hence it can only be retrieved for a
- * running server. </>
+ * Payara / GlassFish is dynamically queried for this list, hence it can only be
+ * retrieved for a running server. </>
  *
  * @author Ludovic Champenois
  *
  */
 public class ApplicationNode extends TreeNode {
 
-    DeployedApplicationsNode parent;
-    PayaraServer server;
-    TreeNode[] modules;
-    AppDesc app;
+	DeployedApplicationsNode parent;
+	PayaraServer server;
+	TreeNode[] modules;
+	AppDesc app;
 
-    public ApplicationNode(DeployedApplicationsNode root, PayaraServer server, AppDesc app) {
-        super(app.getName(), null, root);
-        this.server = server;
-        this.app = app;
-    }
+	public ApplicationNode(DeployedApplicationsNode root, PayaraServer server, AppDesc app) {
+		super(app.getName(), null, root);
+		this.server = server;
+		this.app = app;
+	}
 
-    public PayaraServer getServer() {
-        return this.server;
-    }
+	public PayaraServer getServer() {
+		return this.server;
+	}
 
-    public AppDesc getApplicationInfo() {
-        return this.app;
-    }
+	public AppDesc getApplicationInfo() {
+		return this.app;
+	}
 
-    @Override
+	@Override
 
-    public IPropertyDescriptor[] getPropertyDescriptors() {
+	public IPropertyDescriptor[] getPropertyDescriptors() {
 
-        ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
-        PropertyDescriptor pd;
+		ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
+		PropertyDescriptor pd;
 
-        pd = new TextPropertyDescriptor("contextroot", "context root");
-        pd.setCategory("Payara Applications");
-        properties.add(pd);
+		pd = new TextPropertyDescriptor("contextroot", "context root");
+		pd.setCategory("Payara Applications");
+		properties.add(pd);
 
-        pd = new TextPropertyDescriptor("name", "name");
-        pd.setCategory("Payara Applications");
-        properties.add(pd);
+		pd = new TextPropertyDescriptor("name", "name");
+		pd.setCategory("Payara Applications");
+		properties.add(pd);
 
-        pd = new TextPropertyDescriptor("path", "path");
-        pd.setCategory("Payara Applications");
-        properties.add(pd);
+		pd = new TextPropertyDescriptor("path", "path");
+		pd.setCategory("Payara Applications");
+		properties.add(pd);
 
-        pd = new TextPropertyDescriptor("engine", "engine");
-        pd.setCategory("Payara Applications");
-        properties.add(pd);
+		pd = new TextPropertyDescriptor("engine", "engine");
+		pd.setCategory("Payara Applications");
+		properties.add(pd);
 
-        return properties.toArray(new IPropertyDescriptor[0]);
-    }
+		return properties.toArray(new IPropertyDescriptor[0]);
+	}
 
-    @Override
+	@Override
 
-    public Object getPropertyValue(Object id) {
+	public Object getPropertyValue(Object id) {
 
-        if (id.equals("contextroot")) {
-            return app.getContextRoot();
-        }
+		if (id.equals("contextroot")) {
+			return app.getContextRoot();
+		}
 
-        if (id.equals("name")) {
-            return app.getName();
-        }
+		if (id.equals("name")) {
+			return app.getName();
+		}
 
-        if (id.equals("path")) {
-            return app.getPath();
-        }
+		if (id.equals("path")) {
+			return app.getPath();
+		}
 
-        if (id.equals("engine")) {
-            return app.getType();
-        }
+		if (id.equals("engine")) {
+			return app.getType();
+		}
 
-        return null;
+		return null;
 
-    }
+	}
 
 }

@@ -26,45 +26,44 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * Reads the name of the configuration for given target (server or cluster). TODO now it reads only
- * servers and not clusters...
+ * Reads the name of the configuration for given target (server or cluster).
+ * TODO now it reads only servers and not clusters...
  *
  * @author Peter Benedikovic, Tomas Kraus
  */
-public class TargetConfigNameReader extends TreeParser.NodeListener implements
-        XMLReader {
+public class TargetConfigNameReader extends TreeParser.NodeListener implements XMLReader {
 
-    public static final String SERVER_PATH = "/domain/servers/server";
+	public static final String SERVER_PATH = "/domain/servers/server";
 
-    public static final String DEFAULT_TARGET = "server";
+	public static final String DEFAULT_TARGET = "server";
 
-    private String targetConfigName = null;
+	private String targetConfigName = null;
 
-    private String targetName;
+	private String targetName;
 
-    public TargetConfigNameReader() {
-        this(DEFAULT_TARGET);
-    }
+	public TargetConfigNameReader() {
+		this(DEFAULT_TARGET);
+	}
 
-    public TargetConfigNameReader(String targetName) {
-        this.targetName = targetName;
-    }
+	public TargetConfigNameReader(String targetName) {
+		this.targetName = targetName;
+	}
 
-    public String getTargetConfigName() {
-        return targetConfigName;
-    }
+	public String getTargetConfigName() {
+		return targetConfigName;
+	}
 
-    @Override
-    public void readAttributes(String qname, Attributes attributes) throws SAXException {
-        if (attributes.getValue("name").equalsIgnoreCase(targetName)) {
-            targetConfigName = attributes.getValue("config-ref");
-        }
-    }
+	@Override
+	public void readAttributes(String qname, Attributes attributes) throws SAXException {
+		if (attributes.getValue("name").equalsIgnoreCase(targetName)) {
+			targetConfigName = attributes.getValue("config-ref");
+		}
+	}
 
-    @Override
-    public List<Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<>();
-        paths.add(new Path(SERVER_PATH, this));
-        return paths;
-    }
+	@Override
+	public List<Path> getPathsToListen() {
+		LinkedList<TreeParser.Path> paths = new LinkedList<>();
+		paths.add(new Path(SERVER_PATH, this));
+		return paths;
+	}
 }

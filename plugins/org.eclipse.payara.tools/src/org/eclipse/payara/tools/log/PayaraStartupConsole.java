@@ -20,14 +20,14 @@ package org.eclipse.payara.tools.log;
 
 public class PayaraStartupConsole extends PayaraConsole {
 
-    PayaraStartupConsole(String name, ILogFilter filter) {
-        super(name, filter);
-    }
+	PayaraStartupConsole(String name, ILogFilter filter) {
+		super(name, filter);
+	}
 
-    @Override
-    public synchronized void stopLogging() {
-        // do nothing...
-        readers = null;
-    }
+	@Override
+	public synchronized void stopLogging() {
+		// do nothing...
+		readers = null;
+	}
 
 }

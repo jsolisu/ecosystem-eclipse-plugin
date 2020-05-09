@@ -41,8 +41,9 @@ import org.eclipse.wst.server.core.util.HttpLaunchable;
 import org.eclipse.wst.server.core.util.WebResource;
 
 /**
- * This class converts / adapts an Eclipse generic {@link IModuleArtifact} into an
- * {@link HttpLaunchable}, which represents an archive that can be deployed to Payara / GlassFish
+ * This class converts / adapts an Eclipse generic {@link IModuleArtifact} into
+ * an {@link HttpLaunchable}, which represents an archive that can be deployed
+ * to Payara / GlassFish
  *
  * <p>
  * This class is registered in <code>plug-in.xml</code> in the
@@ -53,138 +54,138 @@ import org.eclipse.wst.server.core.util.WebResource;
 @SuppressWarnings("restriction")
 public class EclipseToPayaraArchiveConverter extends LaunchableAdapterDelegate {
 
-    @Override
-    public Object getLaunchable(IServer server, IModuleArtifact moduleArtifact) throws CoreException {
-        if (server == null) {
-            return null;
-        }
+	@Override
+	public Object getLaunchable(IServer server, IModuleArtifact moduleArtifact) throws CoreException {
+		if (server == null) {
+			return null;
+		}
 
-        String serverTypeId = server.getServerType().getId();
+		String serverTypeId = server.getServerType().getId();
 
-        if (!serverTypeId.equals("payara.server")) {
-            return null;
-        }
+		if (!serverTypeId.equals("payara.server")) {
+			return null;
+		}
 
-        PayaraServer glassfish = load(server, PayaraServer.class);
+		PayaraServer glassfish = load(server, PayaraServer.class);
 
-        if (glassfish == null) {
-            return null;
-        }
+		if (glassfish == null) {
+			return null;
+		}
 
-        // Implementation borrowed from org.eclipse.jst.server.tomcat.core.
-        // TomcatServerLaunchableAdapterDelegate.java
-        if (!(moduleArtifact instanceof Servlet) && !(moduleArtifact instanceof WebResource)) {
-            return null;
-        }
+		// Implementation borrowed from org.eclipse.jst.server.tomcat.core.
+		// TomcatServerLaunchableAdapterDelegate.java
+		if (!(moduleArtifact instanceof Servlet) && !(moduleArtifact instanceof WebResource)) {
+			return null;
+		}
 
-        if (!hasProjectFacet(moduleArtifact.getModule(), getProjectFacet(JST_WEB_MODULE))) {
-            return null;
-        }
+		if (!hasProjectFacet(moduleArtifact.getModule(), getProjectFacet(JST_WEB_MODULE))) {
+			return null;
+		}
 
-        try {
-            IURLProvider delegate = load(server, IURLProvider.class);
-            if (delegate == null) {
-                return null;
-            }
+		try {
+			IURLProvider delegate = load(server, IURLProvider.class);
+			if (delegate == null) {
+				return null;
+			}
 
-            URL url = delegate.getModuleRootURL(moduleArtifact.getModule());
-            if (url == null) {
-                return null;
-            }
+			URL url = delegate.getModuleRootURL(moduleArtifact.getModule());
+			if (url == null) {
+				return null;
+			}
 
-            if (moduleArtifact instanceof Servlet) {
-                Servlet servlet = (Servlet) moduleArtifact;
+			if (moduleArtifact instanceof Servlet) {
+				Servlet servlet = (Servlet) moduleArtifact;
 
-                String base, path;
-                if (servlet.getAlias() != null) {
-                    base = normalize(url.getFile());
-                    path = normalize(servlet.getAlias());
-                    url = new URL(url, base + path);
-                } else {
-                    base = "/servlet";
-                    path = servlet.getServletClassName();
-                }
+				String base, path;
+				if (servlet.getAlias() != null) {
+					base = normalize(url.getFile());
+					path = normalize(servlet.getAlias());
+					url = new URL(url, base + path);
+				} else {
+					base = "/servlet";
+					path = servlet.getServletClassName();
+				}
 
-                url = new URL(url.getProtocol(), url.getHost(), url.getPort(), base + path);
-            } else if (moduleArtifact instanceof WebResource) {
-                WebResource resource = (WebResource) moduleArtifact;
+				url = new URL(url.getProtocol(), url.getHost(), url.getPort(), base + path);
+			} else if (moduleArtifact instanceof WebResource) {
+				WebResource resource = (WebResource) moduleArtifact;
 
-                String path = normalize(resource.getPath().toPortableString());
-                if (path.length() != 0) {
-                    String base = normalize(url.getFile());
-                    url = new URL(url.getProtocol(), url.getHost(), url.getPort(), base + path);
-                }
-            }
+				String path = normalize(resource.getPath().toPortableString());
+				if (path.length() != 0) {
+					String base = normalize(url.getFile());
+					url = new URL(url.getProtocol(), url.getHost(), url.getPort(), base + path);
+				}
+			}
 
-            return new HttpLaunchable((new UrlPathEncoder(url)).asURL());
-        } catch (Exception e) {
-            logError("Error getting URL for " + moduleArtifact, e);
-            return null;
-        }
-    }
+			return new HttpLaunchable((new UrlPathEncoder(url)).asURL());
+		} catch (Exception e) {
+			logError("Error getting URL for " + moduleArtifact, e);
+			return null;
+		}
+	}
 
-    private String normalize(String path) {
-        if (path == null) {
-            return "";
-        }
+	private String normalize(String path) {
+		if (path == null) {
+			return "";
+		}
 
-        if (path.equals("/")) {
-            return "";
-        }
+		if (path.equals("/")) {
+			return "";
+		}
 
-        if (path.length() > 0 && path.endsWith("/")) {
-            return path.substring(0, path.length() - 2);
-        }
+		if (path.length() > 0 && path.endsWith("/")) {
+			return path.substring(0, path.length() - 2);
+		}
 
-        if (path.length() > 0 && !path.startsWith("/")) {
-            return "/" + path;
-        }
+		if (path.length() > 0 && !path.startsWith("/")) {
+			return "/" + path;
+		}
 
-        return path;
-    }
+		return path;
+	}
 
-    static class UrlPathEncoder {
+	static class UrlPathEncoder {
 
-        private URL _url = null;
+		private URL _url = null;
 
-        public UrlPathEncoder(URL theUrl) throws MalformedURLException {
-            this(theUrl.toString());
-        }
+		public UrlPathEncoder(URL theUrl) throws MalformedURLException {
+			this(theUrl.toString());
+		}
 
-        public UrlPathEncoder(String urlString) throws MalformedURLException {
-            try {
+		public UrlPathEncoder(String urlString) throws MalformedURLException {
+			try {
 
-                // Need to decode the URL to make sure we don't re-encode
-                // any already encoded characters
-                String urlStringDecoded = URLDecoder.decode(urlString, "UTF-8"); //$NON-NLS-1$
+				// Need to decode the URL to make sure we don't re-encode
+				// any already encoded characters
+				String urlStringDecoded = URLDecoder.decode(urlString, "UTF-8"); //$NON-NLS-1$
 
-                // Now split the URL into path and query (they get encoded differently)
-                URL tmpUrl = new URL(urlStringDecoded);
-                String query = tmpUrl.getQuery();
-                StringBuilder path = new StringBuilder();
+				// Now split the URL into path and query (they get encoded differently)
+				URL tmpUrl = new URL(urlStringDecoded);
+				String query = tmpUrl.getQuery();
+				StringBuilder path = new StringBuilder();
 
-                // Encode the path and put the '/'s back
-                path.append(URLEncoder.encode(tmpUrl.getPath(), "UTF-8") //$NON-NLS-1$
-                        .replaceAll("%2[fF]", "/")); //$NON-NLS-1$ //$NON-NLS-2$
+				// Encode the path and put the '/'s back
+				path.append(URLEncoder.encode(tmpUrl.getPath(), "UTF-8") //$NON-NLS-1$
+						.replaceAll("%2[fF]", "/")); //$NON-NLS-1$ //$NON-NLS-2$
 
-                if (query != null) {
-                    path.append("?").append(URLEncoder.encode(query, "UTF-8")); //$NON-NLS-1$//$NON-NLS-2$
-                }
+				if (query != null) {
+					path.append("?").append(URLEncoder.encode(query, "UTF-8")); //$NON-NLS-1$//$NON-NLS-2$
+				}
 
-                // Rebuild using the encoded path and query with the original scheme
-                _url = new URL(tmpUrl.getProtocol(), tmpUrl.getHost(), tmpUrl.getPort(), path.toString());
-            } catch (UnsupportedEncodingException uee) {
-                logError("Fatal: Unsupported encoding", uee);
-            }
-        }
+				// Rebuild using the encoded path and query with the original scheme
+				_url = new URL(tmpUrl.getProtocol(), tmpUrl.getHost(), tmpUrl.getPort(), path.toString());
+			} catch (UnsupportedEncodingException uee) {
+				logError("Fatal: Unsupported encoding", uee);
+			}
+		}
 
-        public String asString() {
-            return _url.toString();
-        }
+		public String asString() {
+			return _url.toString();
+		}
 
-        public URL asURL() {
-            return _url;
-        }
-    }
+		public URL asURL() {
+			return _url;
+		}
+	}
 
 }

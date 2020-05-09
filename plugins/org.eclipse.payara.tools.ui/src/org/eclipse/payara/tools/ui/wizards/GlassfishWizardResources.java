@@ -20,13 +20,12 @@ package org.eclipse.payara.tools.ui.wizards;
 
 public class GlassfishWizardResources extends org.eclipse.osgi.util.NLS {
 
-    static {
-        initializeMessages(
-                "org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources",
-                GlassfishWizardResources.class);
-    }
+	static {
+		initializeMessages("org.eclipse.payara.tools.ui.wizards.GlassfishWizardResources",
+				GlassfishWizardResources.class);
+	}
 
-    public static String wzdRuntimeDescription;
-    public static String wzdServerDescription;
+	public static String wzdRuntimeDescription;
+	public static String wzdServerDescription;
 
 }

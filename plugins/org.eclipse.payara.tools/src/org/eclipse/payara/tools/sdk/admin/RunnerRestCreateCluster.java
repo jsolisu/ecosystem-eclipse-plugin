@@ -34,36 +34,36 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestCreateCluster extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestCreateCluster(final PayaraServer server,
-            final Command command) {
-        super(server, command, "/management/domain/clusters/cluster/", null);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestCreateCluster(final PayaraServer server, final Command command) {
+		super(server, command, "/management/domain/clusters/cluster/", null);
+	}
 
-    @Override
-    protected String constructCommandUrl() throws CommandException {
-        String protocol = "http";
-        URI uri;
-        try {
-            uri = new URI(protocol, null, server.getHost(), server.getAdminPort(), path, query, null);
-        } catch (URISyntaxException use) {
-            throw new CommandException(CommandException.RUNNER_HTTP_URL, use);
-        }
-        return uri.toASCIIString();
-    }
+	@Override
+	protected String constructCommandUrl() throws CommandException {
+		String protocol = "http";
+		URI uri;
+		try {
+			uri = new URI(protocol, null, server.getHost(), server.getAdminPort(), path, query, null);
+		} catch (URISyntaxException use) {
+			throw new CommandException(CommandException.RUNNER_HTTP_URL, use);
+		}
+		return uri.toASCIIString();
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        wr.write("name=" + ((CommandTarget) command).target);
-        wr.flush();
-        wr.close();
-    }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		wr.write("name=" + ((CommandTarget) command).target);
+		wr.flush();
+		wr.close();
+	}
 
 }

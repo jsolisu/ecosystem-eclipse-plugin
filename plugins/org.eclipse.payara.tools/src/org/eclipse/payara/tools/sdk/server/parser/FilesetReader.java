@@ -34,76 +34,74 @@ import org.xml.sax.SAXException;
  */
 public class FilesetReader extends TreeParser.NodeListener {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** File sets retrieved from XML elements. */
-    private Map<String, List<String>> filesets = new HashMap<>();
+	/** File sets retrieved from XML elements. */
+	private Map<String, List<String>> filesets = new HashMap<>();
 
-    /** File set being actually processed. */
-    private List<String> actualFileset = null;
+	/** File set being actually processed. */
+	private List<String> actualFileset = null;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        String dirName = attributes.getValue("dir");
-        if ((actualFileset = filesets.get(dirName)) == null) {
-            actualFileset = new ArrayList<>();
-            filesets.put(dirName, actualFileset);
-        }
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		String dirName = attributes.getValue("dir");
+		if ((actualFileset = filesets.get(dirName)) == null) {
+			actualFileset = new ArrayList<>();
+			filesets.put(dirName, actualFileset);
+		}
+	}
 
-    /**
-     * Process child elements from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readChildren(final String qname, final Attributes attributes)
-            throws SAXException {
-        actualFileset.add(attributes.getValue("name"));
-    }
+	/**
+	 * Process child elements from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readChildren(final String qname, final Attributes attributes) throws SAXException {
+		actualFileset.add(attributes.getValue("name"));
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get file sets retrieved from XML elements.
-     * <p/>
-     *
-     * @return File sets retrieved from XML elements.
-     */
-    public Map<String, List<String>> getFilesets() {
-        return filesets;
-    }
+	/**
+	 * Get file sets retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return File sets retrieved from XML elements.
+	 */
+	public Map<String, List<String>> getFilesets() {
+		return filesets;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    public void reset() {
-        filesets = new HashMap<>();
-        actualFileset = null;
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	public void reset() {
+		filesets = new HashMap<>();
+		actualFileset = null;
+	}
 
 }

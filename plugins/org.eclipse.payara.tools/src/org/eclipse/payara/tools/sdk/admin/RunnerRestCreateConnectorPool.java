@@ -32,36 +32,36 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestCreateConnectorPool extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestCreateConnectorPool(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestCreateConnectorPool(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandCreateConnectorConnectionPool cmd = (CommandCreateConnectorConnectionPool) command;
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        StringBuilder data = new StringBuilder();
-        data.append("poolname=").append(cmd.poolName);
-        data.append("&raname=").append(cmd.raName);
-        data.append("&connectiondefinition=").append(cmd.connectionDefinition);
-        appendProperties(data, cmd.properties, "property", true);
-        wr.write(data.toString());
-        wr.close();
-    }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		CommandCreateConnectorConnectionPool cmd = (CommandCreateConnectorConnectionPool) command;
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		StringBuilder data = new StringBuilder();
+		data.append("poolname=").append(cmd.poolName);
+		data.append("&raname=").append(cmd.raName);
+		data.append("&connectiondefinition=").append(cmd.connectionDefinition);
+		appendProperties(data, cmd.properties, "property", true);
+		wr.write(data.toString());
+		wr.close();
+	}
 
-    /**
-     * Overridden because server returns WARNING even when it creates the resource.
-     */
-    @Override
-    protected boolean isSuccess() {
-        return report.isSuccess() || report.getExitCode().equals(ExitCode.WARNING);
-    }
+	/**
+	 * Overridden because server returns WARNING even when it creates the resource.
+	 */
+	@Override
+	protected boolean isSuccess() {
+		return report.isSuccess() || report.getExitCode().equals(ExitCode.WARNING);
+	}
 }

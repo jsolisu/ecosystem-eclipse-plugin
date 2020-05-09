@@ -29,87 +29,88 @@ import org.eclipse.wst.common.project.facet.core.runtime.IRuntimeComponentType;
 import org.eclipse.wst.common.project.facet.core.runtime.RuntimeManager;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 
 public final class ContainsRuntimeComponentType extends PropertyTester {
 
-    private static final String PROP_CONTAINS_RUNTIME_COMPONENT_TYPE = "containsRuntimeComponentType"; //$NON-NLS-1$
+	private static final String PROP_CONTAINS_RUNTIME_COMPONENT_TYPE = "containsRuntimeComponentType"; //$NON-NLS-1$
 
-    @Override
-    public boolean test(Object receiver, String property, Object[] args, Object value) {
-        try {
-            if (!property.equals(PROP_CONTAINS_RUNTIME_COMPONENT_TYPE)) {
-                throw new IllegalStateException();
-            }
+	@Override
+	public boolean test(Object receiver, String property, Object[] args, Object value) {
+		try {
+			if (!property.equals(PROP_CONTAINS_RUNTIME_COMPONENT_TYPE)) {
+				throw new IllegalStateException();
+			}
 
-            String val = (String) value;
-            int colon = val.indexOf(':');
+			String val = (String) value;
+			int colon = val.indexOf(':');
 
-            String typeid;
-            String vexpr;
+			String typeid;
+			String vexpr;
 
-            if (colon == -1 || colon == val.length() - 1) {
-                typeid = val;
-                vexpr = null;
-            } else {
-                typeid = val.substring(0, colon);
-                vexpr = val.substring(colon + 1);
-            }
+			if (colon == -1 || colon == val.length() - 1) {
+				typeid = val;
+				vexpr = null;
+			} else {
+				typeid = val.substring(0, colon);
+				vexpr = val.substring(colon + 1);
+			}
 
-            if (!RuntimeManager.isRuntimeComponentTypeDefined(typeid)) {
-                return false;
-            }
+			if (!RuntimeManager.isRuntimeComponentTypeDefined(typeid)) {
+				return false;
+			}
 
-            IRuntimeComponentType type = RuntimeManager.getRuntimeComponentType(typeid);
+			IRuntimeComponentType type = RuntimeManager.getRuntimeComponentType(typeid);
 
-            if (receiver instanceof IRuntime) {
-                for (Object component : ((IRuntime) receiver).getRuntimeComponents()) {
-                    if (match((IRuntimeComponent) component, type, vexpr)) {
-                        return true;
-                    }
-                }
+			if (receiver instanceof IRuntime) {
+				for (Object component : ((IRuntime) receiver).getRuntimeComponents()) {
+					if (match((IRuntimeComponent) component, type, vexpr)) {
+						return true;
+					}
+				}
 
-                return false;
-            }
-            
-            if (receiver instanceof Collection) {
-                for (Object obj : ((Collection<?>) receiver)) {
-                    if (obj instanceof IRuntimeComponent) {
-                        if (match((IRuntimeComponent) obj, type, vexpr)) {
-                            return true;
-                        }
-                    } else if (obj instanceof IRuntime) {
-                        if (test(obj, property, args, value)) {
-                            return true;
-                        }
-                    } else {
-                        throw new IllegalStateException();
-                    }
-                }
+				return false;
+			}
 
-                return false;
-            }
-            
-            throw new IllegalStateException();
-            
-        } catch (CoreException e) {
-            PayaraToolsPlugin.log(e);
-            return false;
-        }
-    }
+			if (receiver instanceof Collection) {
+				for (Object obj : ((Collection<?>) receiver)) {
+					if (obj instanceof IRuntimeComponent) {
+						if (match((IRuntimeComponent) obj, type, vexpr)) {
+							return true;
+						}
+					} else if (obj instanceof IRuntime) {
+						if (test(obj, property, args, value)) {
+							return true;
+						}
+					} else {
+						throw new IllegalStateException();
+					}
+				}
 
-    private static final boolean match(IRuntimeComponent component, IRuntimeComponentType type, String vexpr) throws CoreException {
-        if (component.getRuntimeComponentType() == type) {
-            if (vexpr == null) {
-                return true;
-            }
-            
-            return type.getVersions(vexpr)
-                       .contains(component.getRuntimeComponentVersion());
-        }
+				return false;
+			}
 
-        return false;
-    }
+			throw new IllegalStateException();
+
+		} catch (CoreException e) {
+			PayaraToolsPlugin.log(e);
+			return false;
+		}
+	}
+
+	private static final boolean match(IRuntimeComponent component, IRuntimeComponentType type, String vexpr)
+			throws CoreException {
+		if (component.getRuntimeComponentType() == type) {
+			if (vexpr == null) {
+				return true;
+			}
+
+			return type.getVersions(vexpr).contains(component.getRuntimeComponentVersion());
+		}
+
+		return false;
+	}
 
 }

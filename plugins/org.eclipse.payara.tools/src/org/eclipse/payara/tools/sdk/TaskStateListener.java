@@ -26,19 +26,19 @@ package org.eclipse.payara.tools.sdk;
  */
 public interface TaskStateListener {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Interface Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Interface Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Callback to notify about GlassFish server administration command execution state change.
-     * <p/>
-     *
-     * @param newState New command execution state.
-     * @param event Event related to execution state change.
-     * @param args Additional String arguments.
-     */
-    public void operationStateChanged(TaskState newState, TaskEvent event,
-            String... args);
+	/**
+	 * Callback to notify about GlassFish server administration command execution
+	 * state change.
+	 * <p/>
+	 *
+	 * @param newState New command execution state.
+	 * @param event    Event related to execution state change.
+	 * @param args     Additional String arguments.
+	 */
+	public void operationStateChanged(TaskState newState, TaskEvent event, String... args);
 
 }

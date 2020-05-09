@@ -26,41 +26,40 @@ package org.eclipse.payara.tools.sdk.server.config;
  */
 public class LibraryNode {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Library ID. */
-    final String libraryID;
+	/** Library ID. */
+	final String libraryID;
 
-    /** Class path file set. */
-    final FileSet classpath;
+	/** Class path file set. */
+	final FileSet classpath;
 
-    /** Java doc file set. */
-    final FileSet javadocs;
+	/** Java doc file set. */
+	final FileSet javadocs;
 
-    /** Java sources file set. */
-    final FileSet sources;
+	/** Java sources file set. */
+	final FileSet sources;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of internal library node element.
-     * <p/>
-     *
-     * @param libraryID Library ID.
-     * @param classpath Class path file set
-     * @param javadocs Java doc file set.
-     * @param sources Java sources file set.
-     */
-    public LibraryNode(final String libraryID, final FileSet classpath,
-            final FileSet javadocs, final FileSet sources) {
-        this.libraryID = libraryID;
-        this.classpath = classpath;
-        this.javadocs = javadocs;
-        this.sources = sources;
-    }
+	/**
+	 * Creates an instance of internal library node element.
+	 * <p/>
+	 *
+	 * @param libraryID Library ID.
+	 * @param classpath Class path file set
+	 * @param javadocs  Java doc file set.
+	 * @param sources   Java sources file set.
+	 */
+	public LibraryNode(final String libraryID, final FileSet classpath, final FileSet javadocs, final FileSet sources) {
+		this.libraryID = libraryID;
+		this.classpath = classpath;
+		this.javadocs = javadocs;
+		this.sources = sources;
+	}
 
 }

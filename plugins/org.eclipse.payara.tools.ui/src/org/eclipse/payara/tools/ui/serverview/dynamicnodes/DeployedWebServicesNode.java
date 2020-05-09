@@ -28,7 +28,8 @@ import org.eclipse.payara.tools.server.PayaraServer;
 import org.eclipse.payara.tools.serverview.WSDesc;
 
 /**
- * This node shows is the root node below which the dynamically retrieved web-services reside.
+ * This node shows is the root node below which the dynamically retrieved
+ * web-services reside.
  *
  * <p>
  * The following depicts this element in the "Servers" view:
@@ -46,75 +47,75 @@ import org.eclipse.payara.tools.serverview.WSDesc;
  * </p>
  *
  * <p>
- * Payara / GlassFish is dynamically queried for this list, hence it can only be retrieved for a
- * running server. </>
+ * Payara / GlassFish is dynamically queried for this list, hence it can only be
+ * retrieved for a running server. </>
  *
  */
 public class DeployedWebServicesNode extends TreeNode {
 
-    private PayaraServer server;
-    private WebServiceNode[] deployedapps;
+	private PayaraServer server;
+	private WebServiceNode[] deployedapps;
 
-    public DeployedWebServicesNode(PayaraServer server) {
-        super("Deployed Web Services", null, null);
-        this.server = server;
-    }
+	public DeployedWebServicesNode(PayaraServer server) {
+		super("Deployed Web Services", null, null);
+		this.server = server;
+	}
 
-    public PayaraServer getServer() {
-        return server;
-    }
+	public PayaraServer getServer() {
+		return server;
+	}
 
-    @Override
-    public Object[] getChildren() {
+	@Override
+	public Object[] getChildren() {
 
-        ArrayList<WebServiceNode> appsList = new ArrayList<>();
+		ArrayList<WebServiceNode> appsList = new ArrayList<>();
 
-        if (deployedapps == null) {
+		if (deployedapps == null) {
 
-            try {
+			try {
 
-                if (server == null) {
-                    deployedapps = appsList.toArray(new WebServiceNode[appsList.size()]);
-                    return deployedapps;
-                }
+				if (server == null) {
+					deployedapps = appsList.toArray(new WebServiceNode[appsList.size()]);
+					return deployedapps;
+				}
 
-                try {
-                    List<WSDesc> wss = getWebServices(server);
+				try {
+					List<WSDesc> wss = getWebServices(server);
 
-                    for (WSDesc app : wss) {
+					for (WSDesc app : wss) {
 
-                        WebServiceNode t = new WebServiceNode(this, server,
+						WebServiceNode t = new WebServiceNode(this, server,
 
-                                app);
+								app);
 
-                        appsList.add(t);
+						appsList.add(t);
 
-                    }
+					}
 
-                } catch (Exception ex) {
+				} catch (Exception ex) {
 
-                    PayaraToolsPlugin.logError("get Applications is failing=", ex); //$NON-NLS-1$
+					PayaraToolsPlugin.logError("get Applications is failing=", ex); //$NON-NLS-1$
 
-                }
+				}
 
-            } catch (Exception e) {
+			} catch (Exception e) {
 
-            }
+			}
 
-            this.deployedapps = appsList
+			this.deployedapps = appsList
 
-                    .toArray(new WebServiceNode[appsList.size()]);
+					.toArray(new WebServiceNode[appsList.size()]);
 
-        }
+		}
 
-        return this.deployedapps;
+		return this.deployedapps;
 
-    }
+	}
 
-    public void refresh() {
+	public void refresh() {
 
-        this.deployedapps = null;
+		this.deployedapps = null;
 
-    }
+	}
 
 }

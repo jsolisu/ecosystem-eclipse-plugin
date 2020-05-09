@@ -34,14 +34,14 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 public @interface RunnerHttpClass {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Payara command runner class as named value. */
-    Class<? extends Runner> runner() default RunnerHttp.class;
+	/** Payara command runner class as named value. */
+	Class<? extends Runner> runner() default RunnerHttp.class;
 
-    /** Payara command string if differs from default one. */
-    String command() default "";
+	/** Payara command string if differs from default one. */
+	String command() default "";
 
 }

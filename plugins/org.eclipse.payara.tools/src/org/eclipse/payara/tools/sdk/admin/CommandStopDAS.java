@@ -39,47 +39,48 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestStopDAS.class)
 public class CommandStopDAS extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for version command. */
-    private static final String COMMAND = "stop-domain";
+	/** Command string for version command. */
+	private static final String COMMAND = "stop-domain";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "DAS stop failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "DAS stop failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Stops running DAS server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @return Stop DAS task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString stopDAS(final PayaraServer server) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, new CommandStopDAS());
-        
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Stops running DAS server.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @return Stop DAS task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString stopDAS(final PayaraServer server) throws PayaraIdeException {
+		Future<ResultString> future = exec(server, new CommandStopDAS());
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    /**
-     * Constructs an instance of GlassFish server version command entity.
-     */
-    public CommandStopDAS() {
-        super(COMMAND);
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Constructs an instance of GlassFish server version command entity.
+	 */
+	public CommandStopDAS() {
+		super(COMMAND);
+	}
 
 }

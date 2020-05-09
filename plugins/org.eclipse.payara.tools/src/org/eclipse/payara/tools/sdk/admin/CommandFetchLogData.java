@@ -30,52 +30,53 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestFetchLogData.class)
 public class CommandFetchLogData extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for view log command. */
-    private static final String COMMAND = "view-log";
+	/** Command string for view log command. */
+	private static final String COMMAND = "view-log";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Query parameters to be used to read only log entries added in particular interval starting from
-     * previous call that returned this value of <code>paramsAppendNext</code> stored in returned
-     * <code>ValueLog</code>.
-     * <p/>
-     * Content of HTTP header <code>X-Text-Append-Next</code>.
-     */
-    final String paramsAppendNext;
+	/**
+	 * Query parameters to be used to read only log entries added in particular
+	 * interval starting from previous call that returned this value of
+	 * <code>paramsAppendNext</code> stored in returned <code>ValueLog</code>.
+	 * <p/>
+	 * Content of HTTP header <code>X-Text-Append-Next</code>.
+	 */
+	final String paramsAppendNext;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server view log command entity.
-     * <p/>
-     * All existing log entries will be returned.
-     */
-    public CommandFetchLogData() {
-        super(COMMAND);
-        this.paramsAppendNext = null;
-    }
+	/**
+	 * Constructs an instance of GlassFish server view log command entity.
+	 * <p/>
+	 * All existing log entries will be returned.
+	 */
+	public CommandFetchLogData() {
+		super(COMMAND);
+		this.paramsAppendNext = null;
+	}
 
-    /**
-     * Constructs an instance of GlassFish server view log command entity.
-     * <p/>
-     * Only log entries added in particular interval starting from previous call that returned this
-     * value of <code>paramsAppendNext</code> will be returned.
-     * <p/>
-     *
-     * @param paramsAppendNext Interval query parameters from Last View Log command execution.
-     */
-    public CommandFetchLogData(String paramsAppendNext) {
-        super(COMMAND);
-        this.paramsAppendNext = paramsAppendNext;
-    }
+	/**
+	 * Constructs an instance of GlassFish server view log command entity.
+	 * <p/>
+	 * Only log entries added in particular interval starting from previous call
+	 * that returned this value of <code>paramsAppendNext</code> will be returned.
+	 * <p/>
+	 *
+	 * @param paramsAppendNext Interval query parameters from Last View Log command
+	 *                         execution.
+	 */
+	public CommandFetchLogData(String paramsAppendNext) {
+		super(COMMAND);
+		this.paramsAppendNext = paramsAppendNext;
+	}
 
 }

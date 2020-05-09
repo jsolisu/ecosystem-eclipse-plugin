@@ -31,8 +31,8 @@ import org.eclipse.jdt.debug.ui.launchConfigurations.JavaJRETab;
 import org.eclipse.wst.server.ui.ServerLaunchConfigurationTab;
 
 /**
- * The launch configuration that's shown when the "Open Launch Configuration" is clicked on e.g. the
- * "Server Editor". See {@link ServerSection}
+ * The launch configuration that's shown when the "Open Launch Configuration" is
+ * clicked on e.g. the "Server Editor". See {@link ServerSection}
  *
  * <p>
  * This is referred in <code>plug-in.xml</code> as extension
@@ -41,41 +41,41 @@ import org.eclipse.wst.server.ui.ServerLaunchConfigurationTab;
  */
 public class LaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-    @Override
-    public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-        ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[7];
-        tabs[0] = new ComboServerLaunchConfigurationTab(new String[] { "payara.server" });
-        tabs[0].setLaunchConfigurationDialog(dialog);
+	@Override
+	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
+		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[7];
+		tabs[0] = new ComboServerLaunchConfigurationTab(new String[] { "payara.server" });
+		tabs[0].setLaunchConfigurationDialog(dialog);
 
-        tabs[1] = new JavaArgumentsTab();
-        tabs[1].setLaunchConfigurationDialog(dialog);
+		tabs[1] = new JavaArgumentsTab();
+		tabs[1].setLaunchConfigurationDialog(dialog);
 
-        tabs[2] = new JavaClasspathTab();
-        tabs[2].setLaunchConfigurationDialog(dialog);
+		tabs[2] = new JavaClasspathTab();
+		tabs[2].setLaunchConfigurationDialog(dialog);
 
-        tabs[3] = new SourceLookupTab();
-        tabs[3].setLaunchConfigurationDialog(dialog);
+		tabs[3] = new SourceLookupTab();
+		tabs[3].setLaunchConfigurationDialog(dialog);
 
-        tabs[4] = new EnvironmentTab();
-        tabs[4].setLaunchConfigurationDialog(dialog);
+		tabs[4] = new EnvironmentTab();
+		tabs[4].setLaunchConfigurationDialog(dialog);
 
-        tabs[5] = new JavaJRETab();
-        tabs[5].setLaunchConfigurationDialog(dialog);
+		tabs[5] = new JavaJRETab();
+		tabs[5].setLaunchConfigurationDialog(dialog);
 
-        tabs[6] = new CommonTab();
-        tabs[6].setLaunchConfigurationDialog(dialog);
-        setTabs(tabs);
-    }
+		tabs[6] = new CommonTab();
+		tabs[6].setLaunchConfigurationDialog(dialog);
+		setTabs(tabs);
+	}
 
-    private static class ComboServerLaunchConfigurationTab extends ServerLaunchConfigurationTab {
-        public ComboServerLaunchConfigurationTab(String[] ids) {
-            super(ids);
-        }
+	private static class ComboServerLaunchConfigurationTab extends ServerLaunchConfigurationTab {
+		public ComboServerLaunchConfigurationTab(String[] ids) {
+			super(ids);
+		}
 
-        @Override
-        public void initializeFrom(ILaunchConfiguration configuration) {
-            super.initializeFrom(configuration);
-            handleServerSelection();
-        }
-    }
+		@Override
+		public void initializeFrom(ILaunchConfiguration configuration) {
+			super.initializeFrom(configuration);
+			handleServerSelection();
+		}
+	}
 }

@@ -31,29 +31,29 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestAddResources extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestAddResources(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestAddResources(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandAddResources cmd = (CommandAddResources) command;
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        StringBuilder data = new StringBuilder();
-        data.append("xml_file_name=").append(cmd.xmlResFile.getAbsolutePath());
-        if (cmd.target != null) {
-            data.append("&target=").append(cmd.target);
-        }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		CommandAddResources cmd = (CommandAddResources) command;
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		StringBuilder data = new StringBuilder();
+		data.append("xml_file_name=").append(cmd.xmlResFile.getAbsolutePath());
+		if (cmd.target != null) {
+			data.append("&target=").append(cmd.target);
+		}
 
-        wr.write(data.toString());
-        wr.close();
-    }
+		wr.write(data.toString());
+		wr.close();
+	}
 }

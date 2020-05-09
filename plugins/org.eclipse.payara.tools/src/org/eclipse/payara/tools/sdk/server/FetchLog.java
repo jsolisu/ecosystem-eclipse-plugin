@@ -33,108 +33,112 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public abstract class FetchLog {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(FetchLog.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(FetchLog.class);
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** GlassFish server for fetching server log. */
-    PayaraServer server;
+	/** GlassFish server for fetching server log. */
+	PayaraServer server;
 
-    /** Input stream which will provide access to log retrieved from server. */
-    final InputStream in;
+	/** Input stream which will provide access to log retrieved from server. */
+	final InputStream in;
 
-    /** Request to skip to the end of log. */
-    final boolean skip;
+	/** Request to skip to the end of log. */
+	final boolean skip;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Abstract methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Abstract methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructor callback which will initialize log <code>InputStream</code>.
-     * <p/>
-     *
-     * @return <code>InputStream</code> where log lines received from server will be available to read.
-     */
-    abstract InputStream initInputStream();
+	/**
+	 * Constructor callback which will initialize log <code>InputStream</code>.
+	 * <p/>
+	 *
+	 * @return <code>InputStream</code> where log lines received from server will be
+	 *         available to read.
+	 */
+	abstract InputStream initInputStream();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an empty instance of GlassFish server log fetcher using provided input stream.
-     * <p/>
-     * <code>InputStream</code> is set using constructor argument. Child class
-     * <code>initInputStream</code> method is ignored.
-     * <p/>
-     *
-     * @param in Input stream used to read server log.
-     * @param skip Skip to the end of the log file.
-     */
-    FetchLog(InputStream in, boolean skip) {
-        this.server = null;
-        this.in = in;
-        this.skip = skip;
-    }
+	/**
+	 * Constructs an empty instance of GlassFish server log fetcher using provided
+	 * input stream.
+	 * <p/>
+	 * <code>InputStream</code> is set using constructor argument. Child class
+	 * <code>initInputStream</code> method is ignored.
+	 * <p/>
+	 *
+	 * @param in   Input stream used to read server log.
+	 * @param skip Skip to the end of the log file.
+	 */
+	FetchLog(InputStream in, boolean skip) {
+		this.server = null;
+		this.in = in;
+		this.skip = skip;
+	}
 
-    /**
-     * Constructs an instance of GlassFish server log fetcher.
-     * <p/>
-     * <code>InputStream</code> is set using child <code>initInputStream</code> method.
-     * <p/>
-     *
-     * @param server GlassFish server for fetching server log.
-     * @param skip Skip to the end of the log file.
-     */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
-    FetchLog(PayaraServer server, boolean skip) {
-        this.server = server;
-        this.in = initInputStream();
-        this.skip = skip;
-    }
+	/**
+	 * Constructs an instance of GlassFish server log fetcher.
+	 * <p/>
+	 * <code>InputStream</code> is set using child <code>initInputStream</code>
+	 * method.
+	 * <p/>
+	 *
+	 * @param server GlassFish server for fetching server log.
+	 * @param skip   Skip to the end of the log file.
+	 */
+	@SuppressWarnings("OverridableMethodCallInConstructor")
+	FetchLog(PayaraServer server, boolean skip) {
+		this.server = server;
+		this.in = initInputStream();
+		this.skip = skip;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and Setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get input stream for reading lines from server log file.
-     * <p/>
-     *
-     * @return Input stream for reading lines from server log file.
-     */
-    public InputStream getInputStream() {
-        return this.in;
-    }
+	/**
+	 * Get input stream for reading lines from server log file.
+	 * <p/>
+	 *
+	 * @return Input stream for reading lines from server log file.
+	 */
+	public InputStream getInputStream() {
+		return this.in;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Close input stream used to access log lines received from server.
-     * <p/>
-     * This should be overridden in child classes to handle all streams and threads properly.
-     */
-    public void close() {
-        final String METHOD = "close";
-        if (this.in != null) {
-            try {
-                this.in.close();
-            } catch (IOException ioe) {
-                LOGGER.log(Level.INFO, METHOD, "cantClose", ioe);
-            }
-        } else {
-            LOGGER.log(Level.INFO, METHOD, "isNull");
-        }
-    }
+	/**
+	 * Close input stream used to access log lines received from server.
+	 * <p/>
+	 * This should be overridden in child classes to handle all streams and threads
+	 * properly.
+	 */
+	public void close() {
+		final String METHOD = "close";
+		if (this.in != null) {
+			try {
+				this.in.close();
+			} catch (IOException ioe) {
+				LOGGER.log(Level.INFO, METHOD, "cantClose", ioe);
+			}
+		} else {
+			LOGGER.log(Level.INFO, METHOD, "isNull");
+		}
+	}
 
 }

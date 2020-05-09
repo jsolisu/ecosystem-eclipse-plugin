@@ -32,24 +32,24 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestDeleteResource extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestDeleteResource(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestDeleteResource(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandDeleteResource cmd = (CommandDeleteResource) command;
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        wr.write(cmd.cmdPropertyName + "=" + cmd.name);
-        wr.flush();
-        wr.close();
-    }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		CommandDeleteResource cmd = (CommandDeleteResource) command;
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		wr.write(cmd.cmdPropertyName + "=" + cmd.name);
+		wr.flush();
+		wr.close();
+	}
 }

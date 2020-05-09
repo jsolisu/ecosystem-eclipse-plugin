@@ -35,58 +35,57 @@ import org.xml.sax.SAXException;
  */
 public class JmxConnectorReader extends TargetConfigReader implements XMLReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(JmxConnectorReader.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(JmxConnectorReader.class);
 
-    public static final String DEFAULT_PATH = "/domain/configs/config/admin-service/jmx-connector";
+	public static final String DEFAULT_PATH = "/domain/configs/config/admin-service/jmx-connector";
 
-    private String path;
+	private String path;
 
-    private String result;
+	private String result;
 
-    public JmxConnectorReader(String path, String targetConfigName) {
-        super(targetConfigName);
-        this.path = path;
-    }
+	public JmxConnectorReader(String path, String targetConfigName) {
+		super(targetConfigName);
+		this.path = path;
+	}
 
-    public JmxConnectorReader(String targetConfigName) {
-        this(DEFAULT_PATH, targetConfigName);
-    }
+	public JmxConnectorReader(String targetConfigName) {
+		this(DEFAULT_PATH, targetConfigName);
+	}
 
-    @Override
-    public void readAttributes(String qname, Attributes attributes)
-            throws SAXException {
-        final String METHOD = "getServerConfig";
-        /*
-         * <admin-service type="das-and-server" system-jmx-connector-name="system"> <jmx-connector .....
-         * port="8686" />
-         */
-        if (readData) {
-            String jmxAttr = attributes.getValue("port");
-            try {
-                int port = Integer.parseInt(jmxAttr);
-                result = "" + port; //$NON-NLS-1$
-                LOGGER.log(Level.INFO, METHOD, "port", result);
-            } catch (NumberFormatException ex) {
-                LOGGER.log(Level.SEVERE, METHOD, "error", ex);
-            }
-        }
+	@Override
+	public void readAttributes(String qname, Attributes attributes) throws SAXException {
+		final String METHOD = "getServerConfig";
+		/*
+		 * <admin-service type="das-and-server" system-jmx-connector-name="system">
+		 * <jmx-connector ..... port="8686" />
+		 */
+		if (readData) {
+			String jmxAttr = attributes.getValue("port");
+			try {
+				int port = Integer.parseInt(jmxAttr);
+				result = "" + port; //$NON-NLS-1$
+				LOGGER.log(Level.INFO, METHOD, "port", result);
+			} catch (NumberFormatException ex) {
+				LOGGER.log(Level.SEVERE, METHOD, "error", ex);
+			}
+		}
 
-    }
+	}
 
-    @Override
-    public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<>();
-        paths.add(new Path(path, this));
-        paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
-        return paths;
-    }
+	@Override
+	public List<TreeParser.Path> getPathsToListen() {
+		LinkedList<TreeParser.Path> paths = new LinkedList<>();
+		paths.add(new Path(path, this));
+		paths.add(new Path(CONFIG_PATH, new TargetConfigMarker()));
+		return paths;
+	}
 
-    public String getResult() {
-        return result;
-    }
+	public String getResult() {
+		return result;
+	}
 }

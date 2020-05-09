@@ -28,13 +28,13 @@ import org.eclipse.wst.server.core.IServer;
 
 public class OpenServerHomeHandler extends AbstractPayaraSelectionHandler {
 
-    @Override
-    public void processSelection(IServer server) {
-        try {
-            showURI(getServerHomeURI(load(server, PayaraServerBehaviour.class).getPayaraServerDelegate()));
-        } catch (Exception e) {
-            logMessage("Error opening folder in desktop " + e.getMessage());
-        }
-    }
+	@Override
+	public void processSelection(IServer server) {
+		try {
+			showURI(getServerHomeURI(load(server, PayaraServerBehaviour.class).getPayaraServerDelegate()));
+		} catch (Exception e) {
+			logMessage("Error opening folder in desktop " + e.getMessage());
+		}
+	}
 
 }

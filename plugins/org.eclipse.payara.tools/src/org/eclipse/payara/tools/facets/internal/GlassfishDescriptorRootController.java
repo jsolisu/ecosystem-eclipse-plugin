@@ -33,76 +33,74 @@ import org.w3c.dom.Element;
 
 public class GlassfishDescriptorRootController extends StandardRootElementController {
 
-    private GlassfishDescriptorType type;
+	private GlassfishDescriptorType type;
 
-    @Override
-    public void init(final XmlResource resource) {
-        super.init(resource);
+	@Override
+	public void init(final XmlResource resource) {
+		super.init(resource);
 
-        this.type = GlassfishDescriptorType.getDescriptorType(resource.element().type());
-    }
+		this.type = GlassfishDescriptorType.getDescriptorType(resource.element().type());
+	}
 
-    @Override
-    public void createRootElement() {
-        Document document = ((RootXmlResource) resource().root()).getDomDocument();
-        createRootElement(document);
-    }
+	@Override
+	public void createRootElement() {
+		Document document = ((RootXmlResource) resource().root()).getDomDocument();
+		createRootElement(document);
+	}
 
-    protected void createRootElement(Document document) {
-        GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
+	protected void createRootElement(Document document) {
+		GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
 
-        final Element root = document.createElementNS(null,
-                gfRootInfo.getRootElementName());
-        DocumentType doctype = null;
+		final Element root = document.createElementNS(null, gfRootInfo.getRootElementName());
+		DocumentType doctype = null;
 
-        if (gfRootInfo.getPublicId() != null) {
-            doctype = document.getImplementation().createDocumentType(
-                    gfRootInfo.getRootElementName(), gfRootInfo.getPublicId(), gfRootInfo.getSystemId());
-        } else {
-            doctype = document.getImplementation().createDocumentType(
-                    gfRootInfo.getRootElementName(), null, gfRootInfo.getSystemId());
-        }
-        if (doctype != null) {
-            document.appendChild(doctype);
-            document.insertBefore(root, doctype);
-        }
-        document.appendChild(root);
-    }
+		if (gfRootInfo.getPublicId() != null) {
+			doctype = document.getImplementation().createDocumentType(gfRootInfo.getRootElementName(),
+					gfRootInfo.getPublicId(), gfRootInfo.getSystemId());
+		} else {
+			doctype = document.getImplementation().createDocumentType(gfRootInfo.getRootElementName(), null,
+					gfRootInfo.getSystemId());
+		}
+		if (doctype != null) {
+			document.appendChild(doctype);
+			document.insertBefore(root, doctype);
+		}
+		document.appendChild(root);
+	}
 
-    @Override
-    public boolean checkRootElement() {
-        final Document document = ((RootXmlResource) resource().root()).getDomDocument();
-        final Element root = document.getDocumentElement();
+	@Override
+	public boolean checkRootElement() {
+		final Document document = ((RootXmlResource) resource().root()).getDomDocument();
+		final Element root = document.getDocumentElement();
 
-        GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
+		GlassfishRootElementInfo gfRootInfo = getGlassfishRootElementInfo();
 
-        if (equal(root.getLocalName(), gfRootInfo.getRootElementName())) {
-            final DocumentType documentType = document.getDoctype();
+		if (equal(root.getLocalName(), gfRootInfo.getRootElementName())) {
+			final DocumentType documentType = document.getDoctype();
 
-            if (documentType != null &&
-                    gfRootInfo.getSystemId().equals(documentType.getSystemId()) &&
-                    equal(gfRootInfo.getPublicId(), normalizeToNull(documentType.getPublicId()))) {
-                return true;
-            }
-        }
+			if (documentType != null && gfRootInfo.getSystemId().equals(documentType.getSystemId())
+					&& equal(gfRootInfo.getPublicId(), normalizeToNull(documentType.getPublicId()))) {
+				return true;
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    private GlassfishRootElementInfo getGlassfishRootElementInfo() {
-        GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
-        PayaraLocationUtils gfInstall = PayaraLocationUtils.find(resource().adapt(IProject.class));
-        if (gfInstall == null) {
-            return defaultInfo;
-        }
-        Version v = gfInstall.version();
-        Version gfVersion = new Version(v.toString());
-        if (gfVersion == null) {
-            return defaultInfo;
-        }
+	private GlassfishRootElementInfo getGlassfishRootElementInfo() {
+		GlassfishRootElementInfo defaultInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
+		PayaraLocationUtils gfInstall = PayaraLocationUtils.find(resource().adapt(IProject.class));
+		if (gfInstall == null) {
+			return defaultInfo;
+		}
+		Version v = gfInstall.version();
+		Version gfVersion = new Version(v.toString());
+		if (gfVersion == null) {
+			return defaultInfo;
+		}
 
-        GlassfishRootElementInfo rootInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
-        return rootInfo != null ? rootInfo : defaultInfo;
-    }
+		GlassfishRootElementInfo rootInfo = GlassfishDescriptorType.getGlassfishRootElementInfo(type);
+		return rootInfo != null ? rootInfo : defaultInfo;
+	}
 
 }

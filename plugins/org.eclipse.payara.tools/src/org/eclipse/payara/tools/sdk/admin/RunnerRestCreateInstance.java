@@ -32,32 +32,32 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestCreateInstance extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestCreateInstance(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestCreateInstance(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        CommandCreateInstance createCommand = (CommandCreateInstance) command;
-        StringBuilder data = new StringBuilder();
-        data.append("instance_name=").append(createCommand.name);
-        data.append("&node=").append(createCommand.node);
-        if (createCommand.target != null) {
-            data.append("&cluster=").append(createCommand.target);
-        }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		CommandCreateInstance createCommand = (CommandCreateInstance) command;
+		StringBuilder data = new StringBuilder();
+		data.append("instance_name=").append(createCommand.name);
+		data.append("&node=").append(createCommand.node);
+		if (createCommand.target != null) {
+			data.append("&cluster=").append(createCommand.target);
+		}
 
-        wr.write(data.toString());
-        wr.flush();
-        wr.close();
-    }
+		wr.write(data.toString());
+		wr.flush();
+		wr.close();
+	}
 
 }

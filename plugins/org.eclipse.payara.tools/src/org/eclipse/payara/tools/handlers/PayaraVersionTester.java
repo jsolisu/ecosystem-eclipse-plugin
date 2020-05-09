@@ -28,9 +28,10 @@ import org.eclipse.wst.server.core.IServer;
 
 public class PayaraVersionTester extends PropertyTester {
 
-    @Override
-    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-        return new File(load((IServer) receiver, PayaraServer.class).getServerInstallationDirectory() + "/modules").exists();
-    }
+	@Override
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+		return new File(load((IServer) receiver, PayaraServer.class).getServerInstallationDirectory() + "/modules")
+				.exists();
+	}
 
 }

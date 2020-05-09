@@ -48,126 +48,129 @@ import org.eclipse.wst.server.core.internal.Runtime;
 @SuppressWarnings("restriction")
 public final class PayaraRuntimeBridge implements IRuntimeBridge {
 
-    @Override
-    public Set<String> getExportedRuntimeNames() throws CoreException {
-        final SetFactory<String> namesSetFactory = SetFactory.start();
+	@Override
+	public Set<String> getExportedRuntimeNames() throws CoreException {
+		final SetFactory<String> namesSetFactory = SetFactory.start();
 
-        for (IRuntime runtime : getRuntimes()) {
-            IRuntimeType type = runtime.getRuntimeType();
+		for (IRuntime runtime : getRuntimes()) {
+			IRuntimeType type = runtime.getRuntimeType();
 
-            if (type != null && "payara.runtime".equals(type.getId())) {
-                namesSetFactory.add(runtime.getId());
-            }
-        }
+			if (type != null && "payara.runtime".equals(type.getId())) {
+				namesSetFactory.add(runtime.getId());
+			}
+		}
 
-        return namesSetFactory.result();
-    }
+		return namesSetFactory.result();
+	}
 
-    @Override
-    public IStub bridge(final String name) throws CoreException {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
+	@Override
+	public IStub bridge(final String name) throws CoreException {
+		if (name == null) {
+			throw new IllegalArgumentException();
+		}
 
-        return new Stub(name);
-    }
+		return new Stub(name);
+	}
 
-    private static class Stub extends IRuntimeBridge.Stub {
-        private String id;
+	private static class Stub extends IRuntimeBridge.Stub {
+		private String id;
 
-        public Stub(String id) {
-            this.id = id;
-        }
+		public Stub(String id) {
+			this.id = id;
+		}
 
-        @Override
-        public List<IRuntimeComponent> getRuntimeComponents() {
-            List<IRuntimeComponent> components = new ArrayList<>(2);
-            final IRuntime runtime = findRuntime(this.id);
+		@Override
+		public List<IRuntimeComponent> getRuntimeComponents() {
+			List<IRuntimeComponent> components = new ArrayList<>(2);
+			final IRuntime runtime = findRuntime(this.id);
 
-            if (runtime == null) {
-                return components;
-            }
+			if (runtime == null) {
+				return components;
+			}
 
-            final PayaraRuntime payaraRuntime = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class, new NullProgressMonitor());
+			final PayaraRuntime payaraRuntime = (PayaraRuntime) runtime.loadAdapter(PayaraRuntime.class,
+					new NullProgressMonitor());
 
-            if (payaraRuntime != null) {
-                final Version payaraVersion = payaraRuntime.getVersion();
+			if (payaraRuntime != null) {
+				final Version payaraVersion = payaraRuntime.getVersion();
 
-                if (payaraVersion != null) {
+				if (payaraVersion != null) {
 
-                    String payaraMainVersion = payaraVersion.matches("[5") ? "5" : (payaraVersion.matches("[4") ? "4" : "3.1");
-                    IRuntimeComponentVersion payaraComponentVersion = getRuntimeComponentType("payara.runtime").getVersion(payaraMainVersion);
+					String payaraMainVersion = payaraVersion.matches("[5") ? "5"
+							: (payaraVersion.matches("[4") ? "4" : "3.1");
+					IRuntimeComponentVersion payaraComponentVersion = getRuntimeComponentType("payara.runtime")
+							.getVersion(payaraMainVersion);
 
-                    Map<String, String> properties = new HashMap<>(5);
-                    if (runtime.getLocation() != null) {
-                        properties.put("location", runtime.getLocation().toPortableString());
-                    } else {
-                        properties.put("location", "");
-                    }
+					Map<String, String> properties = new HashMap<>(5);
+					if (runtime.getLocation() != null) {
+						properties.put("location", runtime.getLocation().toPortableString());
+					} else {
+						properties.put("location", "");
+					}
 
-                    properties.put("name", runtime.getName());
-                    properties.put("id", runtime.getId());
-                    if (runtime.getRuntimeType() != null) {
-                        properties.put("type", runtime.getRuntimeType().getName());
-                        properties.put("type-id", runtime.getRuntimeType().getId());
-                    }
+					properties.put("name", runtime.getName());
+					properties.put("id", runtime.getId());
+					if (runtime.getRuntimeType() != null) {
+						properties.put("type", runtime.getRuntimeType().getName());
+						properties.put("type-id", runtime.getRuntimeType().getId());
+					}
 
-                    components.add(createRuntimeComponent(payaraComponentVersion, properties));
+					components.add(createRuntimeComponent(payaraComponentVersion, properties));
 
-                    // Java Runtime Environment
+					// Java Runtime Environment
 
-                    components.add(StandardJreRuntimeComponent.create(payaraRuntime.getVMInstall()));
+					components.add(StandardJreRuntimeComponent.create(payaraRuntime.getVMInstall()));
 
-                    // Other
+					// Other
 
-                    components.addAll(RuntimeComponentProvidersExtensionPoint.getRuntimeComponents(runtime));
-                }
-            }
+					components.addAll(RuntimeComponentProvidersExtensionPoint.getRuntimeComponents(runtime));
+				}
+			}
 
-            return components;
-        }
+			return components;
+		}
 
-        @Override
-        public Map<String, String> getProperties() {
-            Map<String, String> properties = new HashMap<>();
-            IRuntime runtime = findRuntime(id);
-            if (runtime != null) {
-                properties.put("id", runtime.getId());
-                properties.put("localized-name", runtime.getName());
-                String s = ((Runtime) runtime).getAttribute("alternate-names", (String) null);
-                if (s != null) {
-                    properties.put("alternate-names", s);
-                }
-            }
-            
-            return properties;
-        }
+		@Override
+		public Map<String, String> getProperties() {
+			Map<String, String> properties = new HashMap<>();
+			IRuntime runtime = findRuntime(id);
+			if (runtime != null) {
+				properties.put("id", runtime.getId());
+				properties.put("localized-name", runtime.getName());
+				String s = ((Runtime) runtime).getAttribute("alternate-names", (String) null);
+				if (s != null) {
+					properties.put("alternate-names", s);
+				}
+			}
 
-        @Override
-        public IStatus validate(final IProgressMonitor monitor) {
-            final IRuntime runtime = findRuntime(this.id);
-            if (runtime != null) {
-                return runtime.validate(monitor);
-            }
-            return OK_STATUS;
-        }
+			return properties;
+		}
 
-        private static final IRuntime findRuntime(final String id) {
-            IRuntime[] runtimes = ServerCore.getRuntimes();
-            int size = runtimes.length;
+		@Override
+		public IStatus validate(final IProgressMonitor monitor) {
+			final IRuntime runtime = findRuntime(this.id);
+			if (runtime != null) {
+				return runtime.validate(monitor);
+			}
+			return OK_STATUS;
+		}
 
-            for (int i = 0; i < size; i++) {
-                if (runtimes[i].getId().equals(id)) {
-                    return runtimes[i];
-                }
-                if (runtimes[i].getName().equals(id)) {
-                    return runtimes[i];
-                }
+		private static final IRuntime findRuntime(final String id) {
+			IRuntime[] runtimes = ServerCore.getRuntimes();
+			int size = runtimes.length;
 
-            }
-            
-            return null;
-        }
-    }
+			for (int i = 0; i < size; i++) {
+				if (runtimes[i].getId().equals(id)) {
+					return runtimes[i];
+				}
+				if (runtimes[i].getName().equals(id)) {
+					return runtimes[i];
+				}
+
+			}
+
+			return null;
+		}
+	}
 
 }

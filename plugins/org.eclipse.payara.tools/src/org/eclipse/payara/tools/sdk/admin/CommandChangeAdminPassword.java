@@ -19,7 +19,8 @@
 package org.eclipse.payara.tools.sdk.admin;
 
 /**
- * GlassFish server change administrator's password administration command entity.
+ * GlassFish server change administrator's password administration command
+ * entity.
  * <p/>
  *
  * @author Tomas Kraus
@@ -28,39 +29,38 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerAsadminChangeAdminPassword.class)
 public class CommandChangeAdminPassword extends CommandJava {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for change administrator's password command. */
-    private static final String COMMAND = "change-admin-password";
+	/** Command string for change administrator's password command. */
+	private static final String COMMAND = "change-admin-password";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * GlassFish administrator's new password to be set. Value of <code>null</code> or empty
-     * <code>String</code> means no password.
-     */
-    final String password;
+	/**
+	 * GlassFish administrator's new password to be set. Value of <code>null</code>
+	 * or empty <code>String</code> means no password.
+	 */
+	final String password;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server administration command entity with specified server
-     * command, Java SE home and class path.
-     * <p/>
-     *
-     * @param javaHome Java SE home used to select JRE for GlassFish server.
-     * @param password GlassFish administrator's new password to be set.
-     */
-    public CommandChangeAdminPassword(final String javaHome,
-            final String password) {
-        super(COMMAND, javaHome);
-        this.password = password;
-    }
+	/**
+	 * Constructs an instance of GlassFish server administration command entity with
+	 * specified server command, Java SE home and class path.
+	 * <p/>
+	 *
+	 * @param javaHome Java SE home used to select JRE for GlassFish server.
+	 * @param password GlassFish administrator's new password to be set.
+	 */
+	public CommandChangeAdminPassword(final String javaHome, final String password) {
+		super(COMMAND, javaHome);
+		this.password = password;
+	}
 
 }

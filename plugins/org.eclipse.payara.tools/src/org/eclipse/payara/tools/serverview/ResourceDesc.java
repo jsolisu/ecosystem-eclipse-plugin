@@ -24,29 +24,29 @@ package org.eclipse.payara.tools.serverview;
  */
 public class ResourceDesc implements Comparable<ResourceDesc> {
 
-    private final String name;
-    private final String cmdSuffix;
+	private final String name;
+	private final String cmdSuffix;
 
-    public ResourceDesc(final String name, final String cmdSuffix) {
-        this.name = name;
-        this.cmdSuffix = cmdSuffix;
-    }
+	public ResourceDesc(final String name, final String cmdSuffix) {
+		this.name = name;
+		this.cmdSuffix = cmdSuffix;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getCommandSuffix() {
-        return cmdSuffix;
-    }
+	public String getCommandSuffix() {
+		return cmdSuffix;
+	}
 
-    @Override
-    public int compareTo(ResourceDesc o) {
-        int result = name.compareTo(o.name);
-        if (result == 0) {
-            result = cmdSuffix.compareTo(o.cmdSuffix);
-        }
-        return result;
-    }
+	@Override
+	public int compareTo(ResourceDesc o) {
+		int result = name.compareTo(o.name);
+		if (result == 0) {
+			result = cmdSuffix.compareTo(o.cmdSuffix);
+		}
+		return result;
+	}
 
 }

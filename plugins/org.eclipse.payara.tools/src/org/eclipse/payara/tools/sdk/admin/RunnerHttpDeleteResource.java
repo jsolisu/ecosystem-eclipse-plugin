@@ -27,48 +27,48 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerHttpDeleteResource extends RunnerHttp {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(RunnerHttpDeleteResource.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(RunnerHttpDeleteResource.class);
 
-    /** Deploy command <code>DEFAULT</code> parameter name. */
-    private static final String DEFAULT_PARAM = "DEFAULT";
+	/** Deploy command <code>DEFAULT</code> parameter name. */
+	private static final String DEFAULT_PARAM = "DEFAULT";
 
-    /**
-     * Creates query string from command object properties.
-     * <p/>
-     *
-     * @param command GlassFish server administration command entity.
-     * @return Query string from command object properties.
-     */
-    private static String query(CommandDeleteResource command) {
-        StringBuilder query = new StringBuilder(128);
-        query.append(DEFAULT_PARAM);
-        query.append('=');
-        query.append(command.name);
-        if (null != command.target) {
-            query.append(PARAM_SEPARATOR);
-            query.append("target=");
-            query.append(command.target);
-        }
-        return query.toString();
-    }
+	/**
+	 * Creates query string from command object properties.
+	 * <p/>
+	 *
+	 * @param command GlassFish server administration command entity.
+	 * @return Query string from command object properties.
+	 */
+	private static String query(CommandDeleteResource command) {
+		StringBuilder query = new StringBuilder(128);
+		query.append(DEFAULT_PARAM);
+		query.append('=');
+		query.append(command.name);
+		if (null != command.target) {
+			query.append(PARAM_SEPARATOR);
+			query.append("target=");
+			query.append(command.target);
+		}
+		return query.toString();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerHttpDeleteResource(final PayaraServer server,
-            final Command command) {
-        super(server, command, query((CommandDeleteResource) command));
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerHttpDeleteResource(final PayaraServer server, final Command command) {
+		super(server, command, query((CommandDeleteResource) command));
+	}
 }

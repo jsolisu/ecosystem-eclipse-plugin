@@ -30,35 +30,36 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestCreateInstance.class)
 public class CommandCreateInstance extends CommandTargetName {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for create-instance command. */
-    private static final String COMMAND = "create-instance";
+	/** Command string for create-instance command. */
+	private static final String COMMAND = "create-instance";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Target GlassFish node where instance will be created. */
-    final String node;
+	/** Target GlassFish node where instance will be created. */
+	final String node;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server create-instance command entity.
-     * <p/>
-     *
-     * @param name Name of instance to create.
-     * @param target Target GlassFish cluster or <code>null</code> for standalone instance.
-     * @param node Target GlassFish node where instance will be created.
-     */
-    public CommandCreateInstance(String name, String target, String node) {
-        super(COMMAND, name, target);
-        this.node = node;
-    }
+	/**
+	 * Constructs an instance of GlassFish server create-instance command entity.
+	 * <p/>
+	 *
+	 * @param name   Name of instance to create.
+	 * @param target Target GlassFish cluster or <code>null</code> for standalone
+	 *               instance.
+	 * @param node   Target GlassFish node where instance will be created.
+	 */
+	public CommandCreateInstance(String name, String target, String node) {
+		super(COMMAND, name, target);
+		this.node = node;
+	}
 
 }

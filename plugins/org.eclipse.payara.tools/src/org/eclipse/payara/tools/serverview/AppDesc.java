@@ -24,32 +24,32 @@ package org.eclipse.payara.tools.serverview;
  */
 public class AppDesc {
 
-    private final String name;
-    private final String path;
-    private final String contextRoot;
-    private final String engineType;
+	private final String name;
+	private final String path;
+	private final String contextRoot;
+	private final String engineType;
 
-    public AppDesc(final String name, final String path, final String contextRoot, final String type) {
-        this.name = name;
-        this.path = path;
-        this.contextRoot = contextRoot;
-        this.engineType = type;
-    }
+	public AppDesc(final String name, final String path, final String contextRoot, final String type) {
+		this.name = name;
+		this.path = path;
+		this.contextRoot = contextRoot;
+		this.engineType = type;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getPath() {
-        return path;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public String getContextRoot() {
-        return contextRoot;
-    }
+	public String getContextRoot() {
+		return contextRoot;
+	}
 
-    public String getType() {
-        return engineType;
-    }
+	public String getType() {
+		return engineType;
+	}
 
 }

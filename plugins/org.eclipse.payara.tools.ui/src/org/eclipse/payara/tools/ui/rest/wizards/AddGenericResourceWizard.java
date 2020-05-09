@@ -65,8 +65,8 @@ public class AddGenericResourceWizard extends NewWebArtifactWizard {
         return null;
     }
 
-    @Override
-    protected String getTitle() {
+	@Override
+	protected String getTitle() {
         return Messages.genericResourceWizardTitle;
     }
 

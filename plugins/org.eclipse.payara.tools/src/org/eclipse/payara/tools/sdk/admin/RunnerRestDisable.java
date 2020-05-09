@@ -33,30 +33,30 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestDisable extends RunnerRest {
 
-    /**
-     * Constructs an instance of administration command executor using REST interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestDisable(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-    }
+	/**
+	 * Constructs an instance of administration command executor using REST
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestDisable(final PayaraServer server, final Command command) {
+		super(server, command);
+	}
 
-    @Override
-    protected void handleSend(HttpURLConnection hconn) throws IOException {
-        CommandTargetName commandApp = (CommandTargetName) command;
-        String target = commandApp.target;
-        OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
-        StringBuilder data = new StringBuilder();
-        data.append("name=").append(commandApp.name);
-        if (target != null) {
-            data.append("&target=").append(commandApp.target);
-        }
+	@Override
+	protected void handleSend(HttpURLConnection hconn) throws IOException {
+		CommandTargetName commandApp = (CommandTargetName) command;
+		String target = commandApp.target;
+		OutputStreamWriter wr = new OutputStreamWriter(hconn.getOutputStream());
+		StringBuilder data = new StringBuilder();
+		data.append("name=").append(commandApp.name);
+		if (target != null) {
+			data.append("&target=").append(commandApp.target);
+		}
 
-        wr.write(data.toString());
-        wr.close();
-    }
+		wr.write(data.toString());
+		wr.close();
+	}
 }

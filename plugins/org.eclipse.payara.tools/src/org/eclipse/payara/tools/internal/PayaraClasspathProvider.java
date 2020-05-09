@@ -32,38 +32,39 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
 /**
- * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin Komissarchik</a>
+ * @author <a href="mailto:konstantin.komissarchik@oracle.com">Konstantin
+ *         Komissarchik</a>
  */
 
 public final class PayaraClasspathProvider implements IClasspathProvider {
-    private static final String MODULES_GROUP_ID = "modules";
+	private static final String MODULES_GROUP_ID = "modules";
 
-    @Override
-    public List<IClasspathEntry> getClasspathEntries(IProjectFacetVersion facetVersion) {
-        if (!ProjectFacetsManager.isGroupDefined(MODULES_GROUP_ID)) {
-            return null;
-        }
+	@Override
+	public List<IClasspathEntry> getClasspathEntries(IProjectFacetVersion facetVersion) {
+		if (!ProjectFacetsManager.isGroupDefined(MODULES_GROUP_ID)) {
+			return null;
+		}
 
-        if (getGroup(MODULES_GROUP_ID).getMembers().contains(facetVersion)) {
-            return singletonList(newContainerEntry(new Path(SystemLibrariesContainer.ID)));
-        }
+		if (getGroup(MODULES_GROUP_ID).getMembers().contains(facetVersion)) {
+			return singletonList(newContainerEntry(new Path(SystemLibrariesContainer.ID)));
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    @SuppressWarnings("rawtypes")
-    public static final class Factory implements IAdapterFactory {
-        private static final Class[] ADAPTER_TYPES = { IClasspathProvider.class };
+	@SuppressWarnings("rawtypes")
+	public static final class Factory implements IAdapterFactory {
+		private static final Class[] ADAPTER_TYPES = { IClasspathProvider.class };
 
-        @Override
-        public Class[] getAdapterList() {
-            return ADAPTER_TYPES;
-        }
+		@Override
+		public Class[] getAdapterList() {
+			return ADAPTER_TYPES;
+		}
 
-        @Override
-        public Object getAdapter(final Object adaptableObject, final Class adapterType) {
-            return new PayaraClasspathProvider();
-        }
-    }
+		@Override
+		public Object getAdapter(final Object adaptableObject, final Class adapterType) {
+			return new PayaraClasspathProvider();
+		}
+	}
 
 }

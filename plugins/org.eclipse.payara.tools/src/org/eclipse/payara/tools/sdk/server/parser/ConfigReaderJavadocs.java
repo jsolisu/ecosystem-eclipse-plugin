@@ -31,74 +31,74 @@ import org.eclipse.payara.tools.sdk.server.parser.TreeParser.Path;
  */
 public class ConfigReaderJavadocs extends ConfigReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** <code>link</code> XML element reader. */
-    private final LinkReader linkReader = new LinkReader();
+	/** <code>link</code> XML element reader. */
+	private final LinkReader linkReader = new LinkReader();
 
-    /** <code>lookup</code> XML element reader. */
-    private final LookupReader lookupReader = new LookupReader();
+	/** <code>lookup</code> XML element reader. */
+	private final LookupReader lookupReader = new LookupReader();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // XML reader methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// XML reader methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Provide paths to listen on.
-     * <p/>
-     * Sets readers for internal <code>javadocs</code> elements.
-     * <p/>
-     *
-     * @return Paths that the reader listens to.
-     */
-    @Override
-    public List<TreeParser.Path> getPathsToListen() {
-        LinkedList<TreeParser.Path> paths = new LinkedList<>();
-        paths.add(new Path("/server/library/javadocs/file", pathReader));
-        paths.add(new Path("/server/library/javadocs/fileset", filesetReader));
-        paths.add(new Path("/server/library/javadocs/link", linkReader));
-        paths.add(new Path("/server/library/javadocs/lookup", lookupReader));
-        return paths;
-    }
+	/**
+	 * Provide paths to listen on.
+	 * <p/>
+	 * Sets readers for internal <code>javadocs</code> elements.
+	 * <p/>
+	 *
+	 * @return Paths that the reader listens to.
+	 */
+	@Override
+	public List<TreeParser.Path> getPathsToListen() {
+		LinkedList<TreeParser.Path> paths = new LinkedList<>();
+		paths.add(new Path("/server/library/javadocs/file", pathReader));
+		paths.add(new Path("/server/library/javadocs/fileset", filesetReader));
+		paths.add(new Path("/server/library/javadocs/link", linkReader));
+		paths.add(new Path("/server/library/javadocs/lookup", lookupReader));
+		return paths;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get links retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    List<String> getLinks() {
-        return linkReader.getLinks();
-    }
+	/**
+	 * Get links retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	List<String> getLinks() {
+		return linkReader.getLinks();
+	}
 
-    /**
-     * Get lookups retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    List<String> getLookups() {
-        return lookupReader.getLookups();
-    }
+	/**
+	 * Get lookups retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	List<String> getLookups() {
+		return lookupReader.getLookups();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    @Override
-    void reset() {
-        super.reset();
-        linkReader.reset();
-        lookupReader.reset();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	@Override
+	void reset() {
+		super.reset();
+		linkReader.reset();
+		lookupReader.reset();
+	}
 
 }

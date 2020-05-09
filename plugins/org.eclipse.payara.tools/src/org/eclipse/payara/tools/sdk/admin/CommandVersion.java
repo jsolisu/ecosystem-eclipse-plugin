@@ -42,100 +42,102 @@ import org.eclipse.sapphire.Version;
 @RunnerRestClass
 public class CommandVersion extends Command {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Logger instance for this class. */
-    private static final Logger LOGGER = new Logger(CommandVersion.class);
+	/** Logger instance for this class. */
+	private static final Logger LOGGER = new Logger(CommandVersion.class);
 
-    /** Command string for version command. */
-    private static final String COMMAND = "version";
+	/** Command string for version command. */
+	private static final String COMMAND = "version";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Retrieve version from server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @return GlassFish command result containing version string returned by server.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString getVersion(final PayaraServer server) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, new CommandVersion());
-        
-        try {
-            return future.get();
-        } catch (ExecutionException | InterruptedException | CancellationException e) {
-            throw new CommandException(LOGGER.excMsg("getVersion", "exception"), e.getLocalizedMessage());
-        }
-    }
+	/**
+	 * Retrieve version from server.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @return GlassFish command result containing version string returned by
+	 *         server.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString getVersion(final PayaraServer server) throws PayaraIdeException {
+		Future<ResultString> future = exec(server, new CommandVersion());
 
-    /**
-     * Retrieve version from server.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @return GlassFish command result containing {@link GlassFishVersion} object retrieved from server
-     * or <code>null</code> if no version was returned.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static Version getGlassFishVersion(PayaraServer server) {
-        ResultString result;
-        try {
-            result = getVersion(server);
-        } catch (CommandException ce) {
-            return null;
-        }
-        
-        String value = result != null
-                ? ServerUtils.getVersionString(result.getValue())
-                : null;
-        
-                if (value != null) {
-            return new Version(value);
-        }
-        
-        return null;
-    }
+		try {
+			return future.get();
+		} catch (ExecutionException | InterruptedException | CancellationException e) {
+			throw new CommandException(LOGGER.excMsg("getVersion", "exception"), e.getLocalizedMessage());
+		}
+	}
 
-    /**
-     * Verifies if domain directory returned by version command result matches domain directory of
-     * provided GlassFish server entity.
-     * <p/>
-     *
-     * @param result Version command result.
-     * @param server GlassFish server entity.
-     * @return For local server value of <code>true</code> means that server major and minor version
-     * value matches values returned by version command and value of <code>false</code> that they
-     * differs.
-     */
-    public static boolean verifyResult(ResultString result, PayaraServer server) {
-        boolean verifyResult = false;
-        String value = ServerUtils.getVersionString(result.getValue());
-        if (value != null) {
-            Version valueVersion = new Version(value);
-            Version serverVersion = server.getVersion();
-            if (valueVersion != null && serverVersion != null) {
-                verifyResult = serverVersion.equals(valueVersion);
-            }
-        }
-        
-        return verifyResult;
-    }
+	/**
+	 * Retrieve version from server.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @return GlassFish command result containing {@link GlassFishVersion} object
+	 *         retrieved from server or <code>null</code> if no version was
+	 *         returned.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static Version getGlassFishVersion(PayaraServer server) {
+		ResultString result;
+		try {
+			result = getVersion(server);
+		} catch (CommandException ce) {
+			return null;
+		}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+		String value = result != null ? ServerUtils.getVersionString(result.getValue()) : null;
 
-    /**
-     * Constructs an instance of GlassFish server version command entity.
-     */
-    public CommandVersion() {
-        super(COMMAND);
-    }
+		if (value != null) {
+			return new Version(value);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Verifies if domain directory returned by version command result matches
+	 * domain directory of provided GlassFish server entity.
+	 * <p/>
+	 *
+	 * @param result Version command result.
+	 * @param server GlassFish server entity.
+	 * @return For local server value of <code>true</code> means that server major
+	 *         and minor version value matches values returned by version command
+	 *         and value of <code>false</code> that they differs.
+	 */
+	public static boolean verifyResult(ResultString result, PayaraServer server) {
+		boolean verifyResult = false;
+		String value = ServerUtils.getVersionString(result.getValue());
+		if (value != null) {
+			Version valueVersion = new Version(value);
+			Version serverVersion = server.getVersion();
+			if (valueVersion != null && serverVersion != null) {
+				verifyResult = serverVersion.equals(valueVersion);
+			}
+		}
+
+		return verifyResult;
+	}
+
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Constructs an instance of GlassFish server version command entity.
+	 */
+	public CommandVersion() {
+		super(COMMAND);
+	}
 
 }

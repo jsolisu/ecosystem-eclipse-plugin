@@ -29,49 +29,50 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerRestLocation extends RunnerRest {
 
-    /** Holding data for command execution. */
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    final CommandLocation command;
+	/** Holding data for command execution. */
+	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
+	final CommandLocation command;
 
-    /**
-     * Returned value is map where locations are stored under keys specified in CommandLocation class.
-     */
-    @SuppressWarnings("FieldNameHidesFieldInSuperclass")
-    ResultMap<String, String> result;
+	/**
+	 * Returned value is map where locations are stored under keys specified in
+	 * CommandLocation class.
+	 */
+	@SuppressWarnings("FieldNameHidesFieldInSuperclass")
+	ResultMap<String, String> result;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerRestLocation(final PayaraServer server,
-            final Command command) {
-        super(server, command);
-        this.command = (CommandLocation) command;
-    }
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerRestLocation(final PayaraServer server, final Command command) {
+		super(server, command);
+		this.command = (CommandLocation) command;
+	}
 
-    @Override
-    protected Result createResult() {
-        return result = new ResultMap<>();
-    }
+	@Override
+	protected Result createResult() {
+		return result = new ResultMap<>();
+	}
 
-    @Override
-    protected boolean processResponse() {
-        if (report == null) {
-            return false;
-        }
-        Properties props = report.getTopMessagePart().getProperties();
-        result.value = new HashMap<>(props.size());
-        for (String key : props.stringPropertyNames()) {
-            result.value.put(key, props.getProperty(key));
-        }
-        return true;
-    }
+	@Override
+	protected boolean processResponse() {
+		if (report == null) {
+			return false;
+		}
+		Properties props = report.getTopMessagePart().getProperties();
+		result.value = new HashMap<>(props.size());
+		for (String key : props.stringPropertyNames()) {
+			result.value.put(key, props.getProperty(key));
+		}
+		return true;
+	}
 
 }

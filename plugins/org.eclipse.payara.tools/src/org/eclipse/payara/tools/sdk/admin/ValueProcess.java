@@ -26,95 +26,96 @@ package org.eclipse.payara.tools.sdk.admin;
  */
 public class ValueProcess {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** The name of the executable to run. */
-    private String processName;
+	/** The name of the executable to run. */
+	private String processName;
 
-    /** Arguments passed to the executable. */
-    private String arguments;
+	/** Arguments passed to the executable. */
+	private String arguments;
 
-    /** Process information. */
-    private Process process;
+	/** Process information. */
+	private Process process;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of GlassFish server process entity.
-     * <p/>
-     * Entity is initialized in <code>RunnerLocal</code> method <code>call</code>. method.
-     * <p/>
-     *
-     * @param processName The name of the executable to run..
-     * @param arguments Arguments passed to the executable.
-     */
-    ValueProcess(String processName, String arguments, Process process) {
-        this.processName = processName;
-        this.arguments = arguments;
-        this.process = process;
-    }
+	/**
+	 * Creates an instance of GlassFish server process entity.
+	 * <p/>
+	 * Entity is initialized in <code>RunnerLocal</code> method <code>call</code>.
+	 * method.
+	 * <p/>
+	 *
+	 * @param processName The name of the executable to run..
+	 * @param arguments   Arguments passed to the executable.
+	 */
+	ValueProcess(String processName, String arguments, Process process) {
+		this.processName = processName;
+		this.arguments = arguments;
+		this.process = process;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and Setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get name of the executable to run.
-     * <p/>
-     *
-     * @return Name of the executable to run.
-     */
-    public String getProcessName() {
-        return processName;
-    }
+	/**
+	 * Get name of the executable to run.
+	 * <p/>
+	 *
+	 * @return Name of the executable to run.
+	 */
+	public String getProcessName() {
+		return processName;
+	}
 
-    /**
-     * Get arguments passed to the executable.
-     * <p/>
-     *
-     * @return Arguments passed to the executable.
-     */
-    public String getArguments() {
-        return arguments;
-    }
+	/**
+	 * Get arguments passed to the executable.
+	 * <p/>
+	 *
+	 * @return Arguments passed to the executable.
+	 */
+	public String getArguments() {
+		return arguments;
+	}
 
-    /**
-     * Get process information.
-     * <p/>
-     *
-     * @return Process information.
-     */
-    public Process getProcess() {
-        return process;
-    }
+	/**
+	 * Get process information.
+	 * <p/>
+	 *
+	 * @return Process information.
+	 */
+	public Process getProcess() {
+		return process;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Convert stored process information to <code>String</code>.
-     * <p>
-     *
-     * @return A <code>String</code> representation of the value of this object.
-     */
-    @Override
-    public String toString() {
-        int length = (processName != null ? processName.length() : 0) +
-                (arguments != null ? arguments.length() : 0) + 1;
-        StringBuilder sb = new StringBuilder(length);
-        if (processName != null) {
-            sb.append(processName);
-        }
-        sb.append(' ');
-        if (arguments != null) {
-            sb.append(arguments);
-        }
-        return sb.toString();
-    }
+	/**
+	 * Convert stored process information to <code>String</code>.
+	 * <p>
+	 *
+	 * @return A <code>String</code> representation of the value of this object.
+	 */
+	@Override
+	public String toString() {
+		int length = (processName != null ? processName.length() : 0) + (arguments != null ? arguments.length() : 0)
+				+ 1;
+		StringBuilder sb = new StringBuilder(length);
+		if (processName != null) {
+			sb.append(processName);
+		}
+		sb.append(' ');
+		if (arguments != null) {
+			sb.append(arguments);
+		}
+		return sb.toString();
+	}
 
 }

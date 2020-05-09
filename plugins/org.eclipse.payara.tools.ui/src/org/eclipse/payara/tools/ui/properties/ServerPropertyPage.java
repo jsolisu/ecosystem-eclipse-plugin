@@ -52,128 +52,127 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.ui.internal.editor.GlobalCommandManager;
 
 /**
- * Properties that are being shown for the Payara / GlassFish server when e.g. the server is right
- * clicked in the Servers view and "Properties" is chosen from the context menu.
+ * Properties that are being shown for the Payara / GlassFish server when e.g.
+ * the server is right clicked in the Servers view and "Properties" is chosen
+ * from the context menu.
  *
  */
 public class ServerPropertyPage extends PropertyPage {
 
-    private IServerWorkingCopy serverWorkingCopy;
-    private IPayaraServerModel model;
+	private IServerWorkingCopy serverWorkingCopy;
+	private IPayaraServerModel model;
 
-    FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
-        @Override
-        protected void handleTypedEvent(PropertyValidationEvent event) {
-            refreshStatus();
-        }
-    };
+	FilteredListener<PropertyValidationEvent> listener = new FilteredListener<PropertyValidationEvent>() {
+		@Override
+		protected void handleTypedEvent(PropertyValidationEvent event) {
+			refreshStatus();
+		}
+	};
 
-    @Override
-    protected Control createContents(Composite parent) {
+	@Override
+	protected Control createContents(Composite parent) {
 
-        IServer server = (IServer) getElement();
-        if (server instanceof IServerWorkingCopy) {
-            serverWorkingCopy = (IServerWorkingCopy) server;
-        } else {
-            serverWorkingCopy = server.createWorkingCopy();
-        }
+		IServer server = (IServer) getElement();
+		if (server instanceof IServerWorkingCopy) {
+			serverWorkingCopy = (IServerWorkingCopy) server;
+		} else {
+			serverWorkingCopy = server.createWorkingCopy();
+		}
 
-        model = load(serverWorkingCopy, PayaraServer.class).getModel();
-        model.attach(listener, "*");
+		model = load(serverWorkingCopy, PayaraServer.class).getModel();
+		model.attach(listener, "*");
 
-        SapphireForm control = new SapphireForm(parent, model,
-                DefinitionLoader.context(BaseWizardFragment.class)
-                        .sdef("org.eclipse.payara.tools.ui.PayaraUI")
-                        .form("payara.server"));
+		SapphireForm control = new SapphireForm(parent, model, DefinitionLoader.context(BaseWizardFragment.class)
+				.sdef("org.eclipse.payara.tools.ui.PayaraUI").form("payara.server"));
 
-        control.setLayoutData(new GridData(FILL, FILL, true, true));
+		control.setLayoutData(new GridData(FILL, FILL, true, true));
 
-        refreshStatus();
+		refreshStatus();
 
-        return control;
+		return control;
 
-    }
+	}
 
-    private void refreshStatus() {
-        Status status = model.validation();
+	private void refreshStatus() {
+		Status status = model.validation();
 
-        if (status.severity() == Severity.ERROR) {
-            setMessage(status.message(), ERROR);
-            setValid(false);
-        } else if (status.severity() == Severity.WARNING) {
-            setMessage(status.message(), WARNING);
-            setValid(true);
-        } else {
-            setMessage(null, NONE);
-            setValid(true);
-        }
+		if (status.severity() == Severity.ERROR) {
+			setMessage(status.message(), ERROR);
+			setValid(false);
+		} else if (status.severity() == Severity.WARNING) {
+			setMessage(status.message(), WARNING);
+			setValid(true);
+		} else {
+			setMessage(null, NONE);
+			setValid(true);
+		}
 
-    }
+	}
 
-    // note that this is currently not working due to issue 140
-    // public void propertyChange(PropertyChangeEvent evt) {
-    // if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
-    // username.setText(payaraServer.getAdminUser());
-    // password.setText(payaraServer.getAdminPassword());
-    // adminServerPortNumber.setText(Integer.toString(payaraServer.getAdminPort()));
-    // serverPortNumber.setText(Integer.toString(payaraServer.getPort()));
-    // }
-    // }
+	// note that this is currently not working due to issue 140
+	// public void propertyChange(PropertyChangeEvent evt) {
+	// if (AbstractGlassfishServer.DOMAINUPDATE == evt.getPropertyName()) {
+	// username.setText(payaraServer.getAdminUser());
+	// password.setText(payaraServer.getAdminPassword());
+	// adminServerPortNumber.setText(Integer.toString(payaraServer.getAdminPort()));
+	// serverPortNumber.setText(Integer.toString(payaraServer.getPort()));
+	// }
+	// }
 
+	@Override
+	public boolean performCancel() {
+		model.detach(listener, "*");
+		return super.performCancel();
+	}
 
-    @Override
-    public boolean performCancel() {
-        model.detach(listener, "*");
-        return super.performCancel();
-    }
+	@Override
+	protected void performApply() {
+		try {
+			IServer server = serverWorkingCopy.save(true, new NullProgressMonitor());
+			GlobalCommandManager.getInstance().reload(server.getId());
 
-    @Override
-    protected void performApply() {
-        try {
-            IServer server = serverWorkingCopy.save(true, new NullProgressMonitor());
-            GlobalCommandManager.getInstance().reload(server.getId());
-            
-            scheduleShortJob("Update Payara server state", monitor -> {
-                
-                PayaraServerBehaviour serverBehavior = null;
-                
-                try {
-                    serverBehavior = load(server, PayaraServerBehaviour.class);
-                    
-                    serverBehavior.updateServerStatus();
-                    serverBehavior.setPayaraServerPublishState(PUBLISH_CLEAN);
-                } catch (Exception e) {
-                    if (serverBehavior != null) {
-                        serverBehavior.setPayaraServerState(STATE_STOPPED);
-                    }
-                }
-            });
-        } catch (CoreException e) {
-            // no-op
-            e.printStackTrace();
-        }
-    }
+			scheduleShortJob("Update Payara server state", monitor -> {
 
-    @Override
-    public boolean performOk() {
-        model.detach(listener, "*");
-        performApply();
-        return true;
-    }
+				PayaraServerBehaviour serverBehavior = null;
 
-    @Override
-    protected void performDefaults() {
-        super.performDefaults();
-        
-        serverWorkingCopy.setAttribute(ATTR_ADMIN, "");
-        serverWorkingCopy.setAttribute(ATTR_ADMINPASS, "");
-        serverWorkingCopy.setAttribute(ATTR_DOMAINPATH, getDefaultDomainDir(serverWorkingCopy.getRuntime().getLocation()).toString());
-        serverWorkingCopy.setAttribute(ATTR_ADMINPORT, "");
-        serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
-        serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
-        serverWorkingCopy.setAttribute(PROP_RESTART_PATTERN.name(), "");
-        
-        model.refresh();
-    }
+				try {
+					serverBehavior = load(server, PayaraServerBehaviour.class);
+
+					serverBehavior.updateServerStatus();
+					serverBehavior.setPayaraServerPublishState(PUBLISH_CLEAN);
+				} catch (Exception e) {
+					if (serverBehavior != null) {
+						serverBehavior.setPayaraServerState(STATE_STOPPED);
+					}
+				}
+			});
+		} catch (CoreException e) {
+			// no-op
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public boolean performOk() {
+		model.detach(listener, "*");
+		performApply();
+		return true;
+	}
+
+	@Override
+	protected void performDefaults() {
+		super.performDefaults();
+
+		serverWorkingCopy.setAttribute(ATTR_ADMIN, "");
+		serverWorkingCopy.setAttribute(ATTR_ADMINPASS, "");
+		serverWorkingCopy.setAttribute(ATTR_DOMAINPATH,
+				getDefaultDomainDir(serverWorkingCopy.getRuntime().getLocation()).toString());
+		serverWorkingCopy.setAttribute(ATTR_ADMINPORT, "");
+		serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
+		serverWorkingCopy.setAttribute(ATTR_DEBUG_PORT, "");
+		serverWorkingCopy.setAttribute(PROP_RESTART_PATTERN.name(), "");
+
+		model.refresh();
+	}
 
 }

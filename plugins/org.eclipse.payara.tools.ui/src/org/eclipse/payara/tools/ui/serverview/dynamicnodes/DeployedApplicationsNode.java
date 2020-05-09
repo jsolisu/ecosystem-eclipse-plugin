@@ -29,8 +29,8 @@ import org.eclipse.payara.tools.serverview.AppDesc;
 import org.eclipse.payara.tools.utils.NodesUtils;
 
 /**
- * This node shows is the root node below which the dynamically retrieved deployed applications
- * reside.
+ * This node shows is the root node below which the dynamically retrieved
+ * deployed applications reside.
  *
  * <p>
  * The following depicts this element in the "Servers" views:
@@ -52,71 +52,71 @@ import org.eclipse.payara.tools.utils.NodesUtils;
  * </p>
  *
  * <p>
- * Payara / GlassFish is dynamically queried for this list, hence it can only be retrieved for a
- * running server.
+ * Payara / GlassFish is dynamically queried for this list, hence it can only be
+ * retrieved for a running server.
  * </p>
  *
  */
 public class DeployedApplicationsNode extends TreeNode {
 
-    PayaraServer server;
-    ApplicationNode[] deployedapps;
+	PayaraServer server;
+	ApplicationNode[] deployedapps;
 
-    public DeployedApplicationsNode(PayaraServer server) {
-        super("Deployed Applications", null, null);
-        this.server = server;
-    }
+	public DeployedApplicationsNode(PayaraServer server) {
+		super("Deployed Applications", null, null);
+		this.server = server;
+	}
 
-    public PayaraServer getServer() {
-        return server;
-    }
+	public PayaraServer getServer() {
+		return server;
+	}
 
-    @Override
-    public Object[] getChildren() {
+	@Override
+	public Object[] getChildren() {
 
-        ArrayList<ApplicationNode> appsList = new ArrayList<>();
+		ArrayList<ApplicationNode> appsList = new ArrayList<>();
 
-        if (deployedapps == null) {
+		if (deployedapps == null) {
 
-            try {
+			try {
 
-                if (server == null) {
-                    deployedapps = appsList.toArray(new ApplicationNode[appsList.size()]);
-                    return deployedapps;
-                }
+				if (server == null) {
+					deployedapps = appsList.toArray(new ApplicationNode[appsList.size()]);
+					return deployedapps;
+				}
 
-                try {
-                    Map<String, List<AppDesc>> appMap = NodesUtils.getApplications(server, null);
+				try {
+					Map<String, List<AppDesc>> appMap = NodesUtils.getApplications(server, null);
 
-                    for (Entry<String, List<AppDesc>> entry : appMap.entrySet()) {
+					for (Entry<String, List<AppDesc>> entry : appMap.entrySet()) {
 
-                        List<AppDesc> apps = entry.getValue();
+						List<AppDesc> apps = entry.getValue();
 
-                        for (AppDesc app : apps) {
-                            ApplicationNode t = new ApplicationNode(this, server, app);
-                            appsList.add(t);
-                        }
+						for (AppDesc app : apps) {
+							ApplicationNode t = new ApplicationNode(this, server, app);
+							appsList.add(t);
+						}
 
-                    }
+					}
 
-                } catch (Exception ex) {
-                    PayaraToolsPlugin.logError("get Applications is failing=", ex); //$NON-NLS-1$
-                }
+				} catch (Exception ex) {
+					PayaraToolsPlugin.logError("get Applications is failing=", ex); //$NON-NLS-1$
+				}
 
-            } catch (Exception e) {
+			} catch (Exception e) {
 
-            }
+			}
 
-            this.deployedapps = appsList.toArray(new ApplicationNode[appsList.size()]);
+			this.deployedapps = appsList.toArray(new ApplicationNode[appsList.size()]);
 
-        }
+		}
 
-        return this.deployedapps;
+		return this.deployedapps;
 
-    }
+	}
 
-    public void refresh() {
-        deployedapps = null;
-    }
+	public void refresh() {
+		deployedapps = null;
+	}
 
 }

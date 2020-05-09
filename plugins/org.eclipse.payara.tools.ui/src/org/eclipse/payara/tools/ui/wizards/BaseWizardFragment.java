@@ -39,111 +39,110 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
 
 public abstract class BaseWizardFragment extends WizardFragment {
 
-    private IWizardHandle wizard;
-    private Composite composite;
-    private SapphireForm form;
+	private IWizardHandle wizard;
+	private Composite composite;
+	private SapphireForm form;
 
-    public BaseWizardFragment() {
-        setComplete(false);
-    }
+	public BaseWizardFragment() {
+		setComplete(false);
+	}
 
-    @Override
-    public final boolean hasComposite() {
-        return true;
-    }
+	@Override
+	public final boolean hasComposite() {
+		return true;
+	}
 
-    protected abstract String getTitle();
+	protected abstract String getTitle();
 
-    protected abstract String getDescription();
+	protected abstract String getDescription();
 
-    protected abstract Element getModel();
+	protected abstract Element getModel();
 
-    protected abstract String getUserInterfaceDef();
+	protected abstract String getUserInterfaceDef();
 
-    protected abstract String getInitialFocus();
+	protected abstract String getInitialFocus();
 
-    @Override
-    public Composite createComposite(final Composite parent, final IWizardHandle handle) {
-        this.wizard = handle;
+	@Override
+	public Composite createComposite(final Composite parent, final IWizardHandle handle) {
+		this.wizard = handle;
 
-        this.wizard.setTitle(getTitle());
-        this.wizard.setDescription(getDescription());
-        this.wizard.setImageDescriptor(getImageDescriptor());
+		this.wizard.setTitle(getTitle());
+		this.wizard.setDescription(getDescription());
+		this.wizard.setImageDescriptor(getImageDescriptor());
 
-        this.composite = new Composite(parent, NONE);
-        this.composite.setLayout(glayout(1, 0, 0));
+		this.composite = new Composite(parent, NONE);
+		this.composite.setLayout(glayout(1, 0, 0));
 
-        render();
+		render();
 
-        return this.composite;
-    }
+		return this.composite;
+	}
 
-    @Override
-    public void enter() {
-        super.enter();
+	@Override
+	public void enter() {
+		super.enter();
 
-        // We need to render new UI every time the page is entered since switching host
-        // between
-        // localhost and remote on the server type selection screen after initially
-        // entering
-        // this page will associated a new server working copy with this page. That is,
-        // we cannot
-        // depend on the working copy being constant between repeated invocations of
-        // this method
-        // as users navigates backwards in the wizard and re-enters this page.
+		// We need to render new UI every time the page is entered since switching host
+		// between
+		// localhost and remote on the server type selection screen after initially
+		// entering
+		// this page will associated a new server working copy with this page. That is,
+		// we cannot
+		// depend on the working copy being constant between repeated invocations of
+		// this method
+		// as users navigates backwards in the wizard and re-enters this page.
 
-        render();
-    }
+		render();
+	}
 
-    protected Composite render() {
-        if (this.form != null) {
-            this.form.dispose();
-        }
+	protected Composite render() {
+		if (this.form != null) {
+			this.form.dispose();
+		}
 
-        this.form = new SapphireForm(this.composite, getModel(),
-                DefinitionLoader.context(BaseWizardFragment.class)
-                        .sdef("org.eclipse.payara.tools.ui.PayaraUI").form(getUserInterfaceDef()));
+		this.form = new SapphireForm(this.composite, getModel(), DefinitionLoader.context(BaseWizardFragment.class)
+				.sdef("org.eclipse.payara.tools.ui.PayaraUI").form(getUserInterfaceDef()));
 
-        this.form.part().attach(new FilteredListener<PartValidationEvent>() {
-            @Override
-            protected void handleTypedEvent(final PartValidationEvent event) {
-                Display.getDefault().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshStatus();
-                    }
-                });
-            }
-        });
+		this.form.part().attach(new FilteredListener<PartValidationEvent>() {
+			@Override
+			protected void handleTypedEvent(final PartValidationEvent event) {
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						refreshStatus();
+					}
+				});
+			}
+		});
 
-        this.form.setLayoutData(gdfill());
-        this.form.part().setFocus(getInitialFocus());
-        this.composite.layout(true, true);
+		this.form.setLayoutData(gdfill());
+		this.form.part().setFocus(getInitialFocus());
+		this.composite.layout(true, true);
 
-        refreshStatus();
+		refreshStatus();
 
-        return this.form;
-    }
+		return this.form;
+	}
 
-    private void refreshStatus() {
-        final Status status = this.form.part().validation();
+	private void refreshStatus() {
+		final Status status = this.form.part().validation();
 
-        if (status.severity() == Severity.ERROR) {
-            this.wizard.setMessage(status.message(), IMessageProvider.ERROR);
-            setComplete(false);
-        } else if (status.severity() == Severity.WARNING) {
-            this.wizard.setMessage(status.message(), IMessageProvider.WARNING);
-            setComplete(true);
-        } else {
-            this.wizard.setMessage(null, IMessageProvider.NONE);
-            setComplete(true);
-        }
+		if (status.severity() == Severity.ERROR) {
+			this.wizard.setMessage(status.message(), IMessageProvider.ERROR);
+			setComplete(false);
+		} else if (status.severity() == Severity.WARNING) {
+			this.wizard.setMessage(status.message(), IMessageProvider.WARNING);
+			setComplete(true);
+		} else {
+			this.wizard.setMessage(null, IMessageProvider.NONE);
+			setComplete(true);
+		}
 
-        this.wizard.update();
-    }
+		this.wizard.update();
+	}
 
-    protected ImageDescriptor getImageDescriptor() {
-        return PayaraToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(PayaraToolsUIPlugin.GF_WIZARD);
-    }
+	protected ImageDescriptor getImageDescriptor() {
+		return PayaraToolsUIPlugin.getInstance().getImageRegistry().getDescriptor(PayaraToolsUIPlugin.GF_WIZARD);
+	}
 
 }

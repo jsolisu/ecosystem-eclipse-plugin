@@ -28,9 +28,10 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperatio
  */
 public class InstallJAXRS extends LibraryProviderOperation {
 
-    @Override
-    public void execute(final LibraryProviderOperationConfig config, final IProgressMonitor monitor) throws CoreException {
-        monitor.beginTask("", 1);
-        monitor.done();
-    }
+	@Override
+	public void execute(final LibraryProviderOperationConfig config, final IProgressMonitor monitor)
+			throws CoreException {
+		monitor.beginTask("", 1);
+		monitor.done();
+	}
 }

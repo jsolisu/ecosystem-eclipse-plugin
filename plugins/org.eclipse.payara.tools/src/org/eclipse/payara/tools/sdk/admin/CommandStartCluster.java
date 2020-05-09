@@ -37,53 +37,52 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestStartCluster.class)
 public class CommandStartCluster extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for start-cluster command. */
-    private static final String COMMAND = "start-cluster";
+	/** Command string for start-cluster command. */
+	private static final String COMMAND = "start-cluster";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "Cluster start failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "Cluster start failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Starts cluster.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param target Cluster name.
-     * @return Start cluster task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString startCluster(PayaraServer server,
-            String target) throws PayaraIdeException {
-        Command command = new CommandStartCluster(target);
-        Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException
-                | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Starts cluster.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param target Cluster name.
+	 * @return Start cluster task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString startCluster(PayaraServer server, String target) throws PayaraIdeException {
+		Command command = new CommandStartCluster(target);
+		Future<ResultString> future = ServerAdmin.<ResultString>exec(server, command);
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server start-cluster command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish cluster.
-     */
-    public CommandStartCluster(String target) {
-        super(COMMAND, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server start-cluster command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish cluster.
+	 */
+	public CommandStartCluster(String target) {
+		super(COMMAND, target);
+	}
 
 }

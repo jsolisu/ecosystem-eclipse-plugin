@@ -28,31 +28,30 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerHttpSetProperty extends RunnerHttp {
 
-    /**
-     * Creates query string from command object properties.
-     * <p/>
-     *
-     * @param command GlassFish server administration command entity.
-     * @return Query string from command object properties.
-     */
-    private static String query(CommandSetProperty command) {
-        return MessageFormat.format(
-                command.format, command.property, command.value);
-    }
+	/**
+	 * Creates query string from command object properties.
+	 * <p/>
+	 *
+	 * @param command GlassFish server administration command entity.
+	 * @return Query string from command object properties.
+	 */
+	private static String query(CommandSetProperty command) {
+		return MessageFormat.format(command.format, command.property, command.value);
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerHttpSetProperty(final PayaraServer server,
-            final Command command) {
-        super(server, command, query((CommandSetProperty) command));
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerHttpSetProperty(final PayaraServer server, final Command command) {
+		super(server, command, query((CommandSetProperty) command));
+	}
 
 }

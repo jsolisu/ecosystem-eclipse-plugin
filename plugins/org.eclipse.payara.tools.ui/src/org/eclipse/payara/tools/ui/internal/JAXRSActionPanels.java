@@ -33,9 +33,9 @@ import org.eclipse.swt.widgets.Control;
  */
 public class JAXRSActionPanels extends LibraryProviderOperationPanel {
 
-    @Override
-    public Control createControl(Composite c) {
-        return new Composite(c, NONE);
-    }
+	@Override
+	public Control createControl(Composite c) {
+		return new Composite(c, NONE);
+	}
 
 }

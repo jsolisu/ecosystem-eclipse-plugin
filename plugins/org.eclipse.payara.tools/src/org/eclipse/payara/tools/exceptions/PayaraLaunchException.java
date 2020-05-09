@@ -20,37 +20,37 @@ package org.eclipse.payara.tools.exceptions;
 
 public class PayaraLaunchException extends Exception {
 
-    private static final long serialVersionUID = -3931653934641477601L;
+	private static final long serialVersionUID = -3931653934641477601L;
 
-    private Process payaraProcess;
+	private Process payaraProcess;
 
-    public PayaraLaunchException() {
-        super();
-    }
+	public PayaraLaunchException() {
+		super();
+	}
 
-    public PayaraLaunchException(String message, Throwable cause) {
-        this(message, cause, null);
-    }
+	public PayaraLaunchException(String message, Throwable cause) {
+		this(message, cause, null);
+	}
 
-    public PayaraLaunchException(String message, Process gfProcess) {
-        this(message, null, gfProcess);
-    }
+	public PayaraLaunchException(String message, Process gfProcess) {
+		this(message, null, gfProcess);
+	}
 
-    public PayaraLaunchException(String message, Throwable cause, Process payaraProcess) {
-        super(message, cause);
-        this.payaraProcess = payaraProcess;
-    }
+	public PayaraLaunchException(String message, Throwable cause, Process payaraProcess) {
+		super(message, cause);
+		this.payaraProcess = payaraProcess;
+	}
 
-    public PayaraLaunchException(String message) {
-        this(message, null, null);
-    }
+	public PayaraLaunchException(String message) {
+		this(message, null, null);
+	}
 
-    public PayaraLaunchException(Throwable cause) {
-        this(null, cause, null);
-    }
+	public PayaraLaunchException(Throwable cause) {
+		this(null, cause, null);
+	}
 
-    public Process getStartedProcess() {
-        return payaraProcess;
-    }
+	public Process getStartedProcess() {
+		return payaraProcess;
+	}
 
 }

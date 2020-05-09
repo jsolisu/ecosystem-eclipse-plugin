@@ -32,54 +32,53 @@ import org.xml.sax.SAXException;
  */
 public class LookupReader extends TreeParser.NodeListener {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Lookups retrieved from XML elements. */
-    private List<String> lookups = new LinkedList<>();
+	/** Lookups retrieved from XML elements. */
+	private List<String> lookups = new LinkedList<>();
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        lookups.add(attributes.getValue("path"));
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		lookups.add(attributes.getValue("path"));
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get lookups retrieved from XML elements.
-     * <p/>
-     *
-     * @return Links sets retrieved from XML elements.
-     */
-    public List<String> getLookups() {
-        return lookups;
-    }
+	/**
+	 * Get lookups retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Links sets retrieved from XML elements.
+	 */
+	public List<String> getLookups() {
+		return lookups;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    public void reset() {
-        lookups = new LinkedList<>();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	public void reset() {
+		lookups = new LinkedList<>();
+	}
 
 }

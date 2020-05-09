@@ -31,24 +31,24 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public interface GlassFishServerStatus {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Interface Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Interface Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get GlassFish server entity.
-     * <p/>
-     *
-     * @return GlassFish server entity.
-     */
-    public PayaraServer getServer();
+	/**
+	 * Get GlassFish server entity.
+	 * <p/>
+	 *
+	 * @return GlassFish server entity.
+	 */
+	public PayaraServer getServer();
 
-    /**
-     * Get current GlassFish server status.
-     * <p/>
-     *
-     * @return Current GlassFish server status.
-     */
-    public GlassFishStatus getStatus();
+	/**
+	 * Get current GlassFish server status.
+	 * <p/>
+	 *
+	 * @return Current GlassFish server status.
+	 */
+	public GlassFishStatus getStatus();
 
 }

@@ -30,77 +30,78 @@ import org.eclipse.payara.tools.sdk.TaskState;
  */
 public abstract class Result<T> {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** State of GlassFish server administration command execution. */
-    TaskState state;
+	/** State of GlassFish server administration command execution. */
+	TaskState state;
 
-    /**
-     * Authorization status.
-     * <p/>
-     * Value of <code>true</code> means that there was no authorization issue. Value of
-     * <code>false</code> means that authorization failed.
-     */
-    boolean auth;
+	/**
+	 * Authorization status.
+	 * <p/>
+	 * Value of <code>true</code> means that there was no authorization issue. Value
+	 * of <code>false</code> means that authorization failed.
+	 */
+	boolean auth;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish administration command result.
-     */
-    Result() {
-        this.state = null;
-        this.auth = true;
-    }
+	/**
+	 * Constructs an instance of GlassFish administration command result.
+	 */
+	Result() {
+		this.state = null;
+		this.auth = true;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and Setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and Setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get state of GlassFish server administration command execution.
-     * <p/>
-     *
-     * @return State of GlassFish server administration command execution.
-     */
-    public TaskState getState() {
-        return state;
-    }
+	/**
+	 * Get state of GlassFish server administration command execution.
+	 * <p/>
+	 *
+	 * @return State of GlassFish server administration command execution.
+	 */
+	public TaskState getState() {
+		return state;
+	}
 
-    /**
-     * Get value returned by administration command execution.
-     * <p/>
-     *
-     * @return Value returned by administration command execution.
-     */
-    public abstract T getValue();
+	/**
+	 * Get value returned by administration command execution.
+	 * <p/>
+	 *
+	 * @return Value returned by administration command execution.
+	 */
+	public abstract T getValue();
 
-    /**
-     * Get administration command execution authorization status.
-     * <p/>
-     *
-     * @return Value of <code>true</code> means that there was no authorization issue. Value of
-     * <code>false</code> means that authorization failed.
-     */
-    public boolean isAuth() {
-        return auth;
-    }
+	/**
+	 * Get administration command execution authorization status.
+	 * <p/>
+	 *
+	 * @return Value of <code>true</code> means that there was no authorization
+	 *         issue. Value of <code>false</code> means that authorization failed.
+	 */
+	public boolean isAuth() {
+		return auth;
+	}
 
-    /**
-     * Set administration command execution authorization status.
-     * <p/>
-     * Use only in administration command runners to set result value.
-     * <p/>
-     *
-     * @param auth Authorization status: Value of <code>true</code> means that there was no
-     * authorization issue. Value of <code>false</code> means that authorization failed.
-     */
-    public void setAuth(final boolean auth) {
-        this.auth = auth;
-    }
+	/**
+	 * Set administration command execution authorization status.
+	 * <p/>
+	 * Use only in administration command runners to set result value.
+	 * <p/>
+	 *
+	 * @param auth Authorization status: Value of <code>true</code> means that there
+	 *             was no authorization issue. Value of <code>false</code> means
+	 *             that authorization failed.
+	 */
+	public void setAuth(final boolean auth) {
+		this.auth = auth;
+	}
 
 }

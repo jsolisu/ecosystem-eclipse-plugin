@@ -29,27 +29,27 @@ import org.eclipse.payara.tools.log.AbstractLogFilter.ILogFormatter;
 
 public class LogFormatterSimple implements ILogFormatter {
 
-    private GlassfishLogFields[] fields;
-    private String format;
-    private StringBuilder logRecordBuilder = new StringBuilder(1024);
+	private GlassfishLogFields[] fields;
+	private String format;
+	private StringBuilder logRecordBuilder = new StringBuilder(1024);
 
-    public LogFormatterSimple() {
-        format = "%s|%s: %s";
-        fields = new GlassfishLogFields[] { DATETIME, LEVEL, MESSAGE };
-    }
+	public LogFormatterSimple() {
+		format = "%s|%s: %s";
+		fields = new GlassfishLogFields[] { DATETIME, LEVEL, MESSAGE };
+	}
 
-    public LogFormatterSimple(String delimeter, GlassfishLogFields[] fields) {
-        this.fields = fields;
-    }
+	public LogFormatterSimple(String delimeter, GlassfishLogFields[] fields) {
+		this.fields = fields;
+	}
 
-    @Override
-    public String formatLogRecord(LogRecord record) {
-        logRecordBuilder.setLength(0);
-        Formatter logRecorFormatter = new Formatter(logRecordBuilder);
-        logRecorFormatter.format(format, record.getRecordFieldValues(fields));
-        logRecorFormatter.close();
-        
-        return logRecordBuilder.toString();
-    }
+	@Override
+	public String formatLogRecord(LogRecord record) {
+		logRecordBuilder.setLength(0);
+		Formatter logRecorFormatter = new Formatter(logRecordBuilder);
+		logRecorFormatter.format(format, record.getRecordFieldValues(fields));
+		logRecorFormatter.close();
+
+		return logRecordBuilder.toString();
+	}
 
 }

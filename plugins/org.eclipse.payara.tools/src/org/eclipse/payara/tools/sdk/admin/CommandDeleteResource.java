@@ -27,53 +27,54 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestDeleteResource.class)
 public class CommandDeleteResource extends CommandTarget {
 
-    private static final String COMMAND_PREFIX = "delete-";
+	private static final String COMMAND_PREFIX = "delete-";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Name of the resource. */
-    String name;
+	/** Name of the resource. */
+	String name;
 
-    /** Key name that defines the deleted property. */
-    String cmdPropertyName;
+	/** Key name that defines the deleted property. */
+	String cmdPropertyName;
 
-    /** Delete also dependent resources. */
-    boolean cascade;
+	/** Delete also dependent resources. */
+	boolean cascade;
 
-    /**
-     * Constructor for delete resource command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance or cluster.
-     * @param name Name of resource to be deleted.
-     * @param resourceCmdSuffix Resource related command suffix. Command string is build by appending
-     * this value after <code>delete-</code>.
-     * @param cmdPropertyName Name of query property which contains resource name.
-     * @param cascade Delete also dependent resources.
-     */
-    public CommandDeleteResource(String target, String name,
-            String resourceCmdSuffix, String cmdPropertyName, boolean cascade) {
-        super(COMMAND_PREFIX + resourceCmdSuffix, target);
-        this.name = name;
-        this.cmdPropertyName = cmdPropertyName;
-        this.cascade = cascade;
-    }
+	/**
+	 * Constructor for delete resource command entity.
+	 * <p/>
+	 *
+	 * @param target            Target GlassFish instance or cluster.
+	 * @param name              Name of resource to be deleted.
+	 * @param resourceCmdSuffix Resource related command suffix. Command string is
+	 *                          build by appending this value after
+	 *                          <code>delete-</code>.
+	 * @param cmdPropertyName   Name of query property which contains resource name.
+	 * @param cascade           Delete also dependent resources.
+	 */
+	public CommandDeleteResource(String target, String name, String resourceCmdSuffix, String cmdPropertyName,
+			boolean cascade) {
+		super(COMMAND_PREFIX + resourceCmdSuffix, target);
+		this.name = name;
+		this.cmdPropertyName = cmdPropertyName;
+		this.cascade = cascade;
+	}
 
-    /**
-     * Constructor for delete resource command entity.
-     * <p/>
-     *
-     * @param name Name of resource to be deleted.
-     * @param resourceCmdSuffix Resource related command suffix. Command string is build by appending
-     * this value after <code>delete-</code>.
-     * @param cmdPropertyName Name of query property which contains resource name.
-     * @param cascade Delete also dependent resources.
-     */
-    public CommandDeleteResource(String name,
-            String resourceCmdSuffix, String cmdPropertyName, boolean cascade) {
-        this(null, name, resourceCmdSuffix, cmdPropertyName, cascade);
-    }
+	/**
+	 * Constructor for delete resource command entity.
+	 * <p/>
+	 *
+	 * @param name              Name of resource to be deleted.
+	 * @param resourceCmdSuffix Resource related command suffix. Command string is
+	 *                          build by appending this value after
+	 *                          <code>delete-</code>.
+	 * @param cmdPropertyName   Name of query property which contains resource name.
+	 * @param cascade           Delete also dependent resources.
+	 */
+	public CommandDeleteResource(String name, String resourceCmdSuffix, String cmdPropertyName, boolean cascade) {
+		this(null, name, resourceCmdSuffix, cmdPropertyName, cascade);
+	}
 
 }

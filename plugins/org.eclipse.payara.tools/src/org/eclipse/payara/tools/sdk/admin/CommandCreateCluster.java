@@ -30,25 +30,25 @@ package org.eclipse.payara.tools.sdk.admin;
 @RunnerRestClass(runner = RunnerRestCreateCluster.class)
 public class CommandCreateCluster extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for create-cluster command. */
-    private static final String COMMAND = "create-cluster";
+	/** Command string for create-cluster command. */
+	private static final String COMMAND = "create-cluster";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server create-cluster command entity.
-     * <p/>
-     *
-     * @param clusterName Name of the created cluster.
-     */
-    public CommandCreateCluster(String clusterName) {
-        super(COMMAND, clusterName);
-    }
+	/**
+	 * Constructs an instance of GlassFish server create-cluster command entity.
+	 * <p/>
+	 *
+	 * @param clusterName Name of the created cluster.
+	 */
+	public CommandCreateCluster(String clusterName) {
+		super(COMMAND, clusterName);
+	}
 
 }

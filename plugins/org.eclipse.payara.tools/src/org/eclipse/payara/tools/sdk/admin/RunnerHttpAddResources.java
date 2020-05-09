@@ -28,43 +28,43 @@ import org.eclipse.payara.tools.server.PayaraServer;
  */
 public class RunnerHttpAddResources extends RunnerHttp {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Builds add-resources query string for given command.
-     * <p/>
-     *
-     * @param command GlassFish server administration command entity. <code>CommandAddResources</code>
-     * instance is expected.
-     * @return Add-resources query string for given command.
-     */
-    private static String query(Command command) {
-        CommandAddResources cmd = (CommandAddResources) command;
-        StringBuilder sb = new StringBuilder();
-        sb.append("xml_file_name=");
-        sb.append(cmd.xmlResFile.getAbsolutePath());
-        if (cmd.target != null) {
-            sb.append("&target=");
-            sb.append(cmd.target);
-        }
-        return sb.toString();
-    }
+	/**
+	 * Builds add-resources query string for given command.
+	 * <p/>
+	 *
+	 * @param command GlassFish server administration command entity.
+	 *                <code>CommandAddResources</code> instance is expected.
+	 * @return Add-resources query string for given command.
+	 */
+	private static String query(Command command) {
+		CommandAddResources cmd = (CommandAddResources) command;
+		StringBuilder sb = new StringBuilder();
+		sb.append("xml_file_name=");
+		sb.append(cmd.xmlResFile.getAbsolutePath());
+		if (cmd.target != null) {
+			sb.append("&target=");
+			sb.append(cmd.target);
+		}
+		return sb.toString();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of administration command executor using HTTP interface.
-     * <p/>
-     *
-     * @param server GlassFish server entity object.
-     * @param command GlassFish server administration command entity.
-     */
-    public RunnerHttpAddResources(final PayaraServer server,
-            final Command command) {
-        super(server, command, query(command));
-    }
+	/**
+	 * Constructs an instance of administration command executor using HTTP
+	 * interface.
+	 * <p/>
+	 *
+	 * @param server  GlassFish server entity object.
+	 * @param command GlassFish server administration command entity.
+	 */
+	public RunnerHttpAddResources(final PayaraServer server, final Command command) {
+		super(server, command, query(command));
+	}
 }

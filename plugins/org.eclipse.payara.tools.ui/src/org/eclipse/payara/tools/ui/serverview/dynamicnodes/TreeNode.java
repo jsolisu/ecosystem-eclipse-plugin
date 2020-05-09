@@ -26,80 +26,80 @@ import org.eclipse.ui.views.properties.IPropertySource2;
 
 public class TreeNode implements IPropertySource2 {
 
-    private TreeNode parent;
-    private String name;
+	private TreeNode parent;
+	private String name;
 
-    protected String type;
-    protected List<TreeNode> childModules = new ArrayList<>();
+	protected String type;
+	protected List<TreeNode> childModules = new ArrayList<>();
 
-    public TreeNode(String name, String type) {
-        this(name, type, null);
-    }
+	public TreeNode(String name, String type) {
+		this(name, type, null);
+	}
 
-    /*
-     *
-     * type is ear, war, ejb etc
-     *
-     */
-    public TreeNode(String name, String type, TreeNode parent) {
-        this.parent = parent;
-        this.name = name;
-        this.type = type;
-    }
+	/*
+	 *
+	 * type is ear, war, ejb etc
+	 *
+	 */
+	public TreeNode(String name, String type, TreeNode parent) {
+		this.parent = parent;
+		this.name = name;
+		this.type = type;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public void addChild(TreeNode childModule) {
-        childModules.add(childModule);
-    }
+	public void addChild(TreeNode childModule) {
+		childModules.add(childModule);
+	}
 
-    public Object[] getChildren() {
-        return childModules.toArray();
-    }
+	public Object[] getChildren() {
+		return childModules.toArray();
+	}
 
-    public TreeNode getParent() {
-        return parent;
-    }
+	public TreeNode getParent() {
+		return parent;
+	}
 
-    @Override
-    public Object getEditableValue() {
-        return null;
-    }
+	@Override
+	public Object getEditableValue() {
+		return null;
+	}
 
-    @Override
-    public IPropertyDescriptor[] getPropertyDescriptors() {
-        ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
-        return properties.toArray(new IPropertyDescriptor[0]);
-    }
+	@Override
+	public IPropertyDescriptor[] getPropertyDescriptors() {
+		ArrayList<IPropertyDescriptor> properties = new ArrayList<>();
+		return properties.toArray(new IPropertyDescriptor[0]);
+	}
 
-    @Override
-    public Object getPropertyValue(Object id) {
-        return null;
-    }
+	@Override
+	public Object getPropertyValue(Object id) {
+		return null;
+	}
 
-    @Override
-    public void resetPropertyValue(Object arg0) {
+	@Override
+	public void resetPropertyValue(Object arg0) {
 
-    }
+	}
 
-    @Override
-    public void setPropertyValue(Object arg0, Object arg1) {
-    }
+	@Override
+	public void setPropertyValue(Object arg0, Object arg1) {
+	}
 
-    @Override
-    public boolean isPropertyResettable(Object arg0) {
-        return false;
-    }
+	@Override
+	public boolean isPropertyResettable(Object arg0) {
+		return false;
+	}
 
-    @Override
-    public boolean isPropertySet(Object arg0) {
-        return false;
-    }
+	@Override
+	public boolean isPropertySet(Object arg0) {
+		return false;
+	}
 
 }

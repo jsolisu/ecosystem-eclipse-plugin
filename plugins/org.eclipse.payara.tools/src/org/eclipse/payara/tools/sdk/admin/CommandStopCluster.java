@@ -39,51 +39,52 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestStopCluster.class)
 public class CommandStopCluster extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for stop-cluster command. */
-    private static final String COMMAND = "stop-cluster";
+	/** Command string for stop-cluster command. */
+	private static final String COMMAND = "stop-cluster";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "Cluster stop failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "Cluster stop failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Stops cluster.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param target Cluster name.
-     * @return Stop cluster task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString stopCluster(PayaraServer server, String target) throws PayaraIdeException {
-        Future<ResultString> future = exec(server, new CommandStopCluster(target));
-        
-        try {
-            return future.get();
-        } catch (InterruptedException | ExecutionException| CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Stops cluster.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param target Cluster name.
+	 * @return Stop cluster task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString stopCluster(PayaraServer server, String target) throws PayaraIdeException {
+		Future<ResultString> future = exec(server, new CommandStopCluster(target));
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+		try {
+			return future.get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    /**
-     * Constructs an instance of GlassFish server stop-cluster command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish cluster.
-     */
-    public CommandStopCluster(String target) {
-        super(COMMAND, target);
-    }
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * Constructs an instance of GlassFish server stop-cluster command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish cluster.
+	 */
+	public CommandStopCluster(String target) {
+		super(COMMAND, target);
+	}
 
 }

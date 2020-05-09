@@ -35,55 +35,49 @@ import org.eclipse.ui.browser.IWebBrowser;
 import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 
 public class TestWebServiceAction extends Action {
-    ISelection selection;
+	ISelection selection;
 
-    public TestWebServiceAction(ISelection selection) {
-        setText("Test Web Service in Browser");
+	public TestWebServiceAction(ISelection selection) {
+		setText("Test Web Service in Browser");
 
-        this.selection = selection;
-    }
+		this.selection = selection;
+	}
 
-    @Override
-    public void runWithEvent(Event event) {
-        if (selection instanceof TreeSelection) {
-            TreeSelection ts = (TreeSelection) selection;
-            Object obj = ts.getFirstElement();
-            if (obj instanceof WebServiceNode) {
-                final WebServiceNode module = (WebServiceNode) obj;
-                final DeployedWebServicesNode target = (DeployedWebServicesNode) module
-                        .getParent();
+	@Override
+	public void runWithEvent(Event event) {
+		if (selection instanceof TreeSelection) {
+			TreeSelection ts = (TreeSelection) selection;
+			Object obj = ts.getFirstElement();
+			if (obj instanceof WebServiceNode) {
+				final WebServiceNode module = (WebServiceNode) obj;
+				final DeployedWebServicesNode target = (DeployedWebServicesNode) module.getParent();
 
-                try {
-                    final PayaraServerBehaviour be = target.getServer()
-                            .getServerBehaviourAdapter();
+				try {
+					final PayaraServerBehaviour be = target.getServer().getServerBehaviourAdapter();
 
-                    IWorkbenchBrowserSupport browserSupport = PlatformUI
-                            .getWorkbench().getBrowserSupport();
-                    IWebBrowser browser = browserSupport
-                            .createBrowser(
-                                    IWorkbenchBrowserSupport.LOCATION_BAR
-                                            | IWorkbenchBrowserSupport.NAVIGATION_BAR,
-                                    null, null, null);
-                    PayaraServer server = be.getPayaraServerDelegate();
-                    String host = server.getServer().getHost();
-                    int port = server.getPort();
+					IWorkbenchBrowserSupport browserSupport = PlatformUI.getWorkbench().getBrowserSupport();
+					IWebBrowser browser = browserSupport.createBrowser(
+							IWorkbenchBrowserSupport.LOCATION_BAR | IWorkbenchBrowserSupport.NAVIGATION_BAR, null, null,
+							null);
+					PayaraServer server = be.getPayaraServerDelegate();
+					String host = server.getServer().getHost();
+					int port = server.getPort();
 
-                    String url = Utils.getHttpListenerProtocol(host, port) + "://" + host + ":" + port + "/"
-                            + module.getWSInfo().getTestURL();
-                    browser.openURL(new URL(url));
+					String url = Utils.getHttpListenerProtocol(host, port) + "://" + host + ":" + port + "/"
+							+ module.getWSInfo().getTestURL();
+					browser.openURL(new URL(url));
 
-                } catch (Exception e) {
-                    PayaraToolsPlugin.logMessage("Error opening browser: "
-                            + e.getMessage());
-                }
-            }
-            super.run();
-        }
-    }
+				} catch (Exception e) {
+					PayaraToolsPlugin.logMessage("Error opening browser: " + e.getMessage());
+				}
+			}
+			super.run();
+		}
+	}
 
-    @Override
-    public void run() {
-        this.runWithEvent(null);
-    }
+	@Override
+	public void run() {
+		this.runWithEvent(null);
+	}
 
 }

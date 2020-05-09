@@ -29,49 +29,49 @@ import java.util.Map;
  */
 public abstract class ConfigReader implements XMLReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** <code>fileset</code> XML element reader. */
-    final FilesetReader filesetReader = new FilesetReader();
+	/** <code>fileset</code> XML element reader. */
+	final FilesetReader filesetReader = new FilesetReader();
 
-    /** <code>file</code> XML element reader. */
-    final PathReader pathReader = new PathReader("/server/library/classpath");
+	/** <code>file</code> XML element reader. */
+	final PathReader pathReader = new PathReader("/server/library/classpath");
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get file sets retrieved from XML elements.
-     * <p/>
-     *
-     * @return File sets retrieved from XML elements.
-     */
-    Map<String, List<String>> getFilesets() {
-        return filesetReader.getFilesets();
-    }
+	/**
+	 * Get file sets retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return File sets retrieved from XML elements.
+	 */
+	Map<String, List<String>> getFilesets() {
+		return filesetReader.getFilesets();
+	}
 
-    /**
-     * Get paths retrieved from XML elements.
-     * <p/>
-     *
-     * @return Paths sets retrieved from XML elements.
-     */
-    List<String> getPaths() {
-        return pathReader.getPaths();
-    }
+	/**
+	 * Get paths retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Paths sets retrieved from XML elements.
+	 */
+	List<String> getPaths() {
+		return pathReader.getPaths();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    void reset() {
-        filesetReader.reset();
-        pathReader.reset();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	void reset() {
+		filesetReader.reset();
+		pathReader.reset();
+	}
 }

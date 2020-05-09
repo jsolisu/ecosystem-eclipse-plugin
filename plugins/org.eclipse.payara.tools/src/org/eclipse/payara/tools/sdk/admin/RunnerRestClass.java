@@ -33,14 +33,14 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface RunnerRestClass {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Payara command runner class as named value. */
-    Class<? extends Runner> runner() default RunnerRest.class;
+	/** Payara command runner class as named value. */
+	Class<? extends Runner> runner() default RunnerRest.class;
 
-    /** Override Payara command string if differs from default one. */
-    String command() default "";
+	/** Override Payara command string if differs from default one. */
+	String command() default "";
 
 }

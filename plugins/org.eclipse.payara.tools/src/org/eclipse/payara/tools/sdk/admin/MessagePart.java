@@ -28,20 +28,20 @@ import java.util.Properties;
  */
 public class MessagePart {
 
-    Properties props = new Properties();
-    String message;
+	Properties props = new Properties();
+	String message;
 
-    List<MessagePart> children = new ArrayList<>();
+	List<MessagePart> children = new ArrayList<>();
 
-    public List<MessagePart> getChildren() {
-        return children;
-    }
+	public List<MessagePart> getChildren() {
+		return children;
+	}
 
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public Properties getProps() {
-        return props;
-    }
+	public Properties getProps() {
+		return props;
+	}
 }

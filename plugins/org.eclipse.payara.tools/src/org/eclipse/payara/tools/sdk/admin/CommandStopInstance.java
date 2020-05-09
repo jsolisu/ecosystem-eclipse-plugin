@@ -36,49 +36,50 @@ import org.eclipse.payara.tools.server.PayaraServer;
 @RunnerRestClass(runner = RunnerRestStopInstance.class)
 public class CommandStopInstance extends CommandTarget {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Command string for stop-instance command. */
-    private static final String COMMAND = "stop-instance";
+	/** Command string for stop-instance command. */
+	private static final String COMMAND = "stop-instance";
 
-    /** Error message for administration command execution exception . */
-    private static final String ERROR_MESSAGE = "Instance stop failed.";
+	/** Error message for administration command execution exception . */
+	private static final String ERROR_MESSAGE = "Instance stop failed.";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Static methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Static methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Stops server instance.
-     * <p/>
-     *
-     * @param server GlassFish server entity.
-     * @param target Instance name.
-     * @return Stop instance task response.
-     * @throws PayaraIdeException When error occurred during administration command execution.
-     */
-    public static ResultString stopInstance(PayaraServer server, String target) throws PayaraIdeException {
-        try {
-            return ServerAdmin.<ResultString>exec(server, new CommandStopInstance(target)).get();
-        } catch (InterruptedException | ExecutionException | CancellationException ie) {
-            throw new PayaraIdeException(ERROR_MESSAGE, ie);
-        }
-    }
+	/**
+	 * Stops server instance.
+	 * <p/>
+	 *
+	 * @param server GlassFish server entity.
+	 * @param target Instance name.
+	 * @return Stop instance task response.
+	 * @throws PayaraIdeException When error occurred during administration command
+	 *                            execution.
+	 */
+	public static ResultString stopInstance(PayaraServer server, String target) throws PayaraIdeException {
+		try {
+			return ServerAdmin.<ResultString>exec(server, new CommandStopInstance(target)).get();
+		} catch (InterruptedException | ExecutionException | CancellationException ie) {
+			throw new PayaraIdeException(ERROR_MESSAGE, ie);
+		}
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Constructs an instance of GlassFish server stop-instance command entity.
-     * <p/>
-     *
-     * @param target Target GlassFish instance.
-     */
-    public CommandStopInstance(String target) {
-        super(COMMAND, target);
-    }
+	/**
+	 * Constructs an instance of GlassFish server stop-instance command entity.
+	 * <p/>
+	 *
+	 * @param target Target GlassFish instance.
+	 */
+	public CommandStopInstance(String target) {
+		super(COMMAND, target);
+	}
 
 }

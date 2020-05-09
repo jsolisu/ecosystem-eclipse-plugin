@@ -33,79 +33,80 @@ import org.xml.sax.SAXException;
  */
 public class JavaSEPlatformReader extends AbstractReader {
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Class attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Class attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** <code>platform</code> XML element name. */
-    private static final String NODE = "platform";
+	/** <code>platform</code> XML element name. */
+	private static final String NODE = "platform";
 
-    /** <code>type</code> XML element attribute name. */
-    private static final String VERSION_ATTR = "version";
+	/** <code>type</code> XML element attribute name. */
+	private static final String VERSION_ATTR = "version";
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Instance attributes //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Instance attributes //
+	////////////////////////////////////////////////////////////////////////////
 
-    /** Platforms retrieved from XML elements. */
-    private List<String> platforms;
+	/** Platforms retrieved from XML elements. */
+	private List<String> platforms;
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Constructors //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Constructors //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Creates an instance of <code>platform</code> Java EE configuration XML element reader.
-     * <p/>
-     *
-     * @param pathPrefix Tree parser path prefix to be prepended before current XML element.
-     */
-    JavaSEPlatformReader(final String pathPrefix) throws ServerConfigException {
-        super(pathPrefix, NODE);
-        platforms = new LinkedList<>();
-    }
+	/**
+	 * Creates an instance of <code>platform</code> Java EE configuration XML
+	 * element reader.
+	 * <p/>
+	 *
+	 * @param pathPrefix Tree parser path prefix to be prepended before current XML
+	 *                   element.
+	 */
+	JavaSEPlatformReader(final String pathPrefix) throws ServerConfigException {
+		super(pathPrefix, NODE);
+		platforms = new LinkedList<>();
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Tree parser methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Tree parser methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Process attributes from current XML element.
-     * <p/>
-     *
-     * @param qname Not used.
-     * @param attributes List of XML attributes.
-     * @throws SAXException When any problem occurs.
-     */
-    @Override
-    public void readAttributes(final String qname, final Attributes attributes)
-            throws SAXException {
-        platforms.add(attributes.getValue(VERSION_ATTR));
-    }
+	/**
+	 * Process attributes from current XML element.
+	 * <p/>
+	 *
+	 * @param qname      Not used.
+	 * @param attributes List of XML attributes.
+	 * @throws SAXException When any problem occurs.
+	 */
+	@Override
+	public void readAttributes(final String qname, final Attributes attributes) throws SAXException {
+		platforms.add(attributes.getValue(VERSION_ATTR));
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Getters and setters //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Getters and setters //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Get platforms retrieved from XML elements.
-     * <p/>
-     *
-     * @return Platforms retrieved from XML elements.
-     */
-    public List<String> getPlatforms() {
-        return platforms;
-    }
+	/**
+	 * Get platforms retrieved from XML elements.
+	 * <p/>
+	 *
+	 * @return Platforms retrieved from XML elements.
+	 */
+	public List<String> getPlatforms() {
+		return platforms;
+	}
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Methods //
-    ////////////////////////////////////////////////////////////////////////////
+	////////////////////////////////////////////////////////////////////////////
+	// Methods //
+	////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Reset this XML element reader.
-     */
-    public void reset() {
-        platforms = new LinkedList<>();
-    }
+	/**
+	 * Reset this XML element reader.
+	 */
+	public void reset() {
+		platforms = new LinkedList<>();
+	}
 
 }

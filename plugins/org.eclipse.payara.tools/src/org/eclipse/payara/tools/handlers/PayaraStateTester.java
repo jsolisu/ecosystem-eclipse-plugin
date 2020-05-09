@@ -27,23 +27,23 @@ import org.eclipse.wst.server.core.IServer;
 
 public class PayaraStateTester extends PropertyTester {
 
-    @Override
-    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-        IServer server = (IServer) receiver;
+	@Override
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+		IServer server = (IServer) receiver;
 
-        if (property.equals("isRunning")) {
-            return (server.getServerState() == STATE_STARTED);
-        }
+		if (property.equals("isRunning")) {
+			return (server.getServerState() == STATE_STARTED);
+		}
 
-        if (property.equals("isRemote")) {
-            PayaraServer payaraServer = load(server, PayaraServer.class);
+		if (property.equals("isRemote")) {
+			PayaraServer payaraServer = load(server, PayaraServer.class);
 
-            if (payaraServer != null) {
-                return payaraServer.isRemote();
-            }
-        }
+			if (payaraServer != null) {
+				return payaraServer.isRemote();
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 }
