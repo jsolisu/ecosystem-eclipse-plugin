@@ -91,329 +91,326 @@ import org.eclipse.wst.server.core.model.ServerDelegate;
  */
 public class PayaraServerLaunchDelegate extends AbstractJavaLaunchConfigurationDelegate {
 
-    private static final int MONITOR_TOTAL_WORK = 1000;
-    public static final int WORK_STEP = 200;
-    private static final IStatus DEBUG_STATUS = new Status(OK, SYMBOLIC_NAME, "Debugging");
-    
-    private static final ExecutorService asyncJobsService = Executors.newCachedThreadPool();
+	private static final int MONITOR_TOTAL_WORK = 1000;
+	public static final int WORK_STEP = 200;
+	private static final IStatus DEBUG_STATUS = new Status(OK, SYMBOLIC_NAME, "Debugging");
 
-    @Override
-    public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
+	private static final ExecutorService asyncJobsService = Executors.newCachedThreadPool();
 
-        logMessage("in Payara launch");
+	@Override
+	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
+			throws CoreException {
 
-        monitor.beginTask("Starting Payara", MONITOR_TOTAL_WORK);
+		logMessage("in Payara launch");
 
-        IServer server = getServer(configuration);
-        if (server == null) {
-            abort("missing Server");
-        }
+		monitor.beginTask("Starting Payara", MONITOR_TOTAL_WORK);
 
-        PayaraServerBehaviour serverBehavior = load(server, PayaraServerBehaviour.class);
-        PayaraServer serverAdapter = load(server, PayaraServer.class);
+		IServer server = getServer(configuration);
+		if (server == null) {
+			abort("missing Server");
+		}
 
-        serverBehavior.setLaunch(launch);
+		PayaraServerBehaviour serverBehavior = load(server, PayaraServerBehaviour.class);
+		PayaraServer serverAdapter = load(server, PayaraServer.class);
 
-        try {
-            checkMonitorAndProgress(monitor, WORK_STEP);
-        } catch (InterruptedException e1) {
-            return;
-        }
+		serverBehavior.setLaunch(launch);
 
-        // Find out if our server is already running and ready
-        boolean isRunning = isRunning(serverBehavior);
+		try {
+			checkMonitorAndProgress(monitor, WORK_STEP);
+		} catch (InterruptedException e1) {
+			return;
+		}
 
-        // If server is running and the mode is debug, try to attach the debugger
-        if (isRunning) {
-            
-            logMessage("Server is already started!");
-            
-            if (DEBUG_MODE.equals(mode)) {
-                try {
-                    serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor);
-                } catch (CoreException e) {
-                    Display.getDefault().asyncExec(() -> openError(
-                            Display.getDefault().getActiveShell(),
-                            "Error",
-                            "Error attaching to Payara Server. Please make sure the server is started in debug mode."));
+		// Find out if our server is already running and ready
+		boolean isRunning = isRunning(serverBehavior);
 
-                    logError("Not able to attach debugger, running in normal mode", e);
-                    
-                    serverBehavior.setPayaraServerMode(RUN_MODE);
+		// If server is running and the mode is debug, try to attach the debugger
+		if (isRunning) {
 
-                    throw e;
-                }
-                
-                serverBehavior.setPayaraServerStatus(DEBUG_STATUS);
-            }
-        }
+			logMessage("Server is already started!");
 
-        try {
-            if (serverAdapter.isRemote()) {
-                if (!isRunning) {
-                    abort("Payara Remote Servers cannot be start from this machine.");
-                }
-            } else {
-                if (!isRunning) {
-                    startDASAndTarget(serverAdapter, serverBehavior, configuration, launch, mode, monitor);
-                }
-            }
+			if (DEBUG_MODE.equals(mode)) {
+				try {
+					serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor);
+				} catch (CoreException e) {
+					Display.getDefault().asyncExec(() -> openError(Display.getDefault().getActiveShell(), "Error",
+							"Error attaching to Payara Server. Please make sure the server is started in debug mode."));
 
-        } catch (InterruptedException e) {
-            getStandardConsole(serverAdapter).stopLogging(3);
-            logError("Server start interrupted.", e);
+					logError("Not able to attach debugger, running in normal mode", e);
 
-            serverBehavior.setPayaraServerState(STATE_STOPPED);
-            abort("Unable to start server due interruption.");
-        } catch (CoreException e) {
-            getStandardConsole(serverAdapter).stopLogging(3);
-            serverBehavior.setPayaraServerState(STATE_STOPPED);
-            throw e;
-        } finally {
-            monitor.done();
-        }
+					serverBehavior.setPayaraServerMode(RUN_MODE);
 
-        serverBehavior.setPayaraServerMode(mode);
-    }
-    
-    public ResultProcess launchServer(PayaraServerBehaviour serverBehavior, StartupArgsImpl payaraStartArguments, StartMode launchMode, IProgressMonitor monitor, ILaunchConfiguration configuration, ILaunch launch) throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
-        serverBehavior.setPayaraServerState(STATE_STARTING);
-        
-        ResultProcess process = waitForPayaraStarted(
-            serverBehavior,
-            asyncJobsService.submit(new PayaraStartJob(
-                serverBehavior, 
-                payaraStartArguments, launchMode,
-                configuration, launch, monitor
-                )),
-            monitor);
-        
-        serverBehavior.updateHttpPort();
-        
-        return process;
-    }
-    
-    private ResultProcess waitForPayaraStarted(PayaraServerBehaviour serverBehavior, Future<ResultProcess> futureProcess, IProgressMonitor monitor) throws TimeoutException, InterruptedException, ExecutionException {
-        long endTime = System.currentTimeMillis() + (serverBehavior.getServer().getStartTimeout() * 1000);
-        
-        while (System.currentTimeMillis() < endTime) {
-            
-            try {
-                return futureProcess.get(500, MILLISECONDS);
-            } catch (TimeoutException e) {
-                if (monitor.isCanceled()) {
-                    futureProcess.cancel(true);
-                    // TODO: check if Payara indeed stopped and if not explicitly give stop command
-                    serverBehavior.serverStateChanged(STATE_STOPPED);
-                    serverBehavior.setPayaraServerState(STATE_STOPPED);
-                    throw new OperationCanceledException();
-                }
-            }
-        }
-        
-        throw new TimeoutException("Timeout while waiting for Payara to start");
-    }
+					throw e;
+				}
 
-    @Override
-    protected void abort(String message, Throwable exception, int code) throws CoreException {
-        throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, code, message, exception));
-    }
+				serverBehavior.setPayaraServerStatus(DEBUG_STATUS);
+			}
+		}
 
-    // #### Private methods
+		try {
+			if (serverAdapter.isRemote()) {
+				if (!isRunning) {
+					abort("Payara Remote Servers cannot be start from this machine.");
+				}
+			} else {
+				if (!isRunning) {
+					startDASAndTarget(serverAdapter, serverBehavior, configuration, launch, mode, monitor);
+				}
+			}
 
-    private void startDASAndTarget(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior,
-            ILaunchConfiguration configuration, ILaunch launch, String mode, IProgressMonitor monitor)
-            throws CoreException, InterruptedException {
+		} catch (InterruptedException e) {
+			getStandardConsole(serverAdapter).stopLogging(3);
+			logError("Server start interrupted.", e);
 
-        File bootstrapJar = getJarName(serverAdapter.getServerInstallationDirectory(), GFV3_JAR_MATCHER);
-        if (bootstrapJar == null) {
-            abort("bootstrap jar not found");
-        }
+			serverBehavior.setPayaraServerState(STATE_STOPPED);
+			abort("Unable to start server due interruption.");
+		} catch (CoreException e) {
+			getStandardConsole(serverAdapter).stopLogging(3);
+			serverBehavior.setPayaraServerState(STATE_STOPPED);
+			throw e;
+		} finally {
+			monitor.done();
+		}
 
-        // TODO which java to use? for now ignore the one from launch config
-        AbstractVMInstall/* IVMInstall */ vm = (AbstractVMInstall) serverBehavior.getRuntimeDelegate().getVMInstall();
+		serverBehavior.setPayaraServerMode(mode);
+	}
 
-        if (vm == null || vm.getInstallLocation() == null) {
-            abort("Invalid Java VM location for server " + serverAdapter.getName());
-        }
+	public ResultProcess launchServer(PayaraServerBehaviour serverBehavior, StartupArgsImpl payaraStartArguments,
+			StartMode launchMode, IProgressMonitor monitor, ILaunchConfiguration configuration, ILaunch launch)
+			throws TimeoutException, InterruptedException, ExecutionException, HttpPortUpdateException {
+		serverBehavior.setPayaraServerState(STATE_STARTING);
 
-        StartupArgsImpl startArgs = new StartupArgsImpl();
-        startArgs.setJavaHome(vm.getInstallLocation().getAbsolutePath());
+		ResultProcess process = waitForPayaraStarted(serverBehavior, asyncJobsService.submit(
+				new PayaraStartJob(serverBehavior, payaraStartArguments, launchMode, configuration, launch, monitor)),
+				monitor);
 
-        // Program & VM args
-        String programArgs = getProgramArguments(configuration);
-        String vmArgs = getVMArguments(configuration);
+		serverBehavior.updateHttpPort();
 
-        StartMode startMode = DEBUG_MODE.equals(mode) ? DEBUG : START;
-        addJavaOptions(serverAdapter, mode, startArgs, vmArgs);
-        startArgs.addGlassfishArgs(programArgs);
-        startArgs.addGlassfishArgs("--domain " + serverAdapter.getDomainName());
-        startArgs.addGlassfishArgs("--domaindir " + quote(serverAdapter.getDomainPath()));
+		return process;
+	}
 
-        setDefaultSourceLocator(launch, configuration);
+	private ResultProcess waitForPayaraStarted(PayaraServerBehaviour serverBehavior,
+			Future<ResultProcess> futureProcess, IProgressMonitor monitor)
+			throws TimeoutException, InterruptedException, ExecutionException {
+		long endTime = System.currentTimeMillis() + (serverBehavior.getServer().getStartTimeout() * 1000);
 
-        checkMonitorAndProgress(monitor, WORK_STEP / 2);
-        
-        startLogging(serverAdapter, serverBehavior);
-        
-        ResultProcess process = null;
-        Process payaraProcess = null;
+		while (System.currentTimeMillis() < endTime) {
 
-        try {
-            process = launchServer(serverBehavior, startArgs, startMode, monitor, configuration, launch);
-            payaraProcess = process.getValue().getProcess();
-            launch.setAttribute(ATTR_CAPTURE_OUTPUT, "false");
+			try {
+				return futureProcess.get(500, MILLISECONDS);
+			} catch (TimeoutException e) {
+				if (monitor.isCanceled()) {
+					futureProcess.cancel(true);
+					// TODO: check if Payara indeed stopped and if not explicitly give stop command
+					serverBehavior.serverStateChanged(STATE_STOPPED);
+					serverBehavior.setPayaraServerState(STATE_STOPPED);
+					throw new OperationCanceledException();
+				}
+			}
+		}
 
-            new RuntimeProcess(launch, payaraProcess, "Payara Application Server", null);
-        } catch (TimeoutException e) {
-            abort("Unable to start server on time.", e);
-        } catch (ExecutionException e) {
-            abort("Unable to start server due following issues:", e.getCause());
-        } catch (HttpPortUpdateException e) {
-            abort("Unable to update http port. Server shut down.", e);
-        }
+		throw new TimeoutException("Timeout while waiting for Payara to start");
+	}
 
-        try {
-            checkMonitorAndProgress(monitor, WORK_STEP);
-        } catch (InterruptedException e) {
-            killProcesses(payaraProcess);
-        }
+	@Override
+	protected void abort(String message, Throwable exception, int code) throws CoreException {
+		throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, code, message, exception));
+	}
 
-        setDefaultSourceLocator(launch, configuration);
+	// #### Private methods
 
-        if (DEBUG_MODE.equals(mode) && !serverBehavior.getPayaraServerDelegate().getAttachDebuggerEarly()) {
-            try {
-                serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor, getDebugPort(process));
-                checkMonitorAndProgress(monitor, WORK_STEP);
-            } catch (IllegalArgumentException e) {
-                killProcesses(payaraProcess);
-                abort("Server run in debug mode but the debug port couldn't be determined!", e);
-            }
-        }
-    }
+	private void startDASAndTarget(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior,
+			ILaunchConfiguration configuration, ILaunch launch, String mode, IProgressMonitor monitor)
+			throws CoreException, InterruptedException {
 
-    private void addJavaOptions(PayaraServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
-        if (DEBUG_MODE.equals(mode)) {
-            args.addJavaArgs(vmArgs);
-            int debugPort = serverAdapter.getDebugPort();
-            if (debugPort != -1) {
-                // Debug port was specified by user, use it
-                args.addJavaArgs(serverAdapter.getDebugOptions(debugPort));
-            }
-        } else {
-            args.addJavaArgs(ignoreDebugArgs(vmArgs));
-        }
-    }
+		File bootstrapJar = getJarName(serverAdapter.getServerInstallationDirectory(), GFV3_JAR_MATCHER);
+		if (bootstrapJar == null) {
+			abort("bootstrap jar not found");
+		}
 
-    private String ignoreDebugArgs(String vmArgs) {
-        StringBuilder args = new StringBuilder(vmArgs.length());
-        
-        for (String vmArgument : vmArgs.split("\\s")) {
-            if ("-Xdebug".equalsIgnoreCase(vmArgument) || (vmArgument.startsWith("-agentlib")) || vmArgument.startsWith("-Xrunjdwp")) {
-                break;
-            }
-            args.append(vmArgument);
-            args.append(" ");
-        }
-        
-        return args.toString();
-    }
+		// TODO which java to use? for now ignore the one from launch config
+		AbstractVMInstall/* IVMInstall */ vm = (AbstractVMInstall) serverBehavior.getRuntimeDelegate().getVMInstall();
 
-    private void checkMonitorAndProgress(IProgressMonitor monitor, int work) throws InterruptedException {
-        if (monitor.isCanceled()) {
-            throw new InterruptedException();
-        }
+		if (vm == null || vm.getInstallLocation() == null) {
+			abort("Invalid Java VM location for server " + serverAdapter.getName());
+		}
 
-        monitor.worked(work);
-    }
+		StartupArgsImpl startArgs = new StartupArgsImpl();
+		startArgs.setJavaHome(vm.getInstallLocation().getAbsolutePath());
 
-    private boolean isRunning(PayaraServerBehaviour serverBehavior) throws CoreException {
-        IServer thisServer = serverBehavior.getServer();
+		// Program & VM args
+		String programArgs = getProgramArguments(configuration);
+		String vmArgs = getVMArguments(configuration);
 
-        for (IServer server : ServerCore.getServers()) {
+		StartMode startMode = DEBUG_MODE.equals(mode) ? DEBUG : START;
+		addJavaOptions(serverAdapter, mode, startArgs, vmArgs);
+		startArgs.addGlassfishArgs(programArgs);
+		startArgs.addGlassfishArgs("--domain " + serverAdapter.getDomainName());
+		startArgs.addGlassfishArgs("--domaindir " + quote(serverAdapter.getDomainPath()));
 
-            if (server != thisServer && server.getServerState() == STATE_STARTED) {
-                ServerDelegate delegate = load(server, ServerDelegate.class);
-                if (delegate instanceof PayaraServer) {
-                    PayaraServer runingGfServer = (PayaraServer) delegate;
+		setDefaultSourceLocator(launch, configuration);
 
-                    if (runingGfServer.isRemote()) {
-                        continue;
-                    }
+		checkMonitorAndProgress(monitor, WORK_STEP / 2);
 
-                    PayaraServer thisGfServer = (PayaraServer) (load(thisServer, ServerDelegate.class));
-                    if (runingGfServer.getPort() == thisGfServer.getPort()
-                            || runingGfServer.getAdminPort() == thisGfServer.getAdminPort()) {
-                        abort(canntCommunicate, new RuntimeException(domainNotMatch));
-                        return false;
-                    }
-                }
-            }
-        }
+		startLogging(serverAdapter, serverBehavior);
 
-        switch (serverBehavior.getServerStatus(true)) {
-            case RUNNING_CONNECTION_ERROR:
-                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
-                break;
-            case RUNNING_CREDENTIAL_PROBLEM:
-                AdminCredentialsDialog.open(thisServer);
-                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
-                break;
-            case RUNNING_DOMAIN_MATCHING:
-                return true;
-            case RUNNING_PROXY_ERROR:
-                abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway));
-                break;
-            case STOPPED_DOMAIN_NOT_MATCHING:
-                abort(canntCommunicate, new RuntimeException(domainNotMatch));
-                break;
-            case STOPPED_NOT_LISTENING:
-                return false;
-            default:
-                break;
-        }
+		ResultProcess process = null;
+		Process payaraProcess = null;
 
-        return false;
-    }
+		try {
+			process = launchServer(serverBehavior, startArgs, startMode, monitor, configuration, launch);
+			payaraProcess = process.getValue().getProcess();
+			launch.setAttribute(ATTR_CAPTURE_OUTPUT, "false");
 
-    private void startLogging(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior) {
-        try {
-            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-                File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
-                try {
-                    logFile.createNewFile();
-                } catch (Exception e) {
-                    // File probably exists
-                    e.printStackTrace();
-                }
+			new RuntimeProcess(launch, payaraProcess, "Payara Application Server", null);
+		} catch (TimeoutException e) {
+			abort("Unable to start server on time.", e);
+		} catch (ExecutionException e) {
+			abort("Unable to start server due following issues:", e.getCause());
+		} catch (HttpPortUpdateException e) {
+			abort("Unable to update http port. Server shut down.", e);
+		}
 
-                IPayaraConsole console = getStandardConsole(serverAdapter);
-                showConsole(console);
-                if (!console.isLogging()) {
-                    console.startLogging(FetchLogPiped.create(serverAdapter, true));
-                }
-            });
-        } catch (Exception e) {
-            logError("page.showView", e);
-        }
-    }
+		try {
+			checkMonitorAndProgress(monitor, WORK_STEP);
+		} catch (InterruptedException e) {
+			killProcesses(payaraProcess);
+		}
 
-   
+		setDefaultSourceLocator(launch, configuration);
 
-    private void killProcesses(Process... processes) {
-        for (Process process : processes) {
-            if (process != null) {
-                process.destroy();
-            }
-        }
-    }
-    
-    private void abort(String message) throws CoreException {
-        throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, null));
-    }
-    
-    private void abort(String message, Throwable exception) throws CoreException {
-        throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, exception));
-    }
+		if (DEBUG_MODE.equals(mode) && !serverBehavior.getPayaraServerDelegate().getAttachDebuggerEarly()) {
+			try {
+				serverBehavior.attach(launch, configuration.getWorkingCopy(), monitor, getDebugPort(process));
+				checkMonitorAndProgress(monitor, WORK_STEP);
+			} catch (IllegalArgumentException e) {
+				killProcesses(payaraProcess);
+				abort("Server run in debug mode but the debug port couldn't be determined!", e);
+			}
+		}
+	}
+
+	private void addJavaOptions(PayaraServer serverAdapter, String mode, StartupArgsImpl args, String vmArgs) {
+		if (DEBUG_MODE.equals(mode)) {
+			args.addJavaArgs(vmArgs);
+			int debugPort = serverAdapter.getDebugPort();
+			if (debugPort != -1) {
+				// Debug port was specified by user, use it
+				args.addJavaArgs(serverAdapter.getDebugOptions(debugPort));
+			}
+		} else {
+			args.addJavaArgs(ignoreDebugArgs(vmArgs));
+		}
+	}
+
+	private String ignoreDebugArgs(String vmArgs) {
+		StringBuilder args = new StringBuilder(vmArgs.length());
+
+		for (String vmArgument : vmArgs.split("\\s")) {
+			if ("-Xdebug".equalsIgnoreCase(vmArgument) || (vmArgument.startsWith("-agentlib"))
+					|| vmArgument.startsWith("-Xrunjdwp")) {
+				break;
+			}
+			args.append(vmArgument);
+			args.append(" ");
+		}
+
+		return args.toString();
+	}
+
+	private void checkMonitorAndProgress(IProgressMonitor monitor, int work) throws InterruptedException {
+		if (monitor.isCanceled()) {
+			throw new InterruptedException();
+		}
+
+		monitor.worked(work);
+	}
+
+	private boolean isRunning(PayaraServerBehaviour serverBehavior) throws CoreException {
+		IServer thisServer = serverBehavior.getServer();
+
+		for (IServer server : ServerCore.getServers()) {
+
+			if (server != thisServer && server.getServerState() == STATE_STARTED) {
+				ServerDelegate delegate = load(server, ServerDelegate.class);
+				if (delegate instanceof PayaraServer) {
+					PayaraServer runingGfServer = (PayaraServer) delegate;
+
+					if (runingGfServer.isRemote()) {
+						continue;
+					}
+
+					PayaraServer thisGfServer = (PayaraServer) (load(thisServer, ServerDelegate.class));
+					if (runingGfServer.getPort() == thisGfServer.getPort()
+							|| runingGfServer.getAdminPort() == thisGfServer.getAdminPort()) {
+						abort(canntCommunicate, new RuntimeException(domainNotMatch));
+						return false;
+					}
+				}
+			}
+		}
+
+		switch (serverBehavior.getServerStatus(true)) {
+		case RUNNING_CONNECTION_ERROR:
+			abort(canntCommunicate, new RuntimeException(abortLaunchMsg + domainNotMatch + checkVpnOrProxy));
+			break;
+		case RUNNING_CREDENTIAL_PROBLEM:
+			AdminCredentialsDialog.open(thisServer);
+			abort(canntCommunicate, new RuntimeException(abortLaunchMsg + wrongUsernamePassword));
+			break;
+		case RUNNING_DOMAIN_MATCHING:
+			return true;
+		case RUNNING_PROXY_ERROR:
+			abort(canntCommunicate, new RuntimeException(abortLaunchMsg + badGateway));
+			break;
+		case STOPPED_DOMAIN_NOT_MATCHING:
+			abort(canntCommunicate, new RuntimeException(domainNotMatch));
+			break;
+		case STOPPED_NOT_LISTENING:
+			return false;
+		default:
+			break;
+		}
+
+		return false;
+	}
+
+	private void startLogging(PayaraServer serverAdapter, PayaraServerBehaviour serverBehavior) {
+		try {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+				File logFile = new File(serverAdapter.getDomainPath() + "/logs/server.log"); //$NON-NLS-1$
+				try {
+					logFile.createNewFile();
+				} catch (Exception e) {
+					// File probably exists
+					e.printStackTrace();
+				}
+
+				IPayaraConsole console = getStandardConsole(serverAdapter);
+				showConsole(console);
+				if (!console.isLogging()) {
+					console.startLogging(FetchLogPiped.create(serverAdapter, true));
+				}
+			});
+		} catch (Exception e) {
+			logError("page.showView", e);
+		}
+	}
+
+	private void killProcesses(Process... processes) {
+		for (Process process : processes) {
+			if (process != null) {
+				process.destroy();
+			}
+		}
+	}
+
+	private void abort(String message) throws CoreException {
+		throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, null));
+	}
+
+	private void abort(String message, Throwable exception) throws CoreException {
+		throw new CoreException(new Status(ERROR, SYMBOLIC_NAME, ERR_INTERNAL_ERROR, message, exception));
+	}
 
 }
