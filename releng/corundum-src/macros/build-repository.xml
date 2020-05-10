@@ -35,20 +35,20 @@
         <then>
 
           <!-- Stage 1 -->
-
+          <echo message="Stage 1"/>
           <delete dir="${build.dir}/repository" quiet="true"/>
           <mkdir dir="${build.dir}/repository"/>
           
           <locate-source/>
           
           <!-- Stage 2 -->
-
+          <echo message="Stage 2"/>
           <verify-copyright source="${source.location}"/>
           <verify-author source="${source.location}"/>
           <verify-bundle-required-env source="${source.location}"/>
 
           <!-- Stage 3 -->
-
+          <echo message="Stage 3"/>
           <pde-build source="${source.location}" target="${configuration.recommended}" feature="${root.feature}" build.id="${DSTAMP}" warnings="true"/>
 
           <unzip src="${source.location}/build/${root.feature}-${DSTAMP}.zip" dest="${build.dir}/repository">
@@ -64,7 +64,7 @@
           </delete>
 
           <!-- Stage 4 -->
-
+          <echo message="Stage 4"/>
           <echo message="Setting Require-Bundle version constraints..."/>
 
           <mkdir dir="${build.dir}/repository/temp"/>
@@ -93,7 +93,7 @@
             rules="${require.bundle.version.constraint.rules}"/>
 
           <!-- Stage 5 -->
-
+          <echo message="Stage 5"/>
           <if>
             <istrue value="${set.export.package.versions}"/>
             <then>
@@ -111,11 +111,11 @@
           <delete dir="${build.dir}/repository/temp"/>
             
           <!-- Stage 6 -->
-            
+          <echo message="Stage 6"/>
           <verify-about-html repository="${build.dir}/repository"/>
 
           <!-- Stage 7 -->
-          
+          <echo message="Stage 7"/>
           <for param="jar">
             <path>
               <fileset dir="${build.dir}/repository" includes="**/*.jar"/>
@@ -128,7 +128,7 @@
           </for>
 
           <!-- Stage 8 -->
-
+          <echo message="Stage 8"/>
           <echo message="Finalizing the repository..."/>
 
           <pre-finalize-repository/>
